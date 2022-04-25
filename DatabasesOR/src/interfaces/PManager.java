@@ -12,7 +12,15 @@ public interface PManager {
 	// listPatients
 	public List<Patient> listPatients();
 	
+	// listPatients name and id
+		public List<Patient> listPatientsId();
+	
 	//searchPatients
-	public List<Patient> searchPatient(int id);
+	public Patient searchPatient(int id);
+	
+	//list patient info
+	public Patient showPatient(int id);
 
+	//update patient
+	public Patient updatePatient (Patient p);
 }

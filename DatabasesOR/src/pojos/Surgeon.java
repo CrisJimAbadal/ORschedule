@@ -45,6 +45,14 @@ public class Surgeon implements Serializable {
 		avs = new ArrayList<Availability>();
 	}
 
+	public Surgeon(Integer id, String name, String medstat) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.medstat = medstat;
+		// inicializar las otras?????????????????????????????????????
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

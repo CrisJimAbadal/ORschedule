@@ -60,13 +60,54 @@ public class JDBCSurgeonManager implements SManager {
 			e.printStackTrace();
 		}
 		return surgeons;
-	
+
 	}
 
 	@Override
-	public List<Surgeon> searchSurgeon(int id) {
-		// TODO Auto-generated method stub
-		return null;
+	public Surgeon searchSurgeon(int id) {
+		Surgeon s = null;
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELCT * FROM surgeon WHERE id = " + id;
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String name = rs.getString("name");
+				String medstat = rs.getString("medstat");
+				// availability???????????????????????????????????
+
+				s = new Surgeon(id, name, medstat);
+
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return s;
+	}
+
+	@Override
+	public Surgeon showSurgeon(int num) {
+		Surgeon s= null;
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM surgeon WHERE pagerNumber = " + num;
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+
+				String name = rs.getString("name");
+				String medstat = rs.getString("medstat");
+				Integer pagerNumber = rs.getInt("pagerNumber");
+				Integer tlfNumber = rs.getInt("tlfNumber");
+
+				s = new Surgeon(name, medstat, pagerNumber, tlfNumber);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return s;
 	}
 
 	@Override

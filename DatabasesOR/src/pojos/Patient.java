@@ -21,6 +21,17 @@ public class Patient implements Serializable {
 	
 	
 
+	public Patient() {
+		super();
+		surgeries = new ArrayList <Surgery>();
+	}
+	
+	public Patient(Integer id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+
 	public Patient(String name, String medstat, Integer age, String sex) {
 		super();
 		this.name = name;
@@ -29,14 +40,6 @@ public class Patient implements Serializable {
 		this.sex = sex;
 		this.surgeries= new ArrayList<Surgery>();
 	}
-
-
-
-	public Patient() {
-		super();
-		surgeries = new ArrayList <Surgery>();
-	}
-	
 	
 	public Patient(Integer id, String name, String medstat, Integer age, String sex) {
 		super();
@@ -47,7 +50,17 @@ public class Patient implements Serializable {
 		this.sex = sex;
 		this.surgeries= new ArrayList<Surgery>();
 	}
+	
+	
 
+	public Patient(Integer id, String name, String medstat) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.medstat = medstat;
+		// hay que inicializar los otros??????????
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

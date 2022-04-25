@@ -5,17 +5,22 @@ import java.io.InputStreamReader;
 
 import interfaces.PManager;
 import interfaces.SManager;
+import interfaces.SurgManager;
 import jdbc.JDBCManager;
 import jdbc.JDBCPatientManager;
 import jdbc.JDBCSurgeonManager;
+import jdbc.JDBCSurgeryManager;
+import pojos.OPR;
 import pojos.Patient;
 import pojos.Surgeon;
+import pojos.Surgery;
 
 public class MenuORschedule {
 
 	private static BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
 	private static PManager patientManager;
 	private static SManager surgeonManager;
+	private static SurgManager surgeryManager;
 
 	public static void main(String[] args) {
 
@@ -24,6 +29,7 @@ public class MenuORschedule {
 		// initialize database
 		patientManager = new JDBCPatientManager(jdbcManager);
 		surgeonManager = new JDBCSurgeonManager(jdbcManager);
+		surgeryManager = new JDBCSurgeryManager(jdbcManager);
 		principalMenu();
 	}
 
@@ -89,6 +95,7 @@ public class MenuORschedule {
 				case 2:
 					// TODO Call method log in
 					// call PMenu();
+					PMenu();
 
 					break;
 				case 0:
@@ -123,7 +130,7 @@ public class MenuORschedule {
 				case 2:
 					// log in
 					// call SMenu();
-
+					SMenu();
 					break;
 
 				case 0:
@@ -185,8 +192,8 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					// List patient info
-					// ask for changes and update
+
+					updatePatientInfo();
 
 					break;
 
@@ -223,8 +230,7 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					// List surgeon info
-					// ask for changes and update
+					updateSurgeonInfo();
 
 					break;
 
@@ -252,19 +258,24 @@ public class MenuORschedule {
 			// show medical specialties
 			// choose an specialty
 
-			// list patients
-			patientManager.listPatients();
 			// choose a patient
+			Patient p = choosePatient();
 
 			// list availability
 			// choose availability
 
-			// list surgeons
-			surgeonManager.listSurgeons();
+			// choose opr
+			OPR opr = null; // de momento
+
 			// choose surgeon
+			Surgeon s = chooseSurgeon();
 
 			// input type of surgery (ex: transplant)
-
+			System.out.println("Input the type of surgery: ");
+			String surgery = read.readLine();
+			Surgery surg = new Surgery(p, s, opr, surgery);
+			surgeryManager.addSurgery(surg);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -302,4 +313,48 @@ public class MenuORschedule {
 
 	}
 
+	public static Patient choosePatient() throws Exception {
+		System.out.println("choose a patient by its id: ");
+		// list patients
+		patientManager.listPatients();
+		Integer patientId = Integer.parseInt(read.readLine());
+		Patient p = patientManager.searchPatient(patientId);
+
+		return p;
+	}
+
+	public static Surgeon chooseSurgeon() throws Exception {
+
+		System.out.println("choose a surgeon by its id: ");
+		// list surgeons
+		surgeonManager.listSurgeons();
+		Integer surgeonId = Integer.parseInt(read.readLine());
+		Surgeon s = surgeonManager.searchSurgeon(surgeonId);
+
+		return s;
+	}
+
+	private static void updatePatientInfo() throws Exception {
+		// choose patient
+		System.out.println("Input your id: ");
+		patientManager.listPatientsId();
+		Integer patientId = Integer.parseInt(read.readLine());
+		// List patient info
+		patientManager.showPatient(patientId);
+
+		// TODO ask for changes and update
+
+	}
+
+	private static void updateSurgeonInfo() throws Exception {
+		// choose surgeon
+		System.out.println("Input your pagerNumber: ");
+
+		Integer surgeonPagerNum = Integer.parseInt(read.readLine());
+		// List patient info
+		surgeonManager.showSurgeon(surgeonPagerNum);
+
+		// TODO ask for changes and update
+
+	}
 }

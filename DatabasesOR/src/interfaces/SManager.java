@@ -14,7 +14,10 @@ public interface SManager {
 	public List<Surgeon> listSurgeons();
 
 	// searchSurgeon
-	public List<Surgeon> searchSurgeon(int id);
+	public Surgeon searchSurgeon(int id);
+	
+	//search by PagerNumber
+	public Surgeon showSurgeon (int num);
 
 	// updateSurgeon
 	public void updateSurgeon(String name, String medstat, Integer pagerNumber, Integer tlfNumber);

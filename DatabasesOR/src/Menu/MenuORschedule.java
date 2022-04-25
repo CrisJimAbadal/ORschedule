@@ -354,6 +354,8 @@ public class MenuORschedule {
 		// List patient info
 		surgeonManager.showSurgeon(surgeonPagerNum);
 
+		
+		
 		// TODO ask for changes and update
 
 	}

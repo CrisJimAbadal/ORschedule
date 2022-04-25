@@ -2,6 +2,7 @@ package jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -109,23 +110,76 @@ public class JDBCSurgeonManager implements SManager {
 		}
 		return s;
 	}
-
 	@Override
-	public void updateSurgeon(String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void updateSurgeon (String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
+	//TODO this method
+	
+}
+	
 	@Override
 	public void updateSurgeon(Surgeon s) {
-		// TODO Auto-generated method stub
+		try {
+		String sql = "UPDATE surgeon" + 
+		"SET name = ?" +
+		" medstat = ?" +
+		" pagernumber = ?" +
+		" tlfnumber = ?" ;
+		PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+		pr.setString(1,s.getName());
+		pr.setString(2,s.getMedstat());
+		pr.setInt(3,s.getPagerNumber());
+		pr.setInt(4,s.getTlfNumber());
+		pr.executeUpdate();
+		
+		} catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+	}
+	
 
+	@Override
+	public void deleteSurgeon (int surgeonId) {
+		try {
+			String sql= "DELETE FROM Surgeons WHERE id=?";
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			pr.setInt(1,surgeonId);
+			pr.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
+//TODO check if this method is correct
+	@Override
+	public void acceptSurgery(String s) {
+		try {
+			String sql = "UPDATE surgery" + 
+			"SET conductSurgery = TRUE" ;
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			pr.setBoolean(3,true);
+			pr.executeUpdate();
+			
+			} catch(Exception e) {
+				e.printStackTrace();
+				
+			}
 	}
 
 	@Override
-	public void acceptSurgery(String s) {
-		// TODO Auto-generated method stub
-
+	public void updateAvailability (Availability a) {
+		try {
+			String sql = "UPDATE availability" + 
+					"SET date = ?" +
+					"time=?";
+					PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+					pr.setDate(1,a.getDate());
+					pr.setTime(2,a.getTime());
+					pr.executeUpdate();
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+			
 	}
-
 }

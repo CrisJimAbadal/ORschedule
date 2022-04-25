@@ -2,6 +2,7 @@ package interfaces;
 
 import java.util.List;
 
+import jdbc.Availability;
 import pojos.Patient;
 import pojos.Surgeon;
 
@@ -26,7 +27,12 @@ public interface SManager {
 
 	// acceptSurgery
 	public void acceptSurgery(String s);
+	
+	public void deleteSurgeon(int Surgeonid);
 
 	// availability
+	public void updateAvailability (Availability a);
 	// TODO availability
+	//TODO check availability method
+	//TODO do an ORManager
 }

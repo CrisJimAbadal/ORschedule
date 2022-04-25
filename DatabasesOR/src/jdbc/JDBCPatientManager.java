@@ -2,6 +2,7 @@ package jdbc;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -137,11 +138,46 @@ public class JDBCPatientManager implements PManager {
 		}
 		return p;
 	}
-
+	
 	@Override
-	public Patient updatePatient(Patient p) {
-		// TODO update info
-		return p;
+	public void updatePatient (String name, String medstat, Integer age, String sex) {
+	//TODO this method
+	
+}
+	
+	@Override
+	public void updatePatient(Patient p) {
+		try {
+		String sql = "UPDATE patient" + 
+		"SET name = ?" +
+		" medstat = ?" +
+		" age = ?" +
+		" sex = ?" ;
+		PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+		pr.setString(1,p.getName());
+		pr.setString(2,p.getMedstat());
+		pr.setInt(3,p.getAge());
+		pr.setString(4,p.getSex());
+		pr.executeUpdate();
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+		}
 	}
-
+	
+	
+	
+	@Override
+	public void deletePatient (int patientId) {
+		try {
+			String sql= "DELETE FROM Patients WHERE id=?";
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			pr.setInt(1,patientId);
+			pr.executeUpdate();
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}
+		
+	}
+	
 }

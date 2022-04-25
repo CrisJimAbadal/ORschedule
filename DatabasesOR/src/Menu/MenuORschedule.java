@@ -131,6 +131,8 @@ public class MenuORschedule {
 					break;
 				case 2: 
 					// sugeonManager.logIn();
+					//call SMenu
+					SMenu();
 					break;
 
 				case 0:
@@ -182,8 +184,8 @@ public class MenuORschedule {
 		try {
 			do {
 				System.out.println("CHOOSE AN OPTION: ");
-				System.out.println("1. Check information");
-				System.out.println("2. Check surgeries");
+				System.out.println("1. Check information");//check and update?
+				System.out.println("2. Check surgeries");//check and update?
 
 				System.out.println("0. Exit");
 
@@ -220,9 +222,9 @@ public class MenuORschedule {
 
 		try {
 			do {
-				System.out.println("CHOOSE AN OPTION: ");
-				System.out.println("1. Check information");
-				System.out.println("2. Check schedule");
+				System.out.println("CHOOSE AN OPTION: "); 
+				System.out.println("1. Check information"); //check and update?
+				System.out.println("2. Check schedule");//check and update?
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(read.readLine());

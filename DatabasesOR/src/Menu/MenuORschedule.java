@@ -24,16 +24,13 @@ public class MenuORschedule {
 
 	public static void main(String[] args) {
 
-<<<<<<< HEAD
-		System.out.println("WELCOME TO THE OR SHCEDULE MENU");
-=======
+
 		System.out.println("WELCOME TO THE OR SHCEDULE");
 		JDBCManager jdbcManager = new JDBCManager();
 		// initialize database
 		patientManager = new JDBCPatientManager(jdbcManager);
 		surgeonManager = new JDBCSurgeonManager(jdbcManager);
 		surgeryManager = new JDBCSurgeryManager(jdbcManager);
->>>>>>> 55400e297c5c9271fde329a54536e95caa3898cd
 		principalMenu();
 	}
 
@@ -132,15 +129,8 @@ public class MenuORschedule {
 					createSurgeon();
 
 					break;
-<<<<<<< HEAD
 				case 2: 
 					// sugeonManager.logIn();
-=======
-				case 2:
-					// log in
-					// call SMenu();
-					SMenu();
->>>>>>> 55400e297c5c9271fde329a54536e95caa3898cd
 					break;
 
 				case 0:

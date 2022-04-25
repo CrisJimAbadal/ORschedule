@@ -1,21 +1,48 @@
 package pojos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Surgeon implements Serializable {
 
-	
 	private static final long serialVersionUID = 7391492954500022065L;
-	
+
 	private Integer id;
 	private String name;
 	private String medstat;
-	private Integer pagernumber;
-	private Integer tlfnumber;
-	
+	private Integer pagerNumber;
+	private Integer tlfNumber;
+
+	private List<Surgery> surgeries;
+	private List<Availability> avs;
+
 	public Surgeon() {
 		super();
+		surgeries = new ArrayList<Surgery>();
+		avs = new ArrayList<Availability>();
+	}
+
+	public Surgeon(String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
+		super();
+		this.name = name;
+		this.medstat = medstat;
+		this.pagerNumber = pagerNumber;
+		this.tlfNumber = tlfNumber;
+		surgeries = new ArrayList<Surgery>();
+		avs = new ArrayList<Availability>();
+	}
+
+	public Surgeon(Integer id, String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.medstat = medstat;
+		this.pagerNumber = pagerNumber;
+		this.tlfNumber = tlfNumber;
+		surgeries = new ArrayList<Surgery>();
+		avs = new ArrayList<Availability>();
 	}
 
 	@Override
@@ -59,30 +86,43 @@ public class Surgeon implements Serializable {
 		this.medstat = medstat;
 	}
 
-	public Integer getPagernumber() {
-		return pagernumber;
+	public Integer getPagerNumber() {
+		return pagerNumber;
 	}
 
-	public void setPagernumber(Integer pagernumber) {
-		this.pagernumber = pagernumber;
+	public void setPagerNumber(Integer pagernumber) {
+		this.pagerNumber = pagernumber;
 	}
 
-	public Integer getTlfnumber() {
-		return tlfnumber;
+	public Integer getTlfNumber() {
+		return tlfNumber;
 	}
 
-	public void setTlfnumber(Integer tlfnumber) {
-		this.tlfnumber = tlfnumber;
+	public void setTlfNumber(Integer tlfnumber) {
+		this.tlfNumber = tlfnumber;
 	}
-	
-	
-	
+
+	public List<Surgery> getSurgeries() {
+		return surgeries;
+	}
+
+	public void setSurgeries(List<Surgery> surgeries) {
+		this.surgeries = surgeries;
+	}
+
+	public List<Availability> getAvs() {
+		return avs;
+	}
+
+	public void setAvs(List<Availability> avs) {
+		this.avs = avs;
+	}
+
 	@Override
 	public String toString() {
-		return "Surgeon [id=" + id + ", name=" + name + ", medstat=" + medstat + ", pagernumber=" + pagernumber
-				+ ", tlfnumber=" + tlfnumber + "]";
+		// añadir avs y surgeries
+		return "Surgeon [id=" + id + ", name=" + name + ", medstat=" + medstat + ", pagernumber=" + pagerNumber
+				+ ", tlfnumber=" + tlfNumber + "]";
 	}
 
-	
-	
 }

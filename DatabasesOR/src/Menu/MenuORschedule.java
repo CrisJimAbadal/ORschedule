@@ -9,7 +9,7 @@ public class MenuORschedule {
 
 	public static void main(String[] args) {
 
-		System.out.println("WELCOME TO THE OR SHCEDULE");
+		System.out.println("WELCOME TO THE OR SHCEDULE MENU");
 		principalMenu();
 	}
 
@@ -39,6 +39,7 @@ public class MenuORschedule {
 					break;
 				case 3:
 					// Call method doctor menu
+					doctorMenu();
 
 					break;
 				case 0:
@@ -110,7 +111,7 @@ public class MenuORschedule {
 
 					break;
 				case 2: 
-					
+					// sugeonManager.logIn();
 					break;
 					
 				case 0:

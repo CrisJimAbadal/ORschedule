@@ -3,6 +3,8 @@ package pojos;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class Availability implements Serializable{
@@ -16,9 +18,15 @@ public class Availability implements Serializable{
 	private Date date;
 	private Time time;
 	
+	private List <Availability> avs;
+	private List <Surgeon> surgeons;
+	
+	
 	
 	public Availability() {
 		super();
+		avs = new ArrayList <Availability>();
+		surgeons = new ArrayList <Surgeon>();
 	}
 	@Override
 	public int hashCode() {
@@ -56,8 +64,22 @@ public class Availability implements Serializable{
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+	
+	public List<Availability> getAvs() {
+		return avs;
+	}
+	public void setAvs(List<Availability> avs) {
+		this.avs = avs;
+	}
+	public List<Surgeon> getSurgeons() {
+		return surgeons;
+	}
+	public void setSurgeons(List<Surgeon> surgeons) {
+		this.surgeons = surgeons;
+	}
 	@Override
 	public String toString() {
+		//añadir avs y surgeons
 		return "Availability [id=" + id + ", date=" + date + ", time=" + time + "]";
 	}
 	

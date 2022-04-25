@@ -1,6 +1,8 @@
 package pojos;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class OPR implements Serializable {
@@ -15,8 +17,15 @@ public class OPR implements Serializable {
 	private Integer floor;
 	private Integer number;
 	
+	private List <Surgery> surgeries; 
+	private List <Availability> av;
+	
+	
+
 	public OPR() {
 		super();
+		surgeries = new ArrayList <Surgery>();
+		av = new ArrayList <Availability>();
 	}
 
 	@Override
@@ -60,8 +69,25 @@ public class OPR implements Serializable {
 		this.number = number;
 	}
 	
+	public List<Surgery> getSurgeries() {
+		return surgeries;
+	}
+
+	public void setSurgeries(List<Surgery> surgeries) {
+		this.surgeries = surgeries;
+	}
+
+	public List<Availability> getAv() {
+		return av;
+	}
+
+	public void setAv(List<Availability> av) {
+		this.av = av;
+	}
 	@Override
 	public String toString() {
+		//añadir surgery y availability
+		
 		return "OPR [id=" + id + ", floor=" + floor + ", number=" + number + "]";
 	}
 

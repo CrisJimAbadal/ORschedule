@@ -338,12 +338,13 @@ public class MenuORschedule {
 
 	private static void updatePatientInfo() throws Exception {
 		// choose patient
-		System.out.println("Input your id: ");
 		patientManager.listPatientsId();
+		System.out.println("Input your id: ");
 		Integer patientId = Integer.parseInt(read.readLine());
 		// List patient info
 		patientManager.showPatient(patientId);
 
+		
 		// TODO ask for changes and update
 
 	}

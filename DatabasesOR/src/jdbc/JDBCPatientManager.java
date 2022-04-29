@@ -138,46 +138,37 @@ public class JDBCPatientManager implements PManager {
 		}
 		return p;
 	}
-	
-	@Override
-	public void updatePatient (String name, String medstat, Integer age, String sex) {
-	//TODO this method
-	
-}
-	
+
 	@Override
 	public void updatePatient(Patient p) {
 		try {
-		String sql = "UPDATE patient" + 
-		"SET name = ?" +
-		" medstat = ?" +
-		" age = ?" +
-		" sex = ?" ;
-		PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-		pr.setString(1,p.getName());
-		pr.setString(2,p.getMedstat());
-		pr.setInt(3,p.getAge());
-		pr.setString(4,p.getSex());
-		pr.executeUpdate();
-		}catch(Exception e) {
-			e.printStackTrace();
-			
-		}
-	}
-	
-	
-	
-	@Override
-	public void deletePatient (int patientId) {
-		try {
-			String sql= "DELETE FROM Patients WHERE id=?";
+			String sql = "UPDATE patient" + "SET name = ?" + " medstat = ?" +
+			// TODO change age to dob
+			// TODO cristina update con enters que se queden igual
+					" age = ?" + " sex = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setInt(1,patientId);
+			pr.setString(1, p.getName());
+			pr.setString(2, p.getMedstat());
+			pr.setInt(3, p.getAge());
+			pr.setString(4, p.getSex());
 			pr.executeUpdate();
-		}catch(SQLException e) {
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+	}
+
+	@Override
+	public void deletePatient(int patientId) {
+		try {
+			String sql = "DELETE FROM Patients WHERE id=?";
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			pr.setInt(1, patientId);
+			pr.executeUpdate();
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 }

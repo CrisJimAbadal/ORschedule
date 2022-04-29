@@ -5,10 +5,9 @@ import pojos.Surgery;
 public interface SurgManager {
 
 
-	// addSurgery
+	// assign Surgery
 	public void addSurgery (Surgery s);
 	
-	public void assign (int surgeonId, int patientId);
-	
+	//unassign Surgery
 	public void unassign (int surgeonId, int patientId);
 }

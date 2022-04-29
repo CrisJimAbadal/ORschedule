@@ -24,7 +24,6 @@ public interface PManager {
 	//update patient
 	public void updatePatient(Patient p);
 	
-	public void updatePatient (String name, String medstat, Integer age, String sex);
 	
 	public void deletePatient(int patientid);
 	

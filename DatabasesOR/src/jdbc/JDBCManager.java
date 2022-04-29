@@ -65,7 +65,7 @@ public class JDBCManager {
 			// TABLE PATIENT
 
 			sql = "CREATE TABLE patient" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT NOT NULL ,"
-					+ "medstat TEXT NOT NULL," + "age INTEGER," + "sex TEXT NOT NULL," + " number INTEGER NOT NULL )";
+					+ "medstat TEXT NOT NULL," + "dob INTEGER," + "sex TEXT NOT NULL," + " number INTEGER NOT NULL )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON AVAILABILITY

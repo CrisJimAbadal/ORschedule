@@ -31,15 +31,15 @@ public class JDBCSurgeryManager implements SurgManager {
 		}
 
 	}
-	//TODO check if this methods go here or in surgerymanager
-	
+
 		@Override
-		public void assign (int surgeonId, int patientId) {
+		public void unassign (int surgeonId, int patientId) {
 			try {
-			String sql = "INSERT INTO Surgery (surgeonId, patientId) VALUES (?,?)";
+			String sql = "DELETE * FROM Surgery WHERE surgeonId=? AND patientId=?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setInt(1,surgeonId);
 			pr.setInt(2, patientId);
+			// TODO revisar
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -47,18 +47,6 @@ public class JDBCSurgeryManager implements SurgManager {
 			
 		}
 
-		@Override
-		public void unassign (int surgeonId, int patientId) {
-			try {
-			String sql = "DELETE FROM Surgery WHERE surgeonId=? AND patientId=?";
-			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setInt(1,surgeonId);
-			pr.setInt(2, patientId);
-			}catch (SQLException e) {
-				e.printStackTrace();
-			}
-						
-			
-		}
+
 
 }

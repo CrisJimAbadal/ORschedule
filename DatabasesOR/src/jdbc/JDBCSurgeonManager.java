@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.SManager;
+import pojos.Availability;
 import pojos.Patient;
 import pojos.Surgeon;
 
@@ -90,7 +91,7 @@ public class JDBCSurgeonManager implements SManager {
 
 	@Override
 	public Surgeon showSurgeon(int num) {
-		Surgeon s= null;
+		Surgeon s = null;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM surgeon WHERE pagerNumber = " + num;
@@ -110,76 +111,65 @@ public class JDBCSurgeonManager implements SManager {
 		}
 		return s;
 	}
-	@Override
-	public void updateSurgeon (String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
-	//TODO this method
-	
-}
-	
+
 	@Override
 	public void updateSurgeon(Surgeon s) {
 		try {
-		String sql = "UPDATE surgeon" + 
-		"SET name = ?" +
-		" medstat = ?" +
-		" pagernumber = ?" +
-		" tlfnumber = ?" ;
-		PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-		pr.setString(1,s.getName());
-		pr.setString(2,s.getMedstat());
-		pr.setInt(3,s.getPagerNumber());
-		pr.setInt(4,s.getTlfNumber());
-		pr.executeUpdate();
-		
-		} catch(Exception e) {
+			String sql = "UPDATE surgeon" + "SET name = ?" + " medstat = ?" + " pagernumber = ?" + " tlfnumber = ?";
+			// TODO same as the other
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			pr.setString(1, s.getName());
+			pr.setString(2, s.getMedstat());
+			pr.setInt(3, s.getPagerNumber());
+			pr.setInt(4, s.getTlfNumber());
+			pr.executeUpdate();
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			
+
 		}
 	}
-	
 
 	@Override
-	public void deleteSurgeon (int surgeonId) {
+	public void deleteSurgeon(int surgeonId) {
 		try {
-			String sql= "DELETE FROM Surgeons WHERE id=?";
+			String sql = "DELETE FROM Surgeons WHERE id=?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setInt(1,surgeonId);
+			pr.setInt(1, surgeonId);
 			pr.executeUpdate();
-		}catch(SQLException e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 //TODO check if this method is correct
 	@Override
 	public void acceptSurgery(String s) {
 		try {
-			String sql = "UPDATE surgery" + 
-			"SET conductSurgery = TRUE" ;
+			String sql = "UPDATE surgery" + "SET conductSurgery = TRUE";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setBoolean(3,true);
+			pr.setBoolean(3, true);
 			pr.executeUpdate();
-			
-			} catch(Exception e) {
-				e.printStackTrace();
-				
-			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
 	}
 
 	@Override
-	public void updateAvailability (Availability a) {
+	public void updateAvailability(Availability a) {
 		try {
-			String sql = "UPDATE availability" + 
-					"SET date = ?" +
-					"time=?";
-					PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-					pr.setDate(1,a.getDate());
-					pr.setTime(2,a.getTime());
-					pr.executeUpdate();
-			
-		}catch (Exception e) {
+			String sql = "UPDATE surgAvailability" + "SET date = ?" + "time=?";
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			pr.setDate(1, a.getDate());
+			pr.setTime(2, a.getTime());
+			pr.executeUpdate();
+
+		} catch (Exception e) {
 			e.printStackTrace();
-			
+
+		}
 	}
 }

@@ -14,7 +14,7 @@ public class Patient implements Serializable {
 	private Integer id;
 	private String name;
 	private String medstat;
-	private Integer age;
+	private Integer dob;
 	private String sex;
 	
 	private List <Surgery> surgeries;
@@ -32,21 +32,21 @@ public class Patient implements Serializable {
 		this.name = name;
 	}
 
-	public Patient(String name, String medstat, Integer age, String sex) {
+	public Patient(String name, String medstat, Integer dob, String sex) {
 		super();
 		this.name = name;
 		this.medstat = medstat;
-		this.age = age;
+		this.dob = dob;
 		this.sex = sex;
 		this.surgeries= new ArrayList<Surgery>();
 	}
 	
-	public Patient(Integer id, String name, String medstat, Integer age, String sex) {
+	public Patient(Integer id, String name, String medstat, Integer dob, String sex) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.medstat = medstat;
-		this.age = age;
+		this.dob = dob;
 		this.sex = sex;
 		this.surgeries= new ArrayList<Surgery>();
 	}
@@ -58,6 +58,7 @@ public class Patient implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.medstat = medstat;
+		
 		// hay que inicializar los otros??????????
 	}
 	
@@ -104,11 +105,11 @@ public class Patient implements Serializable {
 	}
 
 	public Integer getAge() {
-		return age;
+		return dob;
 	}
 
 	public void setAge(Integer age) {
-		this.age = age;
+		this.dob = age;
 	}
 
 	public String getSex() {
@@ -133,7 +134,7 @@ public class Patient implements Serializable {
 	public String toString() {
 		//añadir las surgeries
 		
-		return "Patient [id=" + id + ", name=" + name + ", medstat=" + medstat + ", age=" + age + ", sex=" + sex + "]";
+		return "Patient [id=" + id + ", name=" + name + ", medstat=" + medstat + ", age=" + dob + ", sex=" + sex + "]";
 	}
 
 	

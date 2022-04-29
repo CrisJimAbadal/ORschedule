@@ -2,7 +2,8 @@ package interfaces;
 
 import java.util.List;
 
-import jdbc.Availability;
+import pojos.Availability;
+//import jdbc.Availability;
 import pojos.Patient;
 import pojos.Surgeon;
 
@@ -19,9 +20,6 @@ public interface SManager {
 	
 	//search by PagerNumber
 	public Surgeon showSurgeon (int num);
-
-	// updateSurgeon
-	public void updateSurgeon(String name, String medstat, Integer pagerNumber, Integer tlfNumber);
 
 	public void updateSurgeon(Surgeon s);
 

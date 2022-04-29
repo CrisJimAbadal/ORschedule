@@ -12,6 +12,7 @@ public class Surgery implements Serializable{
 	private Integer id;
 	private String type;
 	private Boolean conductSurgery;
+	//TODO set false
 	
 	private Patient patient;
 	private OPR opr;

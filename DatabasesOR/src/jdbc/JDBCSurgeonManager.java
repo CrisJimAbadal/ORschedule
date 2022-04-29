@@ -118,10 +118,15 @@ public class JDBCSurgeonManager implements SManager {
 			String sql = "UPDATE surgeon" + "SET name = ?" + " medstat = ?" + " pagernumber = ?" + " tlfnumber = ?";
 			// TODO same as the other
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			if(s.getName()!= "") {
 			pr.setString(1, s.getName());
+			}if(s.getMedstat()!= "") {
 			pr.setString(2, s.getMedstat());
+			}if(s.getPagerNumber()!= null) {
 			pr.setInt(3, s.getPagerNumber());
+			}if(s.getTlfNumber()!= null) {
 			pr.setInt(4, s.getTlfNumber());
+			}
 			pr.executeUpdate();
 
 		} catch (Exception e) {

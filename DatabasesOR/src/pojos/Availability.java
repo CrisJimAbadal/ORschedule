@@ -79,7 +79,7 @@ public class Availability implements Serializable{
 	}
 	@Override
 	public String toString() {
-		//añadir avs y surgeons
+		//TODO añadir avs y surgeons
 		return "Availability [id=" + id + ", date=" + date + ", time=" + time + "]";
 	}
 	

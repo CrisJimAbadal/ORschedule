@@ -289,12 +289,12 @@ public class MenuORschedule {
 		String name = read.readLine();
 		System.out.println("Medstat: ");
 		String medstat = read.readLine();
-		System.out.println("Age: ");
-		Integer age = Integer.parseInt(read.readLine());
+		System.out.println("Date of birth: ");
+		Integer dob = Integer.parseInt(read.readLine());
 		System.out.println("Sex: ");
 		String sex = read.readLine();
 
-		Patient patient = new Patient(name, medstat, age, sex);
+		Patient patient = new Patient(name, medstat, dob, sex);
 		patientManager.addPatient(patient);
 
 	}

@@ -27,7 +27,7 @@ public class JDBCPatientManager implements PManager {
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, p.getName());
 			prep.setString(2, p.getMedstat());
-			prep.setInt(3, p.getAge());
+			prep.setInt(3, p.getDob());
 			prep.setString(4, p.getSex());
 
 		} catch (Exception e) {
@@ -126,11 +126,11 @@ public class JDBCPatientManager implements PManager {
 
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
-				Integer age = rs.getInt("age");
+				Integer dob = rs.getInt("Dob");
 				String sex = rs.getString("sex");
-				// surgeries????????????????????????????????????????
+				//TODO surgeries????????????????????????????????????????
 
-				p = new Patient(name, medstat, age, sex);
+				p = new Patient(name, medstat, dob, sex);
 			}
 
 		} catch (Exception e) {
@@ -143,14 +143,20 @@ public class JDBCPatientManager implements PManager {
 	public void updatePatient(Patient p) {
 		try {
 			String sql = "UPDATE patient" + "SET name = ?" + " medstat = ?" +
-			// TODO change age to dob
-			// TODO cristina update con enters que se queden igual
-					" age = ?" + " sex = ?";
+					" dob = ?" + " sex = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			if(p.getName()!= "") {
 			pr.setString(1, p.getName());
+			}
+			if(p.getMedstat()!= "") {
 			pr.setString(2, p.getMedstat());
-			pr.setInt(3, p.getAge());
+			}
+			if(p.getDob()!= null) {
+			pr.setInt(3, p.getDob());
+			}
+			if(p.getSex()!= "") {
 			pr.setString(4, p.getSex());
+			}
 			pr.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

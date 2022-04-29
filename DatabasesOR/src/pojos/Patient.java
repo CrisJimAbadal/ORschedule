@@ -104,12 +104,12 @@ public class Patient implements Serializable {
 		this.medstat = medstat;
 	}
 
-	public Integer getAge() {
+	public Integer getDob() {
 		return dob;
 	}
 
-	public void setAge(Integer age) {
-		this.dob = age;
+	public void setDob(Integer dob) {
+		this.dob = dob;
 	}
 
 	public String getSex() {
@@ -132,7 +132,7 @@ public class Patient implements Serializable {
 
 	@Override
 	public String toString() {
-		//añadir las surgeries
+		//TODO añadir las surgeries
 		
 		return "Patient [id=" + id + ", name=" + name + ", medstat=" + medstat + ", age=" + dob + ", sex=" + sex + "]";
 	}

@@ -86,7 +86,7 @@ public class OPR implements Serializable {
 	}
 	@Override
 	public String toString() {
-		//añadir surgery y availability
+		//TODO añadir surgery y availability
 		
 		return "OPR [id=" + id + ", floor=" + floor + ", number=" + number + "]";
 	}

@@ -2,6 +2,9 @@ package Menu;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import interfaces.PManager;
 import interfaces.SManager;
@@ -23,7 +26,6 @@ public class MenuORschedule {
 	private static SurgManager surgeryManager;
 
 	public static void main(String[] args) {
-
 
 		System.out.println("WELCOME TO THE OR SHCEDULE");
 		JDBCManager jdbcManager = new JDBCManager();
@@ -129,9 +131,9 @@ public class MenuORschedule {
 					createSurgeon();
 
 					break;
-				case 2: 
+				case 2:
 					// sugeonManager.logIn();
-					//call SMenu
+					// call SMenu
 					SMenu();
 					break;
 
@@ -184,8 +186,8 @@ public class MenuORschedule {
 		try {
 			do {
 				System.out.println("CHOOSE AN OPTION: ");
-				System.out.println("1. Check information");//check and update?
-				System.out.println("2. Check surgeries");//check and update?
+				System.out.println("1. Check information");// check and update?
+				System.out.println("2. Check surgeries");// check and update?
 
 				System.out.println("0. Exit");
 
@@ -222,9 +224,9 @@ public class MenuORschedule {
 
 		try {
 			do {
-				System.out.println("CHOOSE AN OPTION: "); 
-				System.out.println("1. Check information"); //check and update?
-				System.out.println("2. Check schedule");//check and update?
+				System.out.println("CHOOSE AN OPTION: ");
+				System.out.println("1. Check information"); // check and update?
+				System.out.println("2. Check schedule");// check and update?
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(read.readLine());
@@ -270,14 +272,22 @@ public class MenuORschedule {
 			OPR opr = null; // de momento
 
 			// choose surgeon
-			Surgeon s = chooseSurgeon();
-
+			System.out.println("How many surgeons are going to participate? ");
+			Integer numSurg = Integer.parseInt(read.readLine());
+			List<Surgeon> surgeons = new ArrayList<Surgeon>();
+			
+			for (int i = 0; i < numSurg; i++) {
+				Surgeon s = chooseSurgeon();
+				surgeons.add(s);
+			}
 			// input type of surgery (ex: transplant)
 			System.out.println("Input the type of surgery: ");
 			String surgery = read.readLine();
-			Surgery surg = new Surgery(p, s, opr, surgery);
+
+			Surgery surg = new Surgery(p, surgeons, opr, surgery);
+			surg.setAcceptSurgery(false);
 			surgeryManager.addSurgery(surg);
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -289,7 +299,7 @@ public class MenuORschedule {
 		String name = read.readLine();
 		System.out.println("Medstat: ");
 		String medstat = read.readLine();
-		System.out.println("Date of birth: ");
+		System.out.println("Date of birth (yyyy-mm-dd): ");
 		Integer dob = Integer.parseInt(read.readLine());
 		System.out.println("Sex: ");
 		String sex = read.readLine();
@@ -338,27 +348,46 @@ public class MenuORschedule {
 
 	private static void updatePatientInfo() throws Exception {
 		// choose patient
-		patientManager.listPatientsId();
+		System.out.println("Insert your email: ");
+		String email = read.readLine();
+		patientManager.listPatientsId (email);
+		
 		System.out.println("Input your id: ");
 		Integer patientId = Integer.parseInt(read.readLine());
 		// List patient info
 		patientManager.showPatient(patientId);
-
+		Patient p = patientManager.searchPatient(patientId);
+		System.out.println("Update your information: ");
+		// Ask for name, if empty keep existing name
+		String name = read.readLine();
+		if (!name.equals("")) {
+			p.setName(name);
+		}
+		String medstat = read.readLine();
+		if (!medstat.equals("")) {
+			p.setMedstat(medstat);
+		}
+		//TODO dob
 		
-		// TODO ask for changes and update
+		String sex = read.readLine();
+		if (!sex.equals("")) {
+			p.setSex(sex);
+		}
+		patientManager.updatePatient(p);
 
 	}
 
 	private static void updateSurgeonInfo() throws Exception {
 		// choose surgeon
+
 		System.out.println("Input your pagerNumber: ");
 
 		Integer surgeonPagerNum = Integer.parseInt(read.readLine());
 		// List patient info
 		surgeonManager.showSurgeon(surgeonPagerNum);
+		System.out.println("Update your information: ");
+		surgeonManager.updateSurgeon(null);
 
-		
-		
 		// TODO ask for changes and update
 
 	}

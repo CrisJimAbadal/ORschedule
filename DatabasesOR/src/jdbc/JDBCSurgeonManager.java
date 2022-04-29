@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.SManager;
-import pojos.Availability;
+import pojos.Schedule;
 import pojos.Patient;
 import pojos.Surgeon;
 
@@ -116,7 +116,6 @@ public class JDBCSurgeonManager implements SManager {
 	public void updateSurgeon(Surgeon s) {
 		try {
 			String sql = "UPDATE surgeon" + "SET name = ?" + " medstat = ?" + " pagernumber = ?" + " tlfnumber = ?";
-			// TODO same as the other
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			if(s.getName()!= "") {
 			pr.setString(1, s.getName());
@@ -148,14 +147,15 @@ public class JDBCSurgeonManager implements SManager {
 
 	}
 
-//TODO check if this method is correct
+
 	@Override
 	public void acceptSurgery(String s) {
 		try {
-			String sql = "UPDATE surgery" + "SET conductSurgery = TRUE";
+			String sql = "UPDATE surgery" + "SET acceptSurgery = TRUE";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setBoolean(3, true);
 			pr.executeUpdate();
+			//TODO RESERVAR SALA
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -164,7 +164,7 @@ public class JDBCSurgeonManager implements SManager {
 	}
 
 	@Override
-	public void updateAvailability(Availability a) {
+	public void updateAvailability(Schedule a) {
 		try {
 			String sql = "UPDATE surgAvailability" + "SET date = ?" + "time=?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);

@@ -16,12 +16,12 @@ public class Surgeon implements Serializable {
 	private Integer tlfNumber;
 
 	private List<Surgery> surgeries;
-	private List<Availability> avs;
+	
 
 	public Surgeon() {
 		super();
 		surgeries = new ArrayList<Surgery>();
-		avs = new ArrayList<Availability>();
+		
 	}
 
 	public Surgeon(String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
@@ -31,7 +31,7 @@ public class Surgeon implements Serializable {
 		this.pagerNumber = pagerNumber;
 		this.tlfNumber = tlfNumber;
 		surgeries = new ArrayList<Surgery>();
-		avs = new ArrayList<Availability>();
+		
 	}
 
 	public Surgeon(Integer id, String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
@@ -42,7 +42,7 @@ public class Surgeon implements Serializable {
 		this.pagerNumber = pagerNumber;
 		this.tlfNumber = tlfNumber;
 		surgeries = new ArrayList<Surgery>();
-		avs = new ArrayList<Availability>();
+	
 	}
 
 	public Surgeon(Integer id, String name, String medstat) {
@@ -50,7 +50,9 @@ public class Surgeon implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.medstat = medstat;
-		//TODO inicializar las otras?????????????????????????????????????
+		surgeries = new ArrayList<Surgery>();
+	
+		
 	}
 
 	@Override
@@ -118,17 +120,10 @@ public class Surgeon implements Serializable {
 		this.surgeries = surgeries;
 	}
 
-	public List<Availability> getAvs() {
-		return avs;
-	}
-
-	public void setAvs(List<Availability> avs) {
-		this.avs = avs;
-	}
 
 	@Override
 	public String toString() {
-		//TODO añadir avs y surgeries
+		// añadir avs y surgeries
 		return "Surgeon [id=" + id + ", name=" + name + ", medstat=" + medstat + ", pagernumber=" + pagerNumber
 				+ ", tlfnumber=" + tlfNumber + "]";
 	}

@@ -65,7 +65,7 @@ public class JDBCManager {
 			// TABLE PATIENT
 
 			sql = "CREATE TABLE patient" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT NOT NULL ,"
-					+ "medstat TEXT NOT NULL," + "dob INTEGER," + "sex TEXT NOT NULL," + " number INTEGER NOT NULL )";
+					+ "email TEXT NOT NULL" + "medstat TEXT NOT NULL," + "dob INTEGER," + "sex TEXT NOT NULL," + " number INTEGER NOT NULL )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON AVAILABILITY
@@ -82,7 +82,7 @@ public class JDBCManager {
 			sql = "CREATE TABLE surgery" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "type TEXT,"
 					+ "patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
 					+ "surgeonID INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
-					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL" + "conductSurgery BOOLEAN )";
+					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL" + "acceptSurgery BOOLEAN )";
 			stm.executeUpdate(sql);
 
 		} catch (Exception e) {

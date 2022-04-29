@@ -2,7 +2,7 @@ package interfaces;
 
 import java.util.List;
 
-import pojos.Availability;
+import pojos.Schedule;
 //import jdbc.Availability;
 import pojos.Patient;
 import pojos.Surgeon;
@@ -29,8 +29,7 @@ public interface SManager {
 	public void deleteSurgeon(int Surgeonid);
 
 	// availability
-	public void updateAvailability (Availability a);
+	public void updateAvailability (Schedule a);
 	// TODO availability
-	//TODO check availability method
-	//TODO do an ORManager
+	
 }

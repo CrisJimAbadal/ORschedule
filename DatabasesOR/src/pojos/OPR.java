@@ -18,14 +18,14 @@ public class OPR implements Serializable {
 	private Integer number;
 	
 	private List <Surgery> surgeries; 
-	private List <Availability> av;
+	private List <Schedule> av;
 	
 	
 
 	public OPR() {
 		super();
 		surgeries = new ArrayList <Surgery>();
-		av = new ArrayList <Availability>();
+		av = new ArrayList <Schedule>();
 	}
 
 	@Override
@@ -77,16 +77,16 @@ public class OPR implements Serializable {
 		this.surgeries = surgeries;
 	}
 
-	public List<Availability> getAv() {
+	public List<Schedule> getAv() {
 		return av;
 	}
 
-	public void setAv(List<Availability> av) {
+	public void setAv(List<Schedule> av) {
 		this.av = av;
 	}
 	@Override
 	public String toString() {
-		//TODO añadir surgery y availability
+		//añadir surgery y availability
 		
 		return "OPR [id=" + id + ", floor=" + floor + ", number=" + number + "]";
 	}

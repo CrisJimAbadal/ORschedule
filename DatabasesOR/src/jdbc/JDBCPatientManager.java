@@ -22,7 +22,7 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public void addPatient(Patient p) {
 		try {
-			String sql = "INSERT INTO patient (name, medstat, age, sex) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO patient (name, medstat, dob, sex) VALUES (?,?,?,?)";
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, p.getName());
@@ -49,10 +49,10 @@ public class JDBCPatientManager implements PManager {
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
-				Integer age = rs.getInt("age");
+				Integer dob = rs.getInt("dob");
 				String sex = rs.getString("sex");
 
-				Patient p = new Patient(id, name, medstat, age, sex);
+				Patient p = new Patient(id, name, medstat, dob, sex);
 				patients.add(p);
 			}
 			rs.close();
@@ -65,27 +65,23 @@ public class JDBCPatientManager implements PManager {
 
 	// muestra nombre y id de todos los pacientes
 	@Override
-	public List<Patient> listPatientsId() {
-		List<Patient> patients = new ArrayList<Patient>();
+	public Integer listPatientsId(String email) {
+		Integer id= null;
 		try {
 
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT id, name FROM patient";
+			String sql = "SELECT id FROM patient WHERE email = " +email;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 
-				Integer id = rs.getInt("id");
-				String name = rs.getString("name");
-
-				Patient p = new Patient(id, name);
-				patients.add(p);
+				 id = rs.getInt("id");
 			}
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return patients;
+		return id;
 	}
 
 	// busca un paciente por id
@@ -128,7 +124,7 @@ public class JDBCPatientManager implements PManager {
 				String medstat = rs.getString("medstat");
 				Integer dob = rs.getInt("Dob");
 				String sex = rs.getString("sex");
-				//TODO surgeries????????????????????????????????????????
+				//TODO surgeries????????????????????
 
 				p = new Patient(name, medstat, dob, sex);
 			}
@@ -142,21 +138,18 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public void updatePatient(Patient p) {
 		try {
-			String sql = "UPDATE patient" + "SET name = ?" + " medstat = ?" +
+			String sql = "UPDATE patient " + "SET name = ?" + " medstat = ?" +
 					" dob = ?" + " sex = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			if(p.getName()!= "") {
+			
 			pr.setString(1, p.getName());
-			}
-			if(p.getMedstat()!= "") {
+		
 			pr.setString(2, p.getMedstat());
-			}
-			if(p.getDob()!= null) {
+			
 			pr.setInt(3, p.getDob());
-			}
-			if(p.getSex()!= "") {
+			
 			pr.setString(4, p.getSex());
-			}
+			
 			pr.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

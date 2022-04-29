@@ -7,25 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Availability implements Serializable{
-
-	/**
-	 * 
-	 */
+public class Schedule implements Serializable{
+	
 	private static final long serialVersionUID = 4417970591986345560L;
 	
 	private Integer id;
 	private Date date;
 	private Time time;
 	
-	private List <Availability> avs;
+	private List <Schedule> avs;
 	private List <Surgeon> surgeons;
 	
 	
 	
-	public Availability() {
+	public Schedule() {
 		super();
-		avs = new ArrayList <Availability>();
+		avs = new ArrayList <Schedule>();
 		surgeons = new ArrayList <Surgeon>();
 	}
 	@Override
@@ -40,7 +37,7 @@ public class Availability implements Serializable{
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Availability other = (Availability) obj;
+		Schedule other = (Schedule) obj;
 		return Objects.equals(id, other.id);
 	}
 	public Integer getId() {
@@ -65,10 +62,10 @@ public class Availability implements Serializable{
 		return serialVersionUID;
 	}
 	
-	public List<Availability> getAvs() {
+	public List<Schedule> getAvs() {
 		return avs;
 	}
-	public void setAvs(List<Availability> avs) {
+	public void setAvs(List<Schedule> avs) {
 		this.avs = avs;
 	}
 	public List<Surgeon> getSurgeons() {
@@ -79,7 +76,7 @@ public class Availability implements Serializable{
 	}
 	@Override
 	public String toString() {
-		//TODO añadir avs y surgeons
+		//añadir avs y surgeons
 		return "Availability [id=" + id + ", date=" + date + ", time=" + time + "]";
 	}
 	

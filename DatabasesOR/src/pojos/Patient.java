@@ -14,6 +14,7 @@ public class Patient implements Serializable {
 	private Integer id;
 	private String name;
 	private String medstat;
+	private String email;
 	private Integer dob;
 	private String sex;
 	
@@ -30,6 +31,7 @@ public class Patient implements Serializable {
 		super();
 		this.id = id;
 		this.name = name;
+		this.surgeries= new ArrayList<Surgery>();
 	}
 
 	public Patient(String name, String medstat, Integer dob, String sex) {
@@ -58,8 +60,8 @@ public class Patient implements Serializable {
 		this.id = id;
 		this.name = name;
 		this.medstat = medstat;
-		
-		// hay que inicializar los otros??????????
+		this.surgeries= new ArrayList<Surgery>();
+
 	}
 	
 	@Override
@@ -130,12 +132,21 @@ public class Patient implements Serializable {
 		this.surgeries = surgeries;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
-		//TODO añadir las surgeries
+		//añadir las surgeries, email
 		
 		return "Patient [id=" + id + ", name=" + name + ", medstat=" + medstat + ", age=" + dob + ", sex=" + sex + "]";
 	}
 
+	
 	
 }

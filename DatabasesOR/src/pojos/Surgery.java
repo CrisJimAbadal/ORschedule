@@ -11,12 +11,11 @@ public class Surgery implements Serializable{
 	private static final long serialVersionUID = 7569041371565811550L;
 	private Integer id;
 	private String type;
-	private Boolean conductSurgery;
-	//TODO set false
+	private Boolean acceptSurgery;
 	
 	private Patient patient;
 	private OPR opr;
-	private Surgeon surgeon;
+	private List <Surgeon> surgeons;
 
 
 	
@@ -28,13 +27,12 @@ public class Surgery implements Serializable{
 	
 	
 	
-	public Surgery(Patient patient, Surgeon surgeon, OPR opr,String type ) {
+	public Surgery(Patient patient, List <Surgeon> surgeons, OPR opr,String type ) {
 		super();
 		this.patient = patient;
-		this.surgeon = surgeon;
+		setSurgeons(new ArrayList<Surgeon>());
 		this.opr = opr;
 		this.type = type;
-		//TODO initialice the others???????????????????????????????????????????????????????
 		
 	}
 
@@ -68,11 +66,11 @@ public class Surgery implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Boolean getConductSurgery() {
-		return conductSurgery;
+	public Boolean getAcceptSurgery() {
+		return acceptSurgery;
 	}
-	public void setConductSurgery(Boolean conductSurgery) {
-		this.conductSurgery = conductSurgery;
+	public void setAcceptSurgery(Boolean acceptSurgery) {
+		this.acceptSurgery = acceptSurgery;
 	}
 	
 		public Patient getPatient() {
@@ -91,18 +89,21 @@ public class Surgery implements Serializable{
 		this.opr = opr;
 	}
 	
-	public Surgeon getSurgeon() {
-		return surgeon;
+		public List <Surgeon> getSurgeons() {
+		return surgeons;
 	}
-
-	public void setSurgeon(Surgeon surgeon) {
-		this.surgeon = surgeon;
+	public void setSurgeons(List <Surgeon> surgeons) {
+		this.surgeons = surgeons;
 	}
 	
 	@Override
 	public String toString() {
-		//TODO añadir patient, opr, surgeon
-		return "Surgery [id=" + id + ", type=" + type + ", conductSurgery=" + conductSurgery + "]";
+		//añadir patient, opr, surgeons
+		return "Surgery [id=" + id + ", type=" + type + ", acceptSurgery=" + acceptSurgery + "]";
 	}
+
+
+
+
 	
 }

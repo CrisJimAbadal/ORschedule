@@ -48,12 +48,12 @@ public class JDBCManager {
 			// CREATES TABLES
 			// TABLE AVAILABILITY
 			Statement stm = c.createStatement();
-			String sql = "CREATE TABLE availability" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "date DATE ,"
+			String sql = "CREATE TABLE schedule" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "date DATE ,"
 					+ " time TIME )";
 			stm.executeUpdate(sql);
 
 			// TABLE OPR
-			sql = "CREATE TABLE availability" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "floor INTEGER NOT NULL ,"
+			sql = "CREATE TABLE opr" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "floor INTEGER NOT NULL ,"
 					+ " number INTEGER NOT NULL )";
 			stm.executeUpdate(sql);
 

@@ -77,7 +77,7 @@ public class Schedule implements Serializable{
 	@Override
 	public String toString() {
 		//añadir avs y surgeons
-		return "Availability [id=" + id + ", date=" + date + ", time=" + time + "]";
+		return "Schedule [id=" + id + ", date=" + date + ", time=" + time + "]";
 	}
 	
 	

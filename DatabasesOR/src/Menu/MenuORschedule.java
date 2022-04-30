@@ -275,7 +275,7 @@ public class MenuORschedule {
 			System.out.println("How many surgeons are going to participate? ");
 			Integer numSurg = Integer.parseInt(read.readLine());
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
-			
+
 			for (int i = 0; i < numSurg; i++) {
 				Surgeon s = chooseSurgeon();
 				surgeons.add(s);
@@ -299,12 +299,14 @@ public class MenuORschedule {
 		String name = read.readLine();
 		System.out.println("Medstat: ");
 		String medstat = read.readLine();
+		System.out.println("Email: ");
+		String email = read.readLine();
 		System.out.println("Date of birth (yyyy-mm-dd): ");
 		Integer dob = Integer.parseInt(read.readLine());
 		System.out.println("Sex: ");
 		String sex = read.readLine();
 
-		Patient patient = new Patient(name, medstat, dob, sex);
+		Patient patient = new Patient(name, medstat, email, dob, sex);
 		patientManager.addPatient(patient);
 
 	}
@@ -350,8 +352,8 @@ public class MenuORschedule {
 		// choose patient
 		System.out.println("Insert your email: ");
 		String email = read.readLine();
-		patientManager.listPatientsId (email);
-		
+		patientManager.listPatientsId(email);
+
 		System.out.println("Input your id: ");
 		Integer patientId = Integer.parseInt(read.readLine());
 		// List patient info
@@ -367,8 +369,12 @@ public class MenuORschedule {
 		if (!medstat.equals("")) {
 			p.setMedstat(medstat);
 		}
-		//TODO dob
-		
+		String newEmail = read.readLine();
+		if (!newEmail.equals("")) {
+			p.setEmail(newEmail);
+		}
+		// TODO dob
+
 		String sex = read.readLine();
 		if (!sex.equals("")) {
 			p.setSex(sex);
@@ -385,10 +391,28 @@ public class MenuORschedule {
 		Integer surgeonPagerNum = Integer.parseInt(read.readLine());
 		// List patient info
 		surgeonManager.showSurgeon(surgeonPagerNum);
+		System.out.println("input your id: ");
+		Integer id = Integer.parseInt(read.readLine());
+		Surgeon s = surgeonManager.searchSurgeon(id);
 		System.out.println("Update your information: ");
-		surgeonManager.updateSurgeon(null);
 
-		// TODO ask for changes and update
+		String name = read.readLine();
+		if (!name.equals("")) {
+			s.setName(name);
+		}
+		String medstat = read.readLine();
+		if (!medstat.equals("")) {
+			s.setMedstat(medstat);
+		}
+		Integer pagerNumber = Integer.parseInt(read.readLine());
+		if (!pagerNumber.equals("")) {
+			s.setPagerNumber(pagerNumber);
+		}
+		Integer tlfNumber = Integer.parseInt(read.readLine());
+		if (!tlfNumber.equals("")) {
+			s.setTlfNumber(tlfNumber);
+		}
+		surgeonManager.updateSurgeon(s);
 
 	}
 }

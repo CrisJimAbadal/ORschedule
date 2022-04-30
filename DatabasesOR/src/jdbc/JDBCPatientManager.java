@@ -122,11 +122,12 @@ public class JDBCPatientManager implements PManager {
 
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
+				String email = rs.getString ("email");
 				Integer dob = rs.getInt("Dob");
 				String sex = rs.getString("sex");
 				//TODO surgeries????????????????????
 
-				p = new Patient(name, medstat, dob, sex);
+				p = new Patient( name, medstat, email, dob, sex);
 			}
 
 		} catch (Exception e) {
@@ -138,17 +139,15 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public void updatePatient(Patient p) {
 		try {
-			String sql = "UPDATE patient " + "SET name = ?" + " medstat = ?" +
+			String sql = "UPDATE patient " + "SET name = ?" + " medstat = ?" + "email = ?" +
 					" dob = ?" + " sex = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			
 			pr.setString(1, p.getName());
-		
 			pr.setString(2, p.getMedstat());
-			
-			pr.setInt(3, p.getDob());
-			
-			pr.setString(4, p.getSex());
+			pr.setString(3, p.getEmail());
+			pr.setInt(4, p.getDob());
+			pr.setString(5, p.getSex());
 			
 			pr.executeUpdate();
 		} catch (Exception e) {

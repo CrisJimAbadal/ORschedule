@@ -97,13 +97,13 @@ public class JDBCSurgeonManager implements SManager {
 			String sql = "SELECT * FROM surgeon WHERE pagerNumber = " + num;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-
+				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
 				Integer pagerNumber = rs.getInt("pagerNumber");
 				Integer tlfNumber = rs.getInt("tlfNumber");
 
-				s = new Surgeon(name, medstat, pagerNumber, tlfNumber);
+				s = new Surgeon(id, name, medstat, pagerNumber, tlfNumber);
 			}
 
 		} catch (Exception e) {
@@ -117,14 +117,17 @@ public class JDBCSurgeonManager implements SManager {
 		try {
 			String sql = "UPDATE surgeon" + "SET name = ?" + " medstat = ?" + " pagernumber = ?" + " tlfnumber = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			if(s.getName()!= "") {
-			pr.setString(1, s.getName());
-			}if(s.getMedstat()!= "") {
-			pr.setString(2, s.getMedstat());
-			}if(s.getPagerNumber()!= null) {
-			pr.setInt(3, s.getPagerNumber());
-			}if(s.getTlfNumber()!= null) {
-			pr.setInt(4, s.getTlfNumber());
+			if (s.getName() != "") {
+				pr.setString(1, s.getName());
+			}
+			if (s.getMedstat() != "") {
+				pr.setString(2, s.getMedstat());
+			}
+			if (s.getPagerNumber() != null) {
+				pr.setInt(3, s.getPagerNumber());
+			}
+			if (s.getTlfNumber() != null) {
+				pr.setInt(4, s.getTlfNumber());
 			}
 			pr.executeUpdate();
 
@@ -147,7 +150,6 @@ public class JDBCSurgeonManager implements SManager {
 
 	}
 
-
 	@Override
 	public void acceptSurgery(String s) {
 		try {
@@ -155,7 +157,7 @@ public class JDBCSurgeonManager implements SManager {
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setBoolean(3, true);
 			pr.executeUpdate();
-			//TODO RESERVAR SALA
+			// TODO RESERVAR SALA
 
 		} catch (Exception e) {
 			e.printStackTrace();

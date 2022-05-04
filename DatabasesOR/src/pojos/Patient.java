@@ -2,8 +2,12 @@ package pojos;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.sql.Date;
 import java.util.List;
 import java.util.Objects;
+
+
+
 
 public class Patient implements Serializable {
 
@@ -11,12 +15,17 @@ public class Patient implements Serializable {
 	
 	private static final long serialVersionUID = 7926972104136754563L;
 	
+	
 	private Integer id;
 	private String name;
 	private String medstat;
 	private String email;
-	private Integer dob;
+	private Date dob;
 	private String sex;
+	
+
+	
+	
 	
 	private List <Surgery> surgeries;
 	
@@ -28,7 +37,7 @@ public class Patient implements Serializable {
 	}
 	
 
-	public Patient(String name,  String medstat, String email, Integer dob, String sex) {
+	public Patient(String name,  String medstat, String email, Date dob, String sex) {
 		super();
 		this.name = name;
 		this.medstat = medstat;
@@ -38,7 +47,7 @@ public class Patient implements Serializable {
 		this.surgeries= new ArrayList<Surgery>();
 	}
 	
-	public Patient(Integer id, String name, String medstat, Integer dob, String sex) {
+	public Patient(Integer id, String name, String medstat, Date dob, String sex) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -101,11 +110,11 @@ public class Patient implements Serializable {
 		this.medstat = medstat;
 	}
 
-	public Integer getDob() {
+	public Date getDob() {
 		return dob;
 	}
 
-	public void setDob(Integer dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 

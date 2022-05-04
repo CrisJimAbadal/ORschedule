@@ -2,8 +2,10 @@ package Menu;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 import interfaces.PManager;
@@ -24,6 +26,7 @@ public class MenuORschedule {
 	private static PManager patientManager;
 	private static SManager surgeonManager;
 	private static SurgManager surgeryManager;
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
 
 	public static void main(String[] args) {
 
@@ -302,11 +305,12 @@ public class MenuORschedule {
 		System.out.println("Email: ");
 		String email = read.readLine();
 		System.out.println("Date of birth (yyyy-mm-dd): ");
-		Integer dob = Integer.parseInt(read.readLine());
+		String dob= read.readLine();
+		LocalDate dobDate =LocalDate.parse(dob,formatter);
 		System.out.println("Sex: ");
 		String sex = read.readLine();
-
-		Patient patient = new Patient(name, medstat, email, dob, sex);
+//convert java date into sql date
+		Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate), sex);
 		patientManager.addPatient(patient);
 
 	}

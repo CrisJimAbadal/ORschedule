@@ -1,5 +1,6 @@
 package jdbc;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -27,7 +28,7 @@ public class JDBCPatientManager implements PManager {
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, p.getName());
 			prep.setString(2, p.getMedstat());
-			prep.setInt(3, p.getDob());
+			prep.setDate(3, (Date) p.getDob());
 			prep.setString(4, p.getSex());
 
 		} catch (Exception e) {
@@ -49,7 +50,7 @@ public class JDBCPatientManager implements PManager {
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
-				Integer dob = rs.getInt("dob");
+				Date dob = rs.getDate("dob");
 				String sex = rs.getString("sex");
 
 				Patient p = new Patient(id, name, medstat, dob, sex);
@@ -123,7 +124,7 @@ public class JDBCPatientManager implements PManager {
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
 				String email = rs.getString ("email");
-				Integer dob = rs.getInt("Dob");
+				Date dob = rs.getDate("Dob");
 				String sex = rs.getString("sex");
 				//TODO surgeries????????????????????
 
@@ -146,7 +147,7 @@ public class JDBCPatientManager implements PManager {
 			pr.setString(1, p.getName());
 			pr.setString(2, p.getMedstat());
 			pr.setString(3, p.getEmail());
-			pr.setInt(4, p.getDob());
+			pr.setDate(4, (Date) p.getDob());
 			pr.setString(5, p.getSex());
 			
 			pr.executeUpdate();

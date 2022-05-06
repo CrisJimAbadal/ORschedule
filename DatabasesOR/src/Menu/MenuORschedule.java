@@ -380,8 +380,9 @@ public class MenuORschedule {
 		System.out.println("Date of birth (yyyy-mm-dd): ");
 		String dob= read.readLine();
 		LocalDate dobDate =LocalDate.parse(dob,formatter);
+		
 		if(!dob.equals("")) {
-			p.setDob(dobDate);
+			p.setDob(Date.valueOf(dobDate));
 		}
 
 		String sex = read.readLine();

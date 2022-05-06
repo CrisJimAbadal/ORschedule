@@ -1,7 +1,7 @@
 package pojos;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,7 +16,7 @@ public class Patient implements Serializable {
 	private String name;
 	private String medstat;
 	private String email;
-	private LocalDate dob;
+	private Date dob;
 	private String sex;
 	
 	private List <Surgery> surgeries;
@@ -29,7 +29,7 @@ public class Patient implements Serializable {
 	}
 	
 
-	public Patient(String name,  String medstat, String email, LocalDate dob, String sex) {
+	public Patient(String name,  String medstat, String email, Date dob, String sex) {
 		super();
 		this.name = name;
 		this.medstat = medstat;
@@ -39,7 +39,7 @@ public class Patient implements Serializable {
 		this.surgeries= new ArrayList<Surgery>();
 	}
 	
-	public Patient(Integer id, String name, String medstat, LocalDate dob, String sex) {
+	public Patient(Integer id, String name, String medstat, Date dob, String sex) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -102,11 +102,11 @@ public class Patient implements Serializable {
 		this.medstat = medstat;
 	}
 
-	public LocalDate getDob() {
+	public Date getDob() {
 		return dob;
 	}
 
-	public void setDob(LocalDate dob) {
+	public void setDob(Date dob) {
 		this.dob = dob;
 	}
 

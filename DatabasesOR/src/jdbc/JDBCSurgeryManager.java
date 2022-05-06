@@ -31,6 +31,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		}
 
 	}
+	//TODO method of surgeries that will be accepted
 
 		@Override
 		public void unassign (int surgeonId, int patientId) {

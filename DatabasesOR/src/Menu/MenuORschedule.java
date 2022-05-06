@@ -191,7 +191,7 @@ public class MenuORschedule {
 				System.out.println("CHOOSE AN OPTION: ");
 				System.out.println("1. Check information");// check and update?
 				System.out.println("2. Check surgeries");// check and update?
-
+				//only show the list of accepted surgeries
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(read.readLine());
@@ -223,13 +223,18 @@ public class MenuORschedule {
 		}
 	}
 
+	//TODO remove the accept column from surgery table, add an accept column for the manytomany table that links surgeons and surgeries
+	
+	
+	
 	private static void SMenu() {
 
 		try {
 			do {
 				System.out.println("CHOOSE AN OPTION: ");
 				System.out.println("1. Check information"); // check and update?
-				System.out.println("2. Check schedule");// check and update?
+				System.out.println("2. Check schedule");// check and accept/deny surgeries
+				//show both accepted and not accepted surgeries
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(read.readLine());
@@ -243,7 +248,7 @@ public class MenuORschedule {
 
 				case 2:
 					// show schedule
-					// ask to accept or cancel a surgery
+					// TODO ask to accept or cancel a surgery-> go to create schedule as well
 
 					break;
 
@@ -278,6 +283,9 @@ public class MenuORschedule {
 			System.out.println("How many surgeons are going to participate? ");
 			Integer numSurg = Integer.parseInt(read.readLine());
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
+			//TODO if a surgeon accepts but the rest no what happens
+			//all surgeons must accept for the surgery to take place
+			
 
 			for (int i = 0; i < numSurg; i++) {
 				Surgeon s = chooseSurgeon();

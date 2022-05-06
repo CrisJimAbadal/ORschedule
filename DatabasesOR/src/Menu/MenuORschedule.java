@@ -377,7 +377,12 @@ public class MenuORschedule {
 		if (!newEmail.equals("")) {
 			p.setEmail(newEmail);
 		}
-		// TODO dob
+		System.out.println("Date of birth (yyyy-mm-dd): ");
+		String dob= read.readLine();
+		LocalDate dobDate =LocalDate.parse(dob,formatter);
+		if(!dob.equals("")) {
+			p.setDob(dobDate);
+		}
 
 		String sex = read.readLine();
 		if (!sex.equals("")) {

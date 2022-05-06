@@ -147,7 +147,7 @@ public class JDBCPatientManager implements PManager {
 			pr.setString(1, p.getName());
 			pr.setString(2, p.getMedstat());
 			pr.setString(3, p.getEmail());
-			pr.setDate(4, (Date) p.getDob());
+			pr.setDate(4, (LocalDate) p.getDob());
 			pr.setString(5, p.getSex());
 			
 			pr.executeUpdate();

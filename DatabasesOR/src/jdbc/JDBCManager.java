@@ -53,7 +53,7 @@ public class JDBCManager {
 			stm.executeUpdate(sql);
 
 			// TABLE OPR
-			sql = "CREATE TABLE opr" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "floor INTEGER NOT NULL ,"
+			sql = "CREATE TABLE opr" + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"+ "floor INTEGER NOT NULL ,"
 					+ " number INTEGER NOT NULL )";
 			stm.executeUpdate(sql);
 
@@ -65,7 +65,8 @@ public class JDBCManager {
 			// TABLE PATIENT
 
 			sql = "CREATE TABLE patient" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT NOT NULL ,"
-					+ "email TEXT NOT NULL" + "medstat TEXT NOT NULL," + "dob DATE," + "sex TEXT NOT NULL," + " number INTEGER NOT NULL )";
+					+ "email TEXT NOT NULL" + "medstat TEXT NOT NULL," + "dob DATE," + "sex TEXT NOT NULL,"
+					+ " number INTEGER NOT NULL )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON AVAILABILITY

@@ -2,13 +2,10 @@ package interfaces;
 
 import java.util.List;
 
-import javax.management.relation.Role;
-
-import pojos.User;
+import pojos.*;
 
 public interface UserManager {
 	
-	public void connect();
 	
 	public void disconnect();
 	
@@ -19,6 +16,8 @@ public interface UserManager {
 	public List <Role> getRoles();
 	
 	public User checkPassword (String email, String password);
+
+	public Role getRole(String name);
 	
 	
 	

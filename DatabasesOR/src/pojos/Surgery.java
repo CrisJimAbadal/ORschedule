@@ -1,6 +1,7 @@
 package pojos;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -16,6 +17,7 @@ public class Surgery implements Serializable{
 	private Patient patient;
 	private OPR opr;
 	private List <Surgeon> surgeons;
+	private Schedule schedule;
 
 
 	
@@ -27,13 +29,21 @@ public class Surgery implements Serializable{
 	
 	
 	
-	public Surgery(Patient patient, List <Surgeon> surgeons, OPR opr,String type ) {
+	public Surgery(Patient patient, List <Surgeon> surgeons, OPR opr,String type, Schedule schedule ) {
 		super();
 		this.patient = patient;
 		setSurgeons(new ArrayList<Surgeon>());
 		this.opr = opr;
 		this.type = type;
+		this.schedule=schedule;
 		
+	}
+
+
+
+	public Surgery(String type, Schedule schedule) {
+		this.type=type;
+		this.setSchedule(schedule);
 	}
 
 
@@ -100,6 +110,18 @@ public class Surgery implements Serializable{
 	public String toString() {
 		//añadir patient, opr, surgeons
 		return "Surgery [id=" + id + ", type=" + type + ", acceptSurgery=" + acceptSurgery + "]";
+	}
+
+
+
+	public Schedule getSchedule() {
+		return schedule;
+	}
+
+
+
+	public void setSchedule(Schedule schedule) {
+		this.schedule = schedule;
 	}
 
 

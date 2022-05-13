@@ -15,15 +15,14 @@ public class Schedule implements Serializable{
 	private Date date;
 	private Time time;
 	
-	private List <Schedule> avs;
-	private List <Surgeon> surgeons;
+	
+	private Surgery surgery;
 	
 	
 	
 	public Schedule() {
 		super();
-		avs = new ArrayList <Schedule>();
-		surgeons = new ArrayList <Surgeon>();
+		
 	}
 	@Override
 	public int hashCode() {
@@ -62,21 +61,10 @@ public class Schedule implements Serializable{
 		return serialVersionUID;
 	}
 	
-	public List<Schedule> getAvs() {
-		return avs;
-	}
-	public void setAvs(List<Schedule> avs) {
-		this.avs = avs;
-	}
-	public List<Surgeon> getSurgeons() {
-		return surgeons;
-	}
-	public void setSurgeons(List<Surgeon> surgeons) {
-		this.surgeons = surgeons;
-	}
+	
 	@Override
 	public String toString() {
-		//añadir avs y surgeons
+		
 		return "Schedule [id=" + id + ", date=" + date + ", time=" + time + "]";
 	}
 	

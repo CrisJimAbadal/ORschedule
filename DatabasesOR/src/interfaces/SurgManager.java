@@ -1,5 +1,7 @@
 package interfaces;
 
+import java.util.List;
+
 import pojos.Surgery;
 
 public interface SurgManager {
@@ -10,4 +12,6 @@ public interface SurgManager {
 	
 	//unassign Surgery
 	public void unassign (int surgeonId, int patientId);
+	
+	public List<Surgery> listSurgeries(int id);
 }

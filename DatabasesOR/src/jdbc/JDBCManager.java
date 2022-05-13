@@ -13,7 +13,7 @@ public class JDBCManager {
 		try {
 			// open database connection
 			Class.forName("org.sqlite.JDBC");
-			Connection c = DriverManager.getConnection("jdbc:sqlite:./db/Hospital.db");
+			c = DriverManager.getConnection("jdbc:sqlite:./db/Hospital.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("database connection opened");
 			// create tables each time
@@ -64,14 +64,13 @@ public class JDBCManager {
 
 			// TABLE PATIENT
 
-			sql = "CREATE TABLE patient" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT NOT NULL ,"
-					+ "email TEXT NOT NULL" + "medstat TEXT NOT NULL," + "dob DATE," + "sex TEXT NOT NULL,"
-					+ " number INTEGER NOT NULL )";
+			sql = "CREATE TABLE patient(id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT NOT NULL ,"
+					+ "email TEXT NOT NULL,medstat TEXT NOT NULL,dob DATE,sex TEXT NOT NULL )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON AVAILABILITY
-			sql = "CREATE TABLE surgAvailability" + "(surgId INTEGER REFERENCES surgeon(id) ON DELETE CASCADE,"
-					+ "avId INTEGER REFERENCES availability (id) ON DELETE CASCADE," + "PRIMARY KEY (surgId, avId) )";
+			sql = "CREATE TABLE surgAvailability (surgId INTEGER REFERENCES surgeon(id) ON DELETE CASCADE,"
+					+ "avId INTEGER REFERENCES availability (id) ON DELETE CASCADE,PRIMARY KEY (surgId, avId))";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON
@@ -80,10 +79,11 @@ public class JDBCManager {
 			stm.executeUpdate(sql);
 
 			// TABLE SURGERY
-			sql = "CREATE TABLE surgery" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "type TEXT,"
-					+ "patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
-					+ "surgeonID INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
-					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL" + "acceptSurgery BOOLEAN )";
+			sql = "CREATE TABLE surgery(id INTEGER PRIMARY KEY AUTOINCREMENT,type TEXT,"
+					+"patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
+					+"surgeonID INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
+					+"oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,acceptSurgery BOOLEAN,"
+					+"medstat TEXT NOT NULL,pagerNumber INTEGER UNIQUE NOT NULL,tlfNumber INTEGER UNIQUE, scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
 			stm.executeUpdate(sql);
 
 		} catch (Exception e) {

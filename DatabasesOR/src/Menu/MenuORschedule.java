@@ -1,6 +1,7 @@
 package Menu;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +18,7 @@ import jdbc.JDBCSurgeonManager;
 import jdbc.JDBCSurgeryManager;
 import pojos.OPR;
 import pojos.Patient;
+import pojos.Schedule;
 import pojos.Surgeon;
 import pojos.Surgery;
 
@@ -208,6 +210,7 @@ public class MenuORschedule {
 				case 2:
 					// if there's a surgery schedule show info
 					// else ("no surgeries")
+					checksurgeries();
 
 					break;
 
@@ -288,9 +291,10 @@ public class MenuORschedule {
 			}
 			// input type of surgery (ex: transplant)
 			System.out.println("Input the type of surgery: ");
-			String surgery = read.readLine();
+			String type = read.readLine();
+		    Schedule schedule =null; //TODO
 
-			Surgery surg = new Surgery(p, surgeons, opr, surgery);
+			Surgery surg = new Surgery(p, surgeons, opr, type, schedule);
 			surg.setAcceptSurgery(false);
 			surgeryManager.addSurgery(surg);
 
@@ -427,5 +431,17 @@ public class MenuORschedule {
 		}
 		surgeonManager.updateSurgeon(s);
 
+	}
+	public static void checksurgeries() throws IOException {
+		System.out.println("Insert your email: ");
+		String email = read.readLine();
+		patientManager.listPatientsId(email);
+
+		System.out.println("Input your id: ");
+		Integer patientId = Integer.parseInt(read.readLine());
+		surgeryManager.listSurgeries(patientId);
+		
+		
+		
 	}
 }

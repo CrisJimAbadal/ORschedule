@@ -126,7 +126,7 @@ public class JDBCPatientManager implements PManager {
 				String email = rs.getString ("email");
 				Date dob = rs.getDate("Dob");
 				String sex = rs.getString("sex");
-				//TODO surgeries????????????????????
+				//List <Surgery> surgeries= rs.get
 
 				p = new Patient( name, medstat, email, dob, sex);
 			}

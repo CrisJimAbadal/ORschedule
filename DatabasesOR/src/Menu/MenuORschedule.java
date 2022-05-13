@@ -279,13 +279,9 @@ public class MenuORschedule {
 			System.out.println("How many surgeons are going to participate? ");
 			Integer numSurg = Integer.parseInt(read.readLine());
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
-<<<<<<< HEAD
 			//TODO if a surgeon accepts but the rest no what happens
 			//all surgeons must accept for the surgery to take place
 			
-=======
-
->>>>>>> branch 'master' of https://github.com/CrisJimAbadal/ORschedule
 			for (int i = 0; i < numSurg; i++) {
 				Surgeon s = chooseSurgeon();
 				surgeons.add(s);

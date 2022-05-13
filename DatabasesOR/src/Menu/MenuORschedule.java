@@ -101,6 +101,7 @@ public class MenuORschedule {
 					break;
 				case 2:
 					// TODO Call method log in
+					
 					// call PMenu();
 					PMenu();
 
@@ -286,7 +287,6 @@ public class MenuORschedule {
 			//TODO if a surgeon accepts but the rest no what happens
 			//all surgeons must accept for the surgery to take place
 			
-
 			for (int i = 0; i < numSurg; i++) {
 				Surgeon s = chooseSurgeon();
 				surgeons.add(s);

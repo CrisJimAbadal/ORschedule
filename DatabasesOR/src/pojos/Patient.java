@@ -16,6 +16,16 @@ public class Patient implements Serializable {
 	private String name;
 	private String medstat;
 	private String email;
+	private byte[] digest;
+	public byte[] getDigest() {
+		return digest;
+	}
+
+
+	public void setDigest(byte[] digest) {
+		this.digest = digest;
+	}
+
 	private Date dob;
 	private String sex;
 	
@@ -29,11 +39,12 @@ public class Patient implements Serializable {
 	}
 	
 
-	public Patient(String name,  String medstat, String email, Date dob, String sex) {
+	public Patient(String name,  String medstat, byte[] digest, String email, Date dob, String sex) {
 		super();
 		this.name = name;
 		this.medstat = medstat;
 		this.email = email;
+		this.digest= digest;
 		this.dob = dob;
 		this.sex = sex;
 		this.surgeries= new ArrayList<Surgery>();

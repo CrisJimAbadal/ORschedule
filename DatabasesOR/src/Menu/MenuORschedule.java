@@ -3,6 +3,7 @@ package Menu;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.security.MessageDigest;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import interfaces.OPRManager;
 import interfaces.PManager;
 import interfaces.SManager;
 import interfaces.SurgManager;
+import interfaces.UserManager;
 import jdbc.JDBCManager;
 import jdbc.JDBCPatientManager;
 import jdbc.JDBCSurgeonManager;
@@ -22,6 +24,9 @@ import pojos.Patient;
 import pojos.Schedule;
 import pojos.Surgeon;
 import pojos.Surgery;
+import pojos.User;
+import jpa.JPAUserManager;  //Is this the right package??
+
 
 public class MenuORschedule {
 
@@ -102,9 +107,8 @@ public class MenuORschedule {
 
 					break;
 				case 2:
-					// TODO Call method log in
 					
-					// call PMenu();
+					logInPatient();
 					PMenu();
 
 					break;
@@ -138,8 +142,8 @@ public class MenuORschedule {
 
 					break;
 				case 2:
-					// TODO sugeonManager.logIn();
-			
+					
+					logInSurgeon();
 					SMenu();
 					break;
 
@@ -169,8 +173,8 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					//TODO Call method LOG IN
 					
+					logInDoctor();
 					createSchedule();
 
 					break;
@@ -308,13 +312,16 @@ public class MenuORschedule {
 		System.out.println("Input patient's information: ");
 		System.out.println("Name: ");
 		String name = read.readLine();
-		//System.out.println("Password: ");
-		//String passWord = read.readLine();
-		//TODO añadir password al patient
 		System.out.println("Medstat: ");
 		String medstat = read.readLine();
 		System.out.println("Email: ");
 		String email = read.readLine();
+		System.out.println("Password: ");
+		String password = read.readLine();
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(password.getBytes());
+		byte[] digest = md.digest();
+		
 		System.out.println("Date of birth (yyyy-mm-dd): ");
 		String dob= read.readLine();
 		LocalDate dobDate =LocalDate.parse(dob,formatter);
@@ -322,7 +329,7 @@ public class MenuORschedule {
 		System.out.println("Sex: ");
 		String sex = read.readLine();
 
-		Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate), sex);
+		Patient patient = new Patient(name, medstat, digest, email, Date.valueOf(dobDate), sex);
 		patientManager.addPatient(patient);
 
 	}
@@ -379,13 +386,23 @@ public class MenuORschedule {
 		String email = read.readLine();
 		patientManager.listPatientsId(email);
 
-		System.out.println("Input your id: ");
-		Integer patientId = Integer.parseInt(read.readLine());
+		System.out.println("Input your password: ");
+		String password =read.readLine();
+		
+		//returns a user, if null, user is not found
+		User user = checkPassword(email, password); //no me acepta la funcion??
+		
+		if(user == null) {
+			System.out.println("User not found");
+			PMenu(); //returns to patient menu if the user does not exist
+			
+		}
 		
 		// List patient info
-		patientManager.showPatient(patientId);
-		Patient p = patientManager.searchPatient(patientId);
+		patientManager.showPatient(user.getId());
+		Patient p = patientManager.searchPatient(user.getId());
 		
+		p.setDigest(user.getPassword()); //mete el digest del password en el paciente
 		System.out.println("Update your information: ");
 		
 		// Ask for info, if empty keeps the one existing before 
@@ -449,6 +466,64 @@ public class MenuORschedule {
 		surgeonManager.updateSurgeon(s);
 
 	}
+	
+	public static void logInDoctor() {
+		
+		System.out.println("Insert your email: ");
+		String email = read.readLine();
+		
+
+		System.out.println("Input your password: ");
+		String passwrd =read.readLine();
+		
+		//returns a user, if null, user is not found
+		User user = checkPassword(email, passwrd); //does not work??
+		
+		if(user == null) {
+			System.out.println("User not found");
+			doctorMenu(); //returns to patient menu if the user does not exist
+			
+		}
+	}
+		public static void logInPatient() {
+			
+			System.out.println("Insert your email: ");
+			String email = read.readLine();
+			
+
+			System.out.println("Input your password: ");
+			String passwrd =read.readLine();
+			
+			//returns a user, if null, user is not found
+			User user = checkPassword(email, passwrd); //doesnt work??
+			
+			if(user == null) {
+				System.out.println("User not found");
+				patientMenu(); //returns to patient menu if the user does not exist
+				
+			}
+		}
+		
+			public static void logInSurgeon() {
+				
+				System.out.println("Insert your email: ");
+				String email = read.readLine();
+				
+
+				System.out.println("Input your password: ");
+				String passwrd =read.readLine();
+				
+				//returns a user, if null, user is not found
+				User user = checkPassword(email, passwrd); //doesnt work??
+				
+				if(user == null) {
+					System.out.println("User not found");
+					surgeonMenu(); //returns to patient menu if the user does not exist
+					
+				}
+		
+	}
+	
 	public static void checksurgeries() throws IOException {
 		System.out.println("Insert your email: ");
 		String email = read.readLine();
@@ -460,7 +535,7 @@ public class MenuORschedule {
 		if (surgeryManager.listSurgeries(patientId).isEmpty()) {
 			
 			System.out.println("There are no surgeries scheduled yet ");
-		};
+		}
 		
 		
 		

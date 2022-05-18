@@ -124,11 +124,12 @@ public class JDBCPatientManager implements PManager {
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
 				String email = rs.getString ("email");
+				byte[] digest = rs.getBytes("digest");
 				Date dob = rs.getDate("Dob");
 				String sex = rs.getString("sex");
 			
 
-				p = new Patient( name, medstat, email, dob, sex);
+				p = new Patient( name, medstat, digest,  email, dob, sex);
 			}
 
 		} catch (Exception e) {

@@ -4,7 +4,6 @@ import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -93,10 +92,6 @@ public class User implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-
-	
-	
-	
 	
 	@Override
 	public String toString() {

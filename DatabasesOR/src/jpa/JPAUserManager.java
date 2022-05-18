@@ -38,7 +38,7 @@ public class JPAUserManager implements UserManager {
 	
 	@Override
 	public void disconnect() {
-		// TODO Auto-generated method stub
+		em.close();
 		
 	}
 

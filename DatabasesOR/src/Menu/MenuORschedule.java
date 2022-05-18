@@ -272,12 +272,7 @@ public class MenuORschedule {
 			// choose a patient
 			Patient p = choosePatient();
 
-			// TODO list schedule
-			// choose schedule
-
-			 
-			OPR opr = chooseOPR(); 
-
+			
 			// choose surgeon
 			System.out.println("How many surgeons are going to participate? ");
 			Integer numSurg = Integer.parseInt(read.readLine());
@@ -289,6 +284,11 @@ public class MenuORschedule {
 				Surgeon s = chooseSurgeon();
 				surgeons.add(s);
 			}
+			
+			// TODO list schedule
+			// choose schedule	 
+			OPR opr = chooseOPR(); 
+
 			
 			// input type of surgery (ex: transplant)
 			System.out.println("Input the type of surgery: ");

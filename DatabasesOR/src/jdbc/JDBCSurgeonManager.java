@@ -105,7 +105,8 @@ public class JDBCSurgeonManager implements SManager {
 
 				s = new Surgeon(id, name, medstat, pagerNumber, tlfNumber);
 			}
-
+			rs.close();
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -153,14 +154,12 @@ public class JDBCSurgeonManager implements SManager {
 	@Override
 	public void acceptSurgery(String s) {
 		try {
-			//TODO accept surgery
+			// TODO accept surgery
 			String sql = "UPDATE surgery" + "SET acceptSurgery = TRUE";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setBoolean(3, true);
 			pr.executeUpdate();
-			
-			
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 

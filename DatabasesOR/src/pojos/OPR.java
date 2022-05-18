@@ -7,9 +7,7 @@ import java.util.Objects;
 
 public class OPR implements Serializable {
 
-	/**
-	 * 
-	 */
+	
 	private static final long serialVersionUID = -3851196959970978337L;
 	
 	
@@ -31,6 +29,13 @@ public class OPR implements Serializable {
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
+	}
+
+	public OPR(Integer id, Integer floor, Integer number) {
+		super();
+		this.id = id;
+		this.floor = floor;
+		this.number = number;
 	}
 
 	@Override

@@ -20,6 +20,13 @@ public class Schedule implements Serializable{
 	
 	
 	
+	public Schedule(Integer id, Date date, Time time) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.time = time;
+	}
+	
 	public Schedule() {
 		super();
 		

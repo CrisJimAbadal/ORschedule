@@ -30,6 +30,6 @@ public interface SManager {
 
 	// availability
 	public void updateAvailability (Schedule a);
-	// TODO availability
+	// TODO update availability
 	
 }

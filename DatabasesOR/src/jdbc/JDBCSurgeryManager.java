@@ -47,7 +47,7 @@ public class JDBCSurgeryManager implements SurgManager {
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setInt(1,surgeonId);
 			pr.setInt(2, patientId);
-			// TODO revisar
+			// TODO revisar delete
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -70,7 +70,7 @@ public List<Surgery> listSurgeries (int id){
 			Integer id3=rs.getInt(6);
 			Schedule schedule=new Schedule(id3,date,time);
 			Surgery s = new Surgery (id2,type,schedule);
-			//TODO finish
+			
 			surgeries.add(s);
 			
 		}

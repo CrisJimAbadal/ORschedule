@@ -48,6 +48,15 @@ public class Surgery implements Serializable{
 
 
 
+	public Surgery(Integer id, String type, Schedule schedule) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.schedule = schedule;
+	}
+
+
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

@@ -16,11 +16,13 @@ public class Surgeon implements Serializable {
 	private Integer tlfNumber;
 
 	private List<Surgery> surgeries;
+	private List <Acceptance> acceptances;
 	
 
 	public Surgeon() {
 		super();
 		surgeries = new ArrayList<Surgery>();
+		acceptances=new ArrayList<Acceptance>();
 		
 	}
 
@@ -31,6 +33,7 @@ public class Surgeon implements Serializable {
 		this.pagerNumber = pagerNumber;
 		this.tlfNumber = tlfNumber;
 		surgeries = new ArrayList<Surgery>();
+		acceptances=new ArrayList<Acceptance>();
 		
 	}
 
@@ -42,6 +45,7 @@ public class Surgeon implements Serializable {
 		this.pagerNumber = pagerNumber;
 		this.tlfNumber = tlfNumber;
 		surgeries = new ArrayList<Surgery>();
+		acceptances=new ArrayList<Acceptance>();
 	
 	}
 
@@ -51,6 +55,7 @@ public class Surgeon implements Serializable {
 		this.name = name;
 		this.medstat = medstat;
 		surgeries = new ArrayList<Surgery>();
+		acceptances=new ArrayList<Acceptance>();
 	
 		
 	}
@@ -126,6 +131,14 @@ public class Surgeon implements Serializable {
 		// añadir avs y surgeries
 		return "Surgeon [id=" + id + ", name=" + name + ", medstat=" + medstat + ", pagernumber=" + pagerNumber
 				+ ", tlfnumber=" + tlfNumber + "]";
+	}
+
+	public List<Acceptance> getAcceptances() {
+		return acceptances;
+	}
+
+	public void setAcceptances(List<Acceptance> acceptances) {
+		this.acceptances = acceptances;
 	}
 
 }

@@ -335,7 +335,7 @@ public class MenuORschedule {
 		System.out.println("Date of birth (yyyy-mm-dd): ");
 		String dob= read.readLine();
 		LocalDate dobDate =LocalDate.parse(dob,formatter);
-		//TODO DATE
+		//TODO DATE ask rodrigo
 		System.out.println("Sex: ");
 		String sex = read.readLine();
 

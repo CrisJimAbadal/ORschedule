@@ -19,12 +19,12 @@ public class Surgery implements Serializable{
 	private List <Surgeon> surgeons;
 	private Schedule schedule;
 
-
+	private List <Acceptance> acceptances;
 	
 
 	public Surgery() {
 		super();
-		
+		acceptances=new ArrayList<Acceptance>();
 	}
 	
 	
@@ -36,6 +36,7 @@ public class Surgery implements Serializable{
 		this.opr = opr;
 		this.type = type;
 		this.schedule=schedule;
+		acceptances=new ArrayList<Acceptance>();
 		
 	}
 
@@ -44,6 +45,7 @@ public class Surgery implements Serializable{
 	public Surgery(String type, Schedule schedule) {
 		this.type=type;
 		this.setSchedule(schedule);
+		acceptances=new ArrayList<Acceptance>();
 	}
 
 
@@ -53,6 +55,7 @@ public class Surgery implements Serializable{
 		this.id = id;
 		this.type = type;
 		this.schedule = schedule;
+		acceptances=new ArrayList<Acceptance>();
 	}
 
 
@@ -131,6 +134,18 @@ public class Surgery implements Serializable{
 
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
+	}
+
+
+
+	public List<Acceptance> getAcceptances() {
+		return acceptances;
+	}
+
+
+
+	public void setAcceptances(List<Acceptance> acceptances) {
+		this.acceptances = acceptances;
 	}
 
 

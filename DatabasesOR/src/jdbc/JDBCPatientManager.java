@@ -28,7 +28,7 @@ public class JDBCPatientManager implements PManager {
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, p.getName());
 			prep.setString(2, p.getMedstat());
-			prep.setDate(3, (Date) p.getDob());
+			prep.setDate(3,p.getDob());
 			prep.setString(4, p.getSex());
 
 		} catch (Exception e) {

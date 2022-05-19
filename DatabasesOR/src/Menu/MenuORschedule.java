@@ -248,9 +248,10 @@ public class MenuORschedule {
 
 				case 2:
 					//TODO show schedule
-					
+					showshedule();
 					//TODO accept / deny surgery
-
+					//System.out.println("Input id of the surgery you accept");
+					//update acceptance from surgery to TRUE
 					break;
 
 				case 0:
@@ -266,11 +267,19 @@ public class MenuORschedule {
 		}
 	}
 
+	private static void showshedule() {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private static void createSchedule() {
 		try {
 			//TODO everything about speciality
-			
+		
 			// show medical specialties
+			//select speciality FROM surgeons
+			
+			
 			// choose an specialty
 
 			// choose a patient
@@ -318,6 +327,7 @@ public class MenuORschedule {
 		String email = read.readLine();
 		System.out.println("Password: ");
 		String password = read.readLine();
+		//try-catch
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
 		byte[] digest = md.digest();

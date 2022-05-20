@@ -64,7 +64,7 @@ public class MenuORschedule {
 				case 1:
 					// Call method patient menu
 					patientMenu();
-
+//TODO esto esta mal
 					break;
 				case 2:
 					// Call method surgeon menu

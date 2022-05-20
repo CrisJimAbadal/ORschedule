@@ -11,7 +11,7 @@ public interface SurgManager {
 	public void addSurgery (Surgery s);
 	
 	//unassign Surgery
-	public void unassign (int surgeonId, int patientId);
+	public void unassign (int surgeryId);
 	
 	public List<Surgery> listSurgeries(int id);
 }

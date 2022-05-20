@@ -27,6 +27,12 @@ public class Schedule implements Serializable{
 		this.time = time;
 	}
 	
+	public Schedule(Date date, Time time) {
+		super();
+		this.date = date;
+		this.time = time;
+	}
+
 	public Schedule() {
 		super();
 		

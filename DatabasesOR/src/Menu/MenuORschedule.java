@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import interfaces.OPRManager;
@@ -25,8 +26,7 @@ import pojos.Schedule;
 import pojos.Surgeon;
 import pojos.Surgery;
 import pojos.User;
-import jpa.JPAUserManager;  //Is this the right package??
-
+import jpa.JPAUserManager; //Is this the right package??
 
 public class MenuORschedule {
 
@@ -64,7 +64,7 @@ public class MenuORschedule {
 				case 1:
 					// Call method patient menu
 					patientMenu();
-//TODO esto esta mal
+
 					break;
 				case 2:
 					// Call method surgeon menu
@@ -82,7 +82,7 @@ public class MenuORschedule {
 					break;
 				}
 			} while (true);
-		
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -107,7 +107,7 @@ public class MenuORschedule {
 
 					break;
 				case 2:
-					
+
 					logInPatient();
 					PMenu();
 
@@ -142,7 +142,7 @@ public class MenuORschedule {
 
 					break;
 				case 2:
-					
+
 					logInSurgeon();
 					SMenu();
 					break;
@@ -173,7 +173,7 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					
+
 					logInDoctor();
 					createSchedule();
 
@@ -211,7 +211,7 @@ public class MenuORschedule {
 
 					break;
 				case 2:
-					
+
 					checksurgeries();
 
 					break;
@@ -233,8 +233,8 @@ public class MenuORschedule {
 		try {
 			do {
 				System.out.println("CHOOSE AN OPTION: ");
-				System.out.println("1. Check information and update"); 
-				System.out.println("2. Check schedule");// check and update?
+				System.out.println("1. Check information and update");
+				System.out.println("2. Check schedule");
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(read.readLine());
@@ -247,11 +247,19 @@ public class MenuORschedule {
 					break;
 
 				case 2:
-					//TODO show schedule
-					showshedule();
-					//TODO accept / deny surgery
-					//System.out.println("Input id of the surgery you accept");
-					//update acceptance from surgery to TRUE
+					// TODO show schedule
+					showshedule();  // id + time + type
+					// TODO accept / deny surgery
+					System.out.println ("Do you want to deny a surgery? (1 if yes)");
+					int yes = Integer.parseInt(read.readLine());
+					if (yes ==1) {
+						System.out.println ("Input surgery it: ");
+						int id= Integer.parseInt (read.readLine());
+						surgeryManager.unassign(id);;
+					}else{
+						SMenu();
+					}
+					
 					break;
 
 				case 0:
@@ -268,45 +276,46 @@ public class MenuORschedule {
 	}
 
 	private static void showshedule() {
-		// TODO Auto-generated method stub
 		
+		// TODO tipo y hora   JOIN
+		
+
 	}
 
-	private static void createSchedule() {
+	private static void createSurgery() {
 		try {
-			//TODO everything about speciality
-		
-			// show medical specialties
-			//select speciality FROM surgeons
+			//1) choose schedule
+			chooseSchedule();
 			
+			//2) choose OPR
+			int oprId = chooseOPR();
+			if (surgeryManager.checkOPR()) {
+			OPR opr = oprManager.searchOPR(oprId);
+			}  // TRUE = available
 			
-			// choose an specialty
-
-			// choose a patient
+			//3)choose a patient
 			Patient p = choosePatient();
-
-			// TODO list schedule
-			// choose schedule
-
-			 
-			OPR opr = chooseOPR(); 
-
-			// choose surgeon
+			
+			// 4)TODO everything about speciality
+			
+			//5) choose surgeon
 			System.out.println("How many surgeons are going to participate? ");
 			Integer numSurg = Integer.parseInt(read.readLine());
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
-			//TODO if a surgeon accepts but the rest no what happens
-			//all surgeons must accept for the surgery to take place
+		
 			
+			// TODO if a surgeon accepts but the rest no what happens
+			// all surgeons must accept for the surgery to take place
+
 			for (int i = 0; i < numSurg; i++) {
 				Surgeon s = chooseSurgeon();
 				surgeons.add(s);
 			}
-			
+
 			// input type of surgery (ex: transplant)
 			System.out.println("Input the type of surgery: ");
 			String type = read.readLine();
-		    Schedule schedule =null; //TODO set schedule for the surgery
+			
 
 			Surgery surg = new Surgery(p, surgeons, opr, type, schedule);
 			surg.setAcceptSurgery(false);
@@ -327,15 +336,15 @@ public class MenuORschedule {
 		String email = read.readLine();
 		System.out.println("Password: ");
 		String password = read.readLine();
-		//try-catch
+		// try-catch
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
 		byte[] digest = md.digest();
-		
+
 		System.out.println("Date of birth (yyyy-mm-dd): ");
-		String dob= read.readLine();
-		LocalDate dobDate =LocalDate.parse(dob,formatter);
-		//TODO DATE ask rodrigo
+		String dob = read.readLine();
+		LocalDate dobDate = LocalDate.parse(dob, formatter);
+		// TODO DATE ask rodrigo
 		System.out.println("Sex: ");
 		String sex = read.readLine();
 
@@ -380,47 +389,33 @@ public class MenuORschedule {
 
 		return s;
 	}
-	public static OPR chooseOPR() throws Exception{
+
+	public static int chooseOPR() throws Exception {
 		System.out.println("choose an opr by its id: ");
 		// list oprs
 		oprManager.listOprs();
 		Integer oprsId = Integer.parseInt(read.readLine());
-		OPR opr = oprManager.searchOPR(oprsId);
-		return opr;
-		
+		return oprsId;
+
 	}
 
 	private static void updatePatientInfo() throws Exception {
-		
-		System.out.println("Insert your email: ");
-		String email = read.readLine();
-		patientManager.listPatientsId(email);
 
-		System.out.println("Input your password: ");
-		String password =read.readLine();
-		
-		//returns a user, if null, user is not found
-		User user = checkPassword(email, password); //no me acepta la funcion??
-		
-		if(user == null) {
-			System.out.println("User not found");
-			PMenu(); //returns to patient menu if the user does not exist
-			
-		}
-		
+		System.out.println("input your email: ");
+		String email = read.readLine();
+
+		Integer id = patientManager.listPatientsId(email);
+
 		// List patient info
-		patientManager.showPatient(user.getId());
-		Patient p = patientManager.searchPatient(user.getId());
-		
-		p.setDigest(user.getPassword()); //mete el digest del password en el paciente
+		patientManager.showPatient(id);
+		Patient p = patientManager.searchPatient(id);
 		System.out.println("Update your information: ");
-		
-		// Ask for info, if empty keeps the one existing before 
+		// Ask for info, if empty keeps the one existing before
 		String name = read.readLine();
 		if (!name.equals("")) {
 			p.setName(name);
 		}
-		
+
 		String medstat = read.readLine();
 		if (!medstat.equals("")) {
 			p.setMedstat(medstat);
@@ -430,10 +425,10 @@ public class MenuORschedule {
 			p.setEmail(newEmail);
 		}
 		System.out.println("Date of birth (yyyy-mm-dd): ");
-		String dob= read.readLine();
-		LocalDate dobDate =LocalDate.parse(dob,formatter);
-		
-		if(!dob.equals("")) {
+		String dob = read.readLine();
+		LocalDate dobDate = LocalDate.parse(dob, formatter);
+
+		if (!dob.equals("")) {
 			p.setDob(Date.valueOf(dobDate));
 		}
 
@@ -446,15 +441,13 @@ public class MenuORschedule {
 	}
 
 	private static void updateSurgeonInfo() throws Exception {
-	
+
 		System.out.println("Input your pagerNumber: ");
 
 		Integer surgeonPagerNum = Integer.parseInt(read.readLine());
-		// List patient info
-		surgeonManager.showSurgeon(surgeonPagerNum);
-		System.out.println("input your id: ");
-		Integer id = Integer.parseInt(read.readLine());
-		Surgeon s = surgeonManager.searchSurgeon(id);
+		//TODO preguntar si hay que hacerlo mas seguro
+		
+		Surgeon s = surgeonManager.showSurgeon(surgeonPagerNum);
 		System.out.println("Update your information: ");
 
 		String name = read.readLine();
@@ -476,64 +469,26 @@ public class MenuORschedule {
 		surgeonManager.updateSurgeon(s);
 
 	}
-	
-	public static void logInDoctor() {
-		
+
+	public static void logIn() {
+
 		System.out.println("Insert your email: ");
 		String email = read.readLine();
-		
 
 		System.out.println("Input your password: ");
-		String passwrd =read.readLine();
-		
-		//returns a user, if null, user is not found
-		User user = checkPassword(email, passwrd); //does not work??
-		
-		if(user == null) {
+		String passwrd = read.readLine();
+
+		// returns a user, if null, user is not found
+		User user = checkPassword(email, passwrd); // doesnt work??
+
+		if (user == null) {
 			System.out.println("User not found");
-			doctorMenu(); //returns to patient menu if the user does not exist
-			
-		}
-	}
-		public static void logInPatient() {
-			
-			System.out.println("Insert your email: ");
-			String email = read.readLine();
-			
+			surgeonMenu(); // returns to patient menu if the user does not exist
 
-			System.out.println("Input your password: ");
-			String passwrd =read.readLine();
-			
-			//returns a user, if null, user is not found
-			User user = checkPassword(email, passwrd); //doesnt work??
-			
-			if(user == null) {
-				System.out.println("User not found");
-				patientMenu(); //returns to patient menu if the user does not exist
-				
-			}
 		}
-		
-			public static void logInSurgeon() {
-				
-				System.out.println("Insert your email: ");
-				String email = read.readLine();
-				
 
-				System.out.println("Input your password: ");
-				String passwrd =read.readLine();
-				
-				//returns a user, if null, user is not found
-				User user = checkPassword(email, passwrd); //doesnt work??
-				
-				if(user == null) {
-					System.out.println("User not found");
-					surgeonMenu(); //returns to patient menu if the user does not exist
-					
-				}
-		
 	}
-	
+
 	public static void checksurgeries() throws IOException {
 		System.out.println("Insert your email: ");
 		String email = read.readLine();
@@ -541,13 +496,23 @@ public class MenuORschedule {
 
 		System.out.println("Input your id: ");
 		Integer patientId = Integer.parseInt(read.readLine());
-		
+
 		if (surgeryManager.listSurgeries(patientId).isEmpty()) {
-			
+
 			System.out.println("There are no surgeries scheduled yet ");
 		}
+
+	}
+	
+	public static Schedule chooseSchedule() {
+		Schedule s;
+		System.out.println ("Insert a date: ");
+		//TODO DATE+time
+		Date date = null;
+				//Date.valueOf(read.readLine());
+		Time time = null;
 		
-		
-		
+		s= new Schedule (date, time);
+		return s;
 	}
 }

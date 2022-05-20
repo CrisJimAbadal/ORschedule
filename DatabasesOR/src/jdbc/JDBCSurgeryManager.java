@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import interfaces.SurgManager;
+import pojos.OPR;
 import pojos.Schedule;
 import pojos.Surgery;
 
@@ -41,13 +42,12 @@ public class JDBCSurgeryManager implements SurgManager {
 	//TODO method of surgeries that will be accepted
 
 		@Override
-		public void unassign (int surgeonId, int patientId) {
+		public void unassign ( int surgeryId) {
 			try {
-			String sql = "DELETE * FROM Surgery WHERE surgeonId=? AND patientId=?";
+			String sql = "DELETE * FROM Surgery WHERE id =?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setInt(1,surgeonId);
-			pr.setInt(2, patientId);
-			// TODO revisar delete
+			pr.setInt(1, surgeryId);
+		
 			}catch (SQLException e) {
 				e.printStackTrace();
 			}
@@ -85,4 +85,20 @@ public List<Surgery> listSurgeries (int id){
 	
 }
 
+//COMPROBACION select lo q sea de surgery where time= ? if null... nueva surgery
+
+	public boolean checkOPR (Schedule s, OPR opr) {
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT oprId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id WHERE schedule.Date= ? AND schedule.TIME = ?";
+			ResultSet rs= stmt.executeQuery(sql);
+			//TODO finish
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+return true;
+		
+	}
+}
 }

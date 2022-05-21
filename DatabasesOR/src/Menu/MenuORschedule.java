@@ -285,16 +285,29 @@ public class MenuORschedule {
 	private static void createSurgery() {
 		try {
 			//1) choose schedule
-			chooseSchedule();
+			Schedule s=chooseSchedule();
 			
-			//2) choose OPR
-			int oprId = chooseOPR();
-			if (surgeryManager.checkOPR()) {
-			OPR opr = oprManager.searchOPR(oprId);
-			}  // TRUE = available
-			
-			//3)choose a patient
+			//2)choose a patient
 			Patient p = choosePatient();
+			//check if patient available at that schedule
+			while(surgeryManager.checkpatient(s, p)) {
+				// TRUE = not available
+				System.out.println("The patient is not available at that time and date");
+				//TODO if patient not available-> choose another schedule 
+				System.out.println("Choose another schedule for that patient");
+				s=chooseSchedule();
+			}
+			
+			//3) choose OPR
+			int oprId = chooseOPR();
+			
+			while(surgeryManager.checkOPR(s,oprId)) {
+				// TRUE = not available
+				System.out.println("The OPR is not available at this schedule.");
+				System.out.println("Please choose another one:");
+				oprId = chooseOPR();
+			}  
+			OPR opr = oprManager.searchOPR(oprId);
 			
 			// 4)TODO everything about speciality
 			
@@ -308,8 +321,8 @@ public class MenuORschedule {
 			// all surgeons must accept for the surgery to take place
 
 			for (int i = 0; i < numSurg; i++) {
-				Surgeon s = chooseSurgeon();
-				surgeons.add(s);
+				Surgeon surg = chooseSurgeon();
+				surgeons.add(surg);
 			}
 
 			// input type of surgery (ex: transplant)

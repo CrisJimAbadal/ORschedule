@@ -180,4 +180,4 @@ public class JDBCSurgeonManager implements SManager {
 
 		}
 	}
-}s
+}

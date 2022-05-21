@@ -53,7 +53,7 @@ public class JDBCManager {
 			stm.executeUpdate(sql);
 
 			// TABLE OPR
-			sql = "CREATE TABLE opr" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "floor INTEGER NOT NULL ,"
+			sql = "CREATE TABLE opr" + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"+ "floor INTEGER NOT NULL ,"
 					+ " number INTEGER NOT NULL )";
 			stm.executeUpdate(sql);
 
@@ -78,19 +78,16 @@ public class JDBCManager {
 					+ "medstat TEXT NOT NULL," + "pagerNumber INTEGER UNIQUE NOT NULL," + "tlfNumber INTEGER UNIQUE )";
 			stm.executeUpdate(sql);
 
-			// TABLE ACCEPTANCE
-			sql = "CREATE TABLE acceptance (id INTEGER PRIMARY KEY, surgeonId INTEGER REFERENCES surgeon (id),"
-					+ " surgeryId INTEGER REFERENCES surgery(id), acceptance BOOLEAN ON DEFAULT SET TRUE";
-//TODO ver el set true
-			
 			// TABLE SURGERY
 			sql = "CREATE TABLE surgery(id INTEGER PRIMARY KEY AUTOINCREMENT,type TEXT,"
-					+ "patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
-					+ "surgeonId INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
-					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,acceptSurgery BOOLEAN,"
-					+ "medstat TEXT NOT NULL,pagerNumber INTEGER UNIQUE NOT NULL,tlfNumber INTEGER UNIQUE, scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
+					+"patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
+					+"surgeonID INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
+					+"oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,acceptSurgery BOOLEAN,"
+					+"medstat TEXT NOT NULL, scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
 			stm.executeUpdate(sql);
 
+			//TODO cREATE TABLE SCHEDULE
+			//id, date,time
 		} catch (Exception e) {
 
 			if (!e.getMessage().contains("already exists")) {

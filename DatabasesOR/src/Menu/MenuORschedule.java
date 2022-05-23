@@ -14,10 +14,12 @@ import java.util.List;
 import interfaces.OPRManager;
 import interfaces.PManager;
 import interfaces.SManager;
+import interfaces.ScheduleManager;
 import interfaces.SurgManager;
 import interfaces.UserManager;
 import jdbc.JDBCManager;
 import jdbc.JDBCPatientManager;
+import jdbc.JDBCScheduleManager;
 import jdbc.JDBCSurgeonManager;
 import jdbc.JDBCSurgeryManager;
 import pojos.OPR;
@@ -35,16 +37,21 @@ public class MenuORschedule {
 	private static SManager surgeonManager;
 	private static SurgManager surgeryManager;
 	private static OPRManager oprManager;
-	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-mm-dd");
+	private static UserManager userManager;
+	private static ScheduleManager scheduleManager;
+	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
 	public static void main(String[] args) {
 
 		System.out.println("WELCOME TO THE OR SHCEDULE");
 		JDBCManager jdbcManager = new JDBCManager();
+		
 		// initialize database
 		patientManager = new JDBCPatientManager(jdbcManager);
 		surgeonManager = new JDBCSurgeonManager(jdbcManager);
 		surgeryManager = new JDBCSurgeryManager(jdbcManager);
+		userManager= new JPAUserManager ();
+		scheduleManager= new JDBCScheduleManager(jdbcManager);
 		principalMenu();
 	}
 
@@ -108,7 +115,7 @@ public class MenuORschedule {
 					break;
 				case 2:
 
-					logInPatient();
+					logIn();
 					PMenu();
 
 					break;
@@ -143,7 +150,7 @@ public class MenuORschedule {
 					break;
 				case 2:
 
-					logInSurgeon();
+					logIn();
 					SMenu();
 					break;
 
@@ -174,8 +181,8 @@ public class MenuORschedule {
 
 				case 1:
 
-					logInDoctor();
-					createSchedule();
+					logIn();
+					DMenu();
 
 					break;
 				case 0:
@@ -191,6 +198,38 @@ public class MenuORschedule {
 		}
 	}
 
+	private static void DMenu() {
+
+		try {
+			do {
+				System.out.println("CHOOSE AN OPTION: ");
+				System.out.println("1. Create a surgery");
+				System.out.println("0. Exit");
+
+				int choice = Integer.parseInt(read.readLine());
+
+				switch (choice) {
+
+				case 1:
+
+					createSurgery();
+
+					break;
+				
+				case 0:
+					// EXIT
+					doctorMenu();
+				default:
+					break;
+				}
+			} while (true);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	
 	private static void PMenu() {
 
 		try {
@@ -253,7 +292,7 @@ public class MenuORschedule {
 					System.out.println ("Do you want to deny a surgery? (1 if yes)");
 					int yes = Integer.parseInt(read.readLine());
 					if (yes ==1) {
-						System.out.println ("Input surgery it: ");
+						System.out.println ("Input surgery id: ");
 						int id= Integer.parseInt (read.readLine());
 						surgeryManager.unassign(id);;
 					}else{
@@ -279,6 +318,10 @@ public class MenuORschedule {
 		
 		// TODO tipo y hora   JOIN
 		
+		
+		
+		
+		
 
 	}
 
@@ -293,7 +336,7 @@ public class MenuORschedule {
 			while(surgeryManager.checkpatient(s, p)) {
 				// TRUE = not available
 				System.out.println("The patient is not available at that time and date");
-				//TODO if patient not available-> choose another schedule 
+				// if patient not available-> choose another schedule 
 				System.out.println("Choose another schedule for that patient");
 				s=chooseSchedule();
 			}
@@ -309,7 +352,8 @@ public class MenuORschedule {
 			}  
 			OPR opr = oprManager.searchOPR(oprId);
 			
-			// 4)TODO everything about speciality
+			// 4)show surgeons with same specialty as patient
+			String specialty=p.getMedstat();
 			
 			//5) choose surgeon
 			System.out.println("How many surgeons are going to participate? ");
@@ -317,21 +361,21 @@ public class MenuORschedule {
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		
 			
-			// TODO if a surgeon accepts but the rest no what happens
-			// all surgeons must accept for the surgery to take place
+			
 
 			for (int i = 0; i < numSurg; i++) {
-				Surgeon surg = chooseSurgeon();
+				Surgeon surg = chooseSurgeon(specialty);
 				surgeons.add(surg);
 			}
 
 			// input type of surgery (ex: transplant)
-			System.out.println("Input the type of surgery: ");
+			System.out.println("Input the type of surgery:");
 			String type = read.readLine();
 			
 
-			Surgery surg = new Surgery(p, surgeons, opr, type, schedule);
+			Surgery surg = new Surgery(p, surgeons, opr, type, s);
 			surg.setAcceptSurgery(false);
+			scheduleManager.addSchedule(s);
 			surgeryManager.addSurgery(surg);
 
 		} catch (Exception e) {
@@ -357,7 +401,7 @@ public class MenuORschedule {
 		System.out.println("Date of birth (yyyy-mm-dd): ");
 		String dob = read.readLine();
 		LocalDate dobDate = LocalDate.parse(dob, formatter);
-		// TODO DATE ask rodrigo
+		
 		System.out.println("Sex: ");
 		String sex = read.readLine();
 
@@ -392,11 +436,11 @@ public class MenuORschedule {
 		return p;
 	}
 
-	public static Surgeon chooseSurgeon() throws Exception {
+	public static Surgeon chooseSurgeon(String specialty) throws Exception {
 
 		System.out.println("choose a surgeon by its id: ");
-		// list surgeons
-		surgeonManager.listSurgeons();
+		
+		surgeonManager.listSurgeons(specialty);
 		Integer surgeonId = Integer.parseInt(read.readLine());
 		Surgeon s = surgeonManager.searchSurgeon(surgeonId);
 
@@ -437,18 +481,7 @@ public class MenuORschedule {
 		if (!newEmail.equals("")) {
 			p.setEmail(newEmail);
 		}
-		System.out.println("Date of birth (yyyy-mm-dd): ");
-		String dob = read.readLine();
-		LocalDate dobDate = LocalDate.parse(dob, formatter);
-
-		if (!dob.equals("")) {
-			p.setDob(Date.valueOf(dobDate));
-		}
-
-		String sex = read.readLine();
-		if (!sex.equals("")) {
-			p.setSex(sex);
-		}
+		
 		patientManager.updatePatient(p);
 
 	}
@@ -458,19 +491,11 @@ public class MenuORschedule {
 		System.out.println("Input your pagerNumber: ");
 
 		Integer surgeonPagerNum = Integer.parseInt(read.readLine());
-		//TODO preguntar si hay que hacerlo mas seguro
 		
 		Surgeon s = surgeonManager.showSurgeon(surgeonPagerNum);
 		System.out.println("Update your information: ");
 
-		String name = read.readLine();
-		if (!name.equals("")) {
-			s.setName(name);
-		}
-		String medstat = read.readLine();
-		if (!medstat.equals("")) {
-			s.setMedstat(medstat);
-		}
+		
 		Integer pagerNumber = Integer.parseInt(read.readLine());
 		if (!pagerNumber.equals("")) {
 			s.setPagerNumber(pagerNumber);
@@ -483,7 +508,7 @@ public class MenuORschedule {
 
 	}
 
-	public static void logIn() {
+	public static void logIn()throws IOException {
 
 		System.out.println("Insert your email: ");
 		String email = read.readLine();
@@ -492,11 +517,11 @@ public class MenuORschedule {
 		String passwrd = read.readLine();
 
 		// returns a user, if null, user is not found
-		User user = checkPassword(email, passwrd); // doesnt work??
+		User user = userManager.checkPassword(email, passwrd); 
 
 		if (user == null) {
 			System.out.println("User not found");
-			surgeonMenu(); // returns to patient menu if the user does not exist
+			principalMenu(); // returns to principal menu if the user does not exist
 
 		}
 
@@ -519,11 +544,17 @@ public class MenuORschedule {
 	
 	public static Schedule chooseSchedule() {
 		Schedule s;
-		System.out.println ("Insert a date: ");
-		//TODO DATE+time
 		Date date = null;
-				//Date.valueOf(read.readLine());
 		Time time = null;
+		try {
+		System.out.println ("Insert a date: ");
+		date = Date.valueOf(read.readLine());
+		System.out.println ("Insert a date: ");
+		time = Time.valueOf(read.readLine());
+		
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		s= new Schedule (date, time);
 		return s;

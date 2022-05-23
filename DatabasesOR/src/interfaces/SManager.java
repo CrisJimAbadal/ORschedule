@@ -12,8 +12,8 @@ public interface SManager {
 	// addSurgeon
 	public void addSurgeon(Surgeon p);
 
-	// list surgeons
-	public List<Surgeon> listSurgeons();
+	// list surgeons by specialty
+	public List<Surgeon> listSurgeons(String specialty);
 
 	// searchSurgeon
 	public Surgeon searchSurgeon(int id);
@@ -28,8 +28,6 @@ public interface SManager {
 	
 	public void deleteSurgeon(int Surgeonid);
 
-	// availability
-	public void updateAvailability (Schedule a);
-	// TODO update availability
+	
 	
 }

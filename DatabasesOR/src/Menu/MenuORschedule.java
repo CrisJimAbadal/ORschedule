@@ -50,7 +50,7 @@ public class MenuORschedule {
 		patientManager = new JDBCPatientManager(jdbcManager);
 		surgeonManager = new JDBCSurgeonManager(jdbcManager);
 		surgeryManager = new JDBCSurgeryManager(jdbcManager);
-		userManager= new JPAUserManager ();
+		userManager= new JPAUserManager();
 		scheduleManager= new JDBCScheduleManager(jdbcManager);
 		principalMenu();
 	}
@@ -521,10 +521,16 @@ public class MenuORschedule {
 
 		if (user == null) {
 			System.out.println("User not found");
+			
 			principalMenu(); // returns to principal menu if the user does not exist
 
 		}
-
+		//TODO LOGIN
+		/*
+		if (user!=null && user.getRole().getName().equals("patient")) {
+			System.out.println("Login successful");
+			PMenu(user.getId());
+		}*/
 	}
 
 	public static void checksurgeries() throws IOException {

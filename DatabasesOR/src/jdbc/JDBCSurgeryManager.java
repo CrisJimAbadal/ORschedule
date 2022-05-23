@@ -126,7 +126,7 @@ return true;
 				Integer oprOccupied=rs.getInt(2);
 				patientsOccupied.add(oprOccupied);
 			}
-			
+		
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

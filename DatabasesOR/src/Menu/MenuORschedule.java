@@ -267,7 +267,7 @@ public class MenuORschedule {
 		}
 	}
 
-	private static void SMenu(Surgeon s) {
+	private static void SMenu() {
 
 		try {
 			do {
@@ -281,13 +281,13 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					updateSurgeonInfo(s.getId());
+					updateSurgeonInfo();
 
 					break;
 
 				case 2:
 					// TODO show schedule
-					showshedule(s.getId());  // id + time + type
+					showshedule();  // id + time + type
 					// TODO accept / deny surgery
 					System.out.println ("Do you want to deny a surgery? (1 if yes)");
 					int yes = Integer.parseInt(read.readLine());
@@ -296,7 +296,7 @@ public class MenuORschedule {
 						int id= Integer.parseInt (read.readLine());
 						surgeryManager.unassign(id);;
 					}else{
-						SMenu(s);
+						SMenu();
 					}
 					
 					break;

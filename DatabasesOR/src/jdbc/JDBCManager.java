@@ -57,20 +57,10 @@ public class JDBCManager {
 					+ " number INTEGER NOT NULL )";
 			stm.executeUpdate(sql);
 
-			// TABLE OPRAVAILABILITY
-			sql = "CREATE TABLE opravailability" + "(orId INTEGER REFERENCES opr(id) ON DELETE CASCADE,"
-					+ "avId INTEGER REFERENCES availability(id) ON DELETE CASCADE," + "PRIMARY KEY (orId, avId) )";
-			stm.executeUpdate(sql);
-
 			// TABLE PATIENT
 
 			sql = "CREATE TABLE patient(id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT NOT NULL ,"
 					+ "email TEXT NOT NULL,medstat TEXT NOT NULL,dob DATE,sex TEXT NOT NULL )";
-			stm.executeUpdate(sql);
-
-			// TABLE SURGEON AVAILABILITY
-			sql = "CREATE TABLE surgAvailability (surgId INTEGER REFERENCES surgeon(id) ON DELETE CASCADE,"
-					+ "avId INTEGER REFERENCES availability (id) ON DELETE CASCADE,PRIMARY KEY (surgId, avId))";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON
@@ -86,8 +76,24 @@ public class JDBCManager {
 					+"medstat TEXT NOT NULL, scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
 			stm.executeUpdate(sql);
 
-			//TODO cREATE TABLE SCHEDULE
-			//id, date,time
+			//TABLE SCHEDULE
+			sql = "CREATE TABLE schedule(id INTEGER PRIMARY KEY AUTOINCREMENT,date DATE, time TIME)";
+			stm.executeUpdate(sql);
+			
+		//WE ASSUME THAT OUR HOSPITALS HAS  6 OPR 	
+			sql = "INSERT INTO opr (floor, number) VALUES (1, 1)";
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO opr (floor, number) VALUES (1, 2)";
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO opr (floor, number) VALUES (1, 3)";
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO opr (floor, number) VALUES (2, 1)";
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO opr (floor, number) VALUES (2, 2)";
+			stm.executeUpdate(sql);
+			sql = "INSERT INTO opr (floor, number) VALUES (2, 3)";
+			stm.executeUpdate(sql);
+			
 		} catch (Exception e) {
 
 			if (!e.getMessage().contains("already exists")) {

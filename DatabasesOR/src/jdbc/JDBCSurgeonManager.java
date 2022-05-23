@@ -36,17 +36,17 @@ public class JDBCSurgeonManager implements SManager {
 			e.printStackTrace();
 		}
 	}
-
+//TODO listSurgeonsbyspecialty
 	@Override
-	public List<Surgeon> listSurgeons() {
+	public List<Surgeon> listSurgeons (String specialty) {
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
 
-			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM surgeon";
-			ResultSet rs = stmt.executeQuery(sql);
+			
+			String sql = "SELECT * FROM surgeon WHERE specialty LIKE"+specialty;
+			PreparedStatement prep=manager.getConnection().prepareStatement(sql);
+			ResultSet rs=prep.executeQuery(sql);
 			while (rs.next()) {
-
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
@@ -57,7 +57,7 @@ public class JDBCSurgeonManager implements SManager {
 				surgeons.add(s);
 			}
 			rs.close();
-			stmt.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -166,18 +166,4 @@ public class JDBCSurgeonManager implements SManager {
 		}
 	}
 
-	@Override
-	public void updateAvailability(Schedule a) {
-		try {
-			String sql = "UPDATE surgAvailability" + "SET date = ?" + "time=?";
-			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setDate(1, a.getDate());
-			pr.setTime(2, a.getTime());
-			pr.executeUpdate();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-
-		}
-	}
 }

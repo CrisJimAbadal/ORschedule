@@ -120,7 +120,7 @@ public class MenuORschedule {
 				case 2:
 
 					logIn();
-					PMenu();
+					
 
 					break;
 				case 0:
@@ -155,7 +155,7 @@ public class MenuORschedule {
 				case 2:
 
 					logIn();
-					SMenu();
+				
 					break;
 
 				case 0:
@@ -186,7 +186,6 @@ public class MenuORschedule {
 				case 1:
 
 					logIn();
-					DMenu();
 
 					break;
 				case 0:
@@ -392,7 +391,7 @@ public class MenuORschedule {
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
 		byte[] digest = md.digest();
-		// TODO check creating user [user]
+		
 		User u = new User(email, digest);
 		Role role = userManager.getRole("patient");
 		u.setRole(role);
@@ -421,13 +420,13 @@ public class MenuORschedule {
 		Integer pagerNumber = Integer.parseInt(read.readLine());
 		System.out.println("Telephone number: ");
 		Integer tlfNumber = Integer.parseInt(read.readLine());
-        //TODO check
+     
 		System.out.println("Password: ");
 		String password = read.readLine();
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.update(password.getBytes());
 		byte[] digest = md.digest();
-		// TODO check creating user [user]
+		
 		User u = new User(name, digest);
 		Role role = userManager.getRole("surgeon");
 		u.setRole(role);
@@ -538,13 +537,13 @@ public class MenuORschedule {
 		}
 		// TODO check [depending on the type of user we open a different menu]
 		if (user != null && user.getRole().equals("patient")) {
-			// TODO PMenu(user.getId());
+		    //PMenu(user.getId());
 		}
 		if (user != null && user.getRole().equals("surgeon")) {
-			// TODO SMenu(user.getId());
+			//SMenu(user.getId());
 		}
 		if (user != null && user.getRole().equals("doctor")) {
-			// TODO DMenu(user.getId());
+			//DMenu(user.getId());
 		}
 
 	}

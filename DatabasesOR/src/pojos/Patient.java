@@ -21,11 +21,7 @@ public class Patient implements Serializable {
 		return digest;
 	}
 
-/*
-	public void setDigest(byte[] digest) {
-		this.digest = digest;
-	}*/
-	//TODO check this ;)
+
 
 	private Date dob;
 	private String sex;
@@ -40,7 +36,7 @@ public class Patient implements Serializable {
 	}
 	
 
-	public Patient(String name,  String medstat,/* byte[] digest,*/ String email, Date dob, String sex) {
+	public Patient(String name,  String medstat, String email, Date dob, String sex) {
 		super();
 		this.name = name;
 		this.medstat = medstat;

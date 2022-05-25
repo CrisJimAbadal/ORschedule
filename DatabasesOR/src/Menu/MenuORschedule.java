@@ -55,7 +55,8 @@ public class MenuORschedule {
 
 		scheduleManager = new JDBCScheduleManager(jdbcManager);
 		// initialize database JPA
-		userManager = new JPAUserManager();
+		userManager= new JPAUserManager();
+		scheduleManager= new JDBCScheduleManager(jdbcManager);
 		principalMenu();
 	}
 
@@ -532,6 +533,7 @@ public class MenuORschedule {
 
 		if (user == null) {
 			System.out.println("User not found");
+			
 			principalMenu(); // returns to principal menu if the user does not exist
 
 		}
@@ -546,6 +548,12 @@ public class MenuORschedule {
 			//DMenu(user.getId());
 		}
 
+		//TODO LOGIN
+		/*
+		if (user!=null && user.getRole().getName().equals("patient")) {
+			System.out.println("Login successful");
+			PMenu(user.getId());
+		}*/
 	}
 
 	public static void checksurgeries() throws IOException {

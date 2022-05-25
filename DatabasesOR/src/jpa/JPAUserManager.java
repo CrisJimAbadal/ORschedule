@@ -9,6 +9,7 @@ import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import pojos.Role;
 import interfaces.UserManager;
 import pojos.*;
 
@@ -19,6 +20,7 @@ public class JPAUserManager implements UserManager {
 	public JPAUserManager() {
 		this.connect();
 	}
+	
 
 	private void connect() {
 		em = Persistence.createEntityManagerFactory("DatabasesOR").createEntityManager();
@@ -39,7 +41,6 @@ public class JPAUserManager implements UserManager {
 	@Override
 	public void disconnect() {
 		em.close();
-
 	}
 
 	@Override
@@ -69,10 +70,12 @@ public class JPAUserManager implements UserManager {
 	@Override
 	public List<Role> getRoles() {
 		Query q = em.createNativeQuery("SELECT * FROM roles", Role.class);
+
 		List<Role> roles = (List<Role>) q.getResultList();
+
 		return roles;
 	}
-
+	
 	@Override
 	public User checkPassword(String email, String password) {
 		// null user if match not found

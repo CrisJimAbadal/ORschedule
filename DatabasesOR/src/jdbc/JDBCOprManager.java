@@ -17,6 +17,7 @@ public class JDBCOprManager implements OPRManager {
 		this.manager = m;
 	}
 
+	//LIST ALL THE OPRs
 	@Override
 	public List<OPR> listOprs() {
 		List<OPR> oprs = new ArrayList<OPR>();
@@ -26,7 +27,6 @@ public class JDBCOprManager implements OPRManager {
 			String sql = "SELECT * FROM opr";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-
 				Integer id = rs.getInt("id");
 				Integer floor = rs.getInt("floor");
 				Integer number = rs.getInt("number");
@@ -41,30 +41,9 @@ public class JDBCOprManager implements OPRManager {
 		}
 		return oprs;
 	}
-
-	@Override
-	public OPR searchOPR(int id) {
-		OPR opr = null;
-		try {
-			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELCT * FROM opr WHERE id = " + id;
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-				Integer floor = rs.getInt("floor");
-				Integer number = rs.getInt("number");
-
-				opr = new OPR(id, floor, number);
-
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return opr;
-	}
-
+	
+	//TODO can we delete this?
+/*	//SHOW OPR
 	@Override
 	public OPR showOPR(int id) {
 		OPR opr = null;
@@ -86,6 +65,30 @@ public class JDBCOprManager implements OPRManager {
 			e.printStackTrace();
 		}
 		return opr;
+	}*/
+	
+	//SEARCH and return OPR by id
+	@Override
+	public OPR searchOPR(int id) {
+		OPR opr = null;
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM opr WHERE id = " + id;
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				Integer floor = rs.getInt("floor");
+				Integer number = rs.getInt("number");
+
+				opr = new OPR(id, floor, number);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return opr;
 	}
+   
+	
 
 }

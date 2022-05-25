@@ -1,9 +1,11 @@
 package jdbc;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,7 @@ import interfaces.SManager;
 import pojos.Schedule;
 import pojos.Patient;
 import pojos.Surgeon;
+import pojos.Surgery;
 
 public class JDBCSurgeonManager implements SManager {
 
@@ -19,7 +22,8 @@ public class JDBCSurgeonManager implements SManager {
 	public JDBCSurgeonManager(JDBCManager m) {
 		this.manager = m;
 	}
-
+ 
+	//ADD PATIENT TO THE DATABASE
 	@Override
 	public void addSurgeon(Surgeon s) {
 
@@ -36,16 +40,16 @@ public class JDBCSurgeonManager implements SManager {
 			e.printStackTrace();
 		}
 	}
-//TODO listSurgeonsbyspecialty
+
+	//LIST SURGEONS by specialty (to match the patient's medStat)
 	@Override
-	public List<Surgeon> listSurgeons (String specialty) {
+	public List<Surgeon> listSurgeons(String specialty) {
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
 
-			
-			String sql = "SELECT * FROM surgeon WHERE specialty LIKE"+specialty;
-			PreparedStatement prep=manager.getConnection().prepareStatement(sql);
-			ResultSet rs=prep.executeQuery(sql);
+			String sql = "SELECT * FROM surgeon WHERE specialty LIKE" + specialty;
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			ResultSet rs = prep.executeQuery(sql);
 			while (rs.next()) {
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
@@ -57,25 +61,23 @@ public class JDBCSurgeonManager implements SManager {
 				surgeons.add(s);
 			}
 			rs.close();
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return surgeons;
-
 	}
 
+	//SEARCH SURGEON BY ID
 	@Override
 	public Surgeon searchSurgeon(int id) {
 		Surgeon s = null;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELCT * FROM surgeon WHERE id = " + id;
+			String sql = "SELECT * FROM surgeon WHERE id = " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
-				// availability???????????????????????????????????
 
 				s = new Surgeon(id, name, medstat);
 
@@ -85,19 +87,18 @@ public class JDBCSurgeonManager implements SManager {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return s;
 	}
 
+	//SHOW SURGEON'S INFO (before updating the info)
 	@Override
-	public Surgeon showSurgeon(int num) {
+	public Surgeon showSurgeon(int id) {
 		Surgeon s = null;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM surgeon WHERE pagerNumber = " + num;
+			String sql = "SELECT * FROM surgeon WHERE id = " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
 				Integer pagerNumber = rs.getInt("pagerNumber");
@@ -113,10 +114,11 @@ public class JDBCSurgeonManager implements SManager {
 		return s;
 	}
 
+	//UPDATE SURGEON
 	@Override
 	public void updateSurgeon(Surgeon s) {
 		try {
-			String sql = "UPDATE surgeon" + "SET name = ?" + " medstat = ?" + " pagernumber = ?" + " tlfnumber = ?";
+			String sql = "UPDATE surgeonSET name = ?, medstat = ?, pagernumber = ?, tlfnumber = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			if (s.getName() != "") {
 				pr.setString(1, s.getName());
@@ -138,6 +140,7 @@ public class JDBCSurgeonManager implements SManager {
 		}
 	}
 
+//TODO this is not neccessary anymore
 	@Override
 	public void deleteSurgeon(int surgeonId) {
 		try {
@@ -151,19 +154,30 @@ public class JDBCSurgeonManager implements SManager {
 
 	}
 
-	@Override
-	public void acceptSurgery(String s) {
+	// TODO is this ok?
+	public List<Schedule> showSchedules(int surgeonId) {
+
+		List<Schedule> schedules = new ArrayList<Schedule>();
 		try {
-			// TODO accept surgery
-			String sql = "UPDATE surgery" + "SET acceptSurgery = TRUE";
-			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setBoolean(3, true);
-			pr.executeUpdate();
+			String sql = "SELECT date, startTime, finishTime  FROM schedule JOIN surgeon"
+					+ " ON surgeon.scheduleId = schedule.id WHERE surgeonId = " + surgeonId;
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			ResultSet rs = prep.executeQuery(sql);
+			while (rs.next()) {
+
+				Date date = rs.getDate(1);
+				Time stime = rs.getTime(2);
+				Time ftime = rs.getTime(3);
+				Schedule schedule = new Schedule(date, stime, ftime);
+
+				schedules.add(schedule);
+			}
+			rs.close();
 
 		} catch (Exception e) {
 			e.printStackTrace();
-
 		}
+		return schedules;
 	}
 
 }

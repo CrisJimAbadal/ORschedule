@@ -13,24 +13,26 @@ public class Schedule implements Serializable{
 	
 	private Integer id;
 	private Date date;
-	private Time time;
+	private Time startTime;
+	private Time finishTime;
 	
-	
+
 	private Surgery surgery;
 	
-	
-	
-	public Schedule(Integer id, Date date, Time time) {
+
+	public Schedule(Integer id, Date date, Time startTime, Time finishTime) {
 		super();
 		this.id = id;
 		this.date = date;
-		this.time = time;
+		this.startTime = startTime;
+		this.finishTime = finishTime;
 	}
 	
-	public Schedule(Date date, Time time) {
+	public Schedule(Date date, Time startTime, Time finishTime) {
 		super();
 		this.date = date;
-		this.time = time;
+		this.startTime = startTime;
+		this.finishTime = finishTime;
 	}
 
 	public Schedule() {
@@ -64,22 +66,34 @@ public class Schedule implements Serializable{
 	public void setDate(Date date) {
 		this.date = date;
 	}
-	public Time getTime() {
-		return time;
+	
+	public Time getStartTime() {
+		return startTime;
 	}
-	public void setTime(Time time) {
-		this.time = time;
+
+	public void setStartTime(Time startTime) {
+		this.startTime = startTime;
 	}
+
+	public Time getFinishTime() {
+		return finishTime;
+	}
+
+	public void setFinishTime(Time finishTime) {
+		this.finishTime = finishTime;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
-	
-	
+
 	@Override
 	public String toString() {
-		
-		return "Schedule [id=" + id + ", date=" + date + ", time=" + time + "]";
+		return "Schedule [id=" + id + ", date=" + date + ", startTime=" + startTime + ", finishTime=" + finishTime
+				+ ", surgery=" + surgery + "]";
 	}
+	
+	
 	
 	
 	

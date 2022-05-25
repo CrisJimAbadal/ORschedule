@@ -19,7 +19,7 @@ public class JDBCPatientManager implements PManager {
 		this.manager = m;
 	}
 
-	// añade un paciente a la base de datos
+	// ADD PATIENT TO THE DATABASE
 	@Override
 	public void addPatient(Patient p) {
 		try {
@@ -28,7 +28,7 @@ public class JDBCPatientManager implements PManager {
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, p.getName());
 			prep.setString(2, p.getMedstat());
-			prep.setDate(3,p.getDob());
+			prep.setDate(3, p.getDob());
 			prep.setString(4, p.getSex());
 
 		} catch (Exception e) {
@@ -36,7 +36,7 @@ public class JDBCPatientManager implements PManager {
 		}
 	}
 
-	// muestra la info de todos los pacientes
+	// PATIENTS INFO for the doctor
 	@Override
 	public List<Patient> listPatients() {
 		List<Patient> patients = new ArrayList<Patient>();
@@ -64,28 +64,7 @@ public class JDBCPatientManager implements PManager {
 		return patients;
 	}
 
-	// muestra nombre y id de todos los pacientes
-	@Override
-	public Integer listPatientsId(String email) {
-		Integer id= null;
-		try {
-
-			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT id FROM patient WHERE email = " +email;
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-
-				 id = rs.getInt("id");
-			}
-			rs.close();
-			stmt.close();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return id;
-	}
-
-	// busca un paciente por id
+	// FINDS A PATIENT BY ITS ID
 	@Override
 	public Patient searchPatient(int id) {
 		Patient p = null;
@@ -98,7 +77,6 @@ public class JDBCPatientManager implements PManager {
 				String medstat = rs.getString("medstat");
 
 				p = new Patient(id, name, medstat);
-
 			}
 			rs.close();
 			stmt.close();
@@ -109,12 +87,11 @@ public class JDBCPatientManager implements PManager {
 		return p;
 	}
 
-	// info that the patient can see
+	// INFO THAT THE PATIENT CAN SEE
 	@Override
 	public Patient showPatient(int id) {
 
 		Patient p = null;
-
 		try {
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM patient WHERE id = " + id;
@@ -123,34 +100,31 @@ public class JDBCPatientManager implements PManager {
 
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
-				String email = rs.getString ("email");
-			//	byte[] digest = rs.getBytes("digest");
-				Date dob = rs.getDate("Dob");
+				String email = rs.getString("email");
+				Date dob = rs.getDate("dob");
 				String sex = rs.getString("sex");
-			
 
-				p = new Patient( name, medstat,/* digest,*/  email, dob, sex);
+				p = new Patient(name, medstat, /* digest, */ email, dob, sex);
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return p;
 	}
 
+	// UPDATE PATIENT'S INFORMATION
 	@Override
 	public void updatePatient(Patient p) {
 		try {
-			String sql = "UPDATE patient " + "SET name = ?" + " medstat = ?" + "email = ?" +
-					" dob = ?" + " sex = ?";
+			String sql = "UPDATE patient " + "SET name = ?" + " medstat = ?" + "email = ?" + " dob = ?" + " sex = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			
+
 			pr.setString(1, p.getName());
 			pr.setString(2, p.getMedstat());
 			pr.setString(3, p.getEmail());
 			pr.setDate(4, (Date) p.getDob());
 			pr.setString(5, p.getSex());
-			
+
 			pr.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -158,6 +132,7 @@ public class JDBCPatientManager implements PManager {
 		}
 	}
 
+//TODO this is not neccessary anymore
 	@Override
 	public void deletePatient(int patientId) {
 		try {

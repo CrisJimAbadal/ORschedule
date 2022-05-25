@@ -10,13 +10,14 @@ public class JDBCManager {
 	private static Connection c;
 
 	public JDBCManager() {
+
 		try {
-			// open database connection
+			// OPEN DATABASE CONNECTION
 			Class.forName("org.sqlite.JDBC");
 			c = DriverManager.getConnection("jdbc:sqlite:./db/Hospital.db");
 			c.createStatement().execute("PRAGMA foreign_keys=ON");
 			System.out.println("database connection opened");
-			// create tables each time
+
 			this.createTables();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -27,60 +28,54 @@ public class JDBCManager {
 
 	}
 
+	// CLOSE DATABASE CONNECTION
 	public static void disconnect() {
 		try {
-			// close database connection
 			c.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 
+	// ACCESS TO THE CONNECTION FOR OTHER CLASSES
 	public Connection getConnection() {
-		// for other classes to access the connection
 		return c;
 	}
 
+	// CREATES TABLES
 	private void createTables() {
 
 		try {
-
-			// CREATES TABLES
-			// TABLE AVAILABILITY
+			//TABLE SCHEDULE
 			Statement stm = c.createStatement();
-			String sql = "CREATE TABLE schedule" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "date DATE ,"
-					+ " time TIME )";
+			String sql = "CREATE TABLE schedule" + "(id INTEGER PRIMARY KEY AUTOINCREMENT, date DATE ,"
+					+ " startTime TIME, finishTime TIME )";
 			stm.executeUpdate(sql);
 
 			// TABLE OPR
-			sql = "CREATE TABLE opr" + "(id INTEGER PRIMARY KEY AUTOINCREMENT,"+ "floor INTEGER NOT NULL ,"
+			sql = "CREATE TABLE opr" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "floor INTEGER NOT NULL ,"
 					+ " number INTEGER NOT NULL )";
 			stm.executeUpdate(sql);
 
 			// TABLE PATIENT
-
 			sql = "CREATE TABLE patient(id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT NOT NULL ,"
 					+ "email TEXT NOT NULL,medstat TEXT NOT NULL,dob DATE,sex TEXT NOT NULL )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON
-			sql = "CREATE TABLE surgeon" + "(id INTEGER PRIMARY KEY AUTOINCREMENT," + "name TEXT NOT NULL ,"
-					+ "medstat TEXT NOT NULL," + "pagerNumber INTEGER UNIQUE NOT NULL," + "tlfNumber INTEGER UNIQUE )";
+			sql = "CREATE TABLE surgeon (id INTEGER PRIMARY KEY AUTOINCREMENT,name TEXT NOT NULL ,"
+					+ "medstat TEXT NOT NULL,pagerNumber INTEGER UNIQUE NOT NULL, tlfNumber INTEGER UNIQUE )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGERY
-			sql = "CREATE TABLE surgery(id INTEGER PRIMARY KEY AUTOINCREMENT,type TEXT,"
-					+"patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
-					+"surgeonID INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
-					+"oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,acceptSurgery BOOLEAN,"
-					+"medstat TEXT NOT NULL, scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
+			sql = "CREATE TABLE surgery(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT,"
+					+ "patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
+					+ "surgeonID INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
+					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,"
+					+ "medstat TEXT NOT NULL, scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
 			stm.executeUpdate(sql);
 
-			//TABLE SCHEDULE
-			sql = "CREATE TABLE schedule(id INTEGER PRIMARY KEY AUTOINCREMENT,date DATE, time TIME)";
-			stm.executeUpdate(sql);
-			
-		//WE ASSUME THAT OUR HOSPITALS HAS  6 OPR 	
+			// WE ASSUME THAT OUR HOSPITALS HAS 6 OPR
 			sql = "INSERT INTO opr (floor, number) VALUES (1, 1)";
 			stm.executeUpdate(sql);
 			sql = "INSERT INTO opr (floor, number) VALUES (1, 2)";
@@ -93,7 +88,7 @@ public class JDBCManager {
 			stm.executeUpdate(sql);
 			sql = "INSERT INTO opr (floor, number) VALUES (2, 3)";
 			stm.executeUpdate(sql);
-			
+
 		} catch (Exception e) {
 
 			if (!e.getMessage().contains("already exists")) {

@@ -17,17 +17,16 @@ public interface SManager {
 
 	// searchSurgeon
 	public Surgeon searchSurgeon(int id);
-	
-	//search by PagerNumber
-	public Surgeon showSurgeon (int num);
+
+	// search by PagerNumber
+	public Surgeon showSurgeon(int id);
 
 	public void updateSurgeon(Surgeon s);
 
-	// acceptSurgery
-	public void acceptSurgery(String s);
-	
+
 	public void deleteSurgeon(int Surgeonid);
 
-	
-	
+    //show assigned surgeries
+	public List<Schedule> showSchedules(int surgeonId);
+
 }

@@ -12,9 +12,6 @@ public interface PManager {
 	// listPatients
 	public List<Patient> listPatients();
 	
-	// listPatients name and id
-		public Integer listPatientsId(String email);
-	
 	//searchPatients
 	public Patient searchPatient(int id);
 	

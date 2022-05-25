@@ -15,14 +15,16 @@ public class JDBCScheduleManager implements ScheduleManager {
 		this.manager = m;
 	}
 
+	//ADD SCHEDULE TO THE DATABASE
 	@Override
 	public void addSchedule(Schedule s) {
 		try {
 
-			String sql = "INSERT INTO schedule (date,time) VALUES (?,?)";
+			String sql = "INSERT INTO schedule (date,startTime, finishTime) VALUES (?,?,?)";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setDate(1, s.getDate());
-			pr.setTime(2, s.getTime());
+			pr.setTime(2, s.getStartTime());
+			pr.setTime(3, s.getFinishTime());
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -30,25 +32,27 @@ public class JDBCScheduleManager implements ScheduleManager {
 
 	}
 
+	// SCHEDULES OF ASSIGNED SURGERIES
 	public Schedule showSchedule(int id) {
 		Schedule s = null;
 		Date date = null;
-		Time time = null;
+		Time startTime = null;
+		Time finishTime= null;
 		try {
 			String sql = "SELECT * FROM schedule WHERE surgeonId = " + id;
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			ResultSet rs = prep.executeQuery(sql);
 			while (rs.next()) {
 				date = rs.getDate("date");
-				time = rs.getTime("time");
-
+				startTime = rs.getTime ("startTime");
+				finishTime = rs.getTime ("finishTime");
+				
 			}
-			s = new Schedule(id, date, time);
+			s = new Schedule(id, date, startTime, finishTime);
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return s;
 	}
 }

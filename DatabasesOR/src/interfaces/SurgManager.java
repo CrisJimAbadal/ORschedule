@@ -13,9 +13,10 @@ public interface SurgManager {
 	// assign Surgery
 	public void addSurgery (Surgery s);
 	
-	//unassign Surgery
+	//unassign/delete Surgery
 	public void unassign (int surgeryId);
 	
+	//list assigned surgeries to the patient
 	public List<Surgery> listSurgeries(int id);
 	
 	//to check if it's available at a specific schedule

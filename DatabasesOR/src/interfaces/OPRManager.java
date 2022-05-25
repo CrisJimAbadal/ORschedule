@@ -13,6 +13,6 @@ public interface OPRManager {
 	public OPR searchOPR(int id);
 
 	// show if it´s scheduled for surgery or not
-	public OPR showOPR(int id);
+	//public OPR showOPR(int id);
 
 }

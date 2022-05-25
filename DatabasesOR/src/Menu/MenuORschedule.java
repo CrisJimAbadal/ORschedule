@@ -9,6 +9,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Time;
 import java.util.List;
 
@@ -52,11 +54,11 @@ public class MenuORschedule {
 		patientManager = new JDBCPatientManager(jdbcManager);
 		surgeonManager = new JDBCSurgeonManager(jdbcManager);
 		surgeryManager = new JDBCSurgeryManager(jdbcManager);
-
+		scheduleManager = new JDBCScheduleManager(jdbcManager);
 		scheduleManager = new JDBCScheduleManager(jdbcManager);
 		// initialize database JPA
-		userManager= new JPAUserManager();
-		scheduleManager= new JDBCScheduleManager(jdbcManager);
+		userManager = new JPAUserManager();
+
 		principalMenu();
 	}
 
@@ -74,19 +76,19 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					// Call method patient menu
+					
 					patientMenu();
-
 					break;
 				case 2:
-					// Call method surgeon menu
+					
 					surgeonMenu();
 					break;
 				case 3:
-					// Call method doctor menu
+
 					doctorMenu();
 					break;
 				case 0:
+					
 					JDBCManager.disconnect();
 					System.exit(0);
 
@@ -101,7 +103,6 @@ public class MenuORschedule {
 
 	}
 
-	// Menu's methods
 	private static void patientMenu() {
 		try {
 			do {
@@ -119,12 +120,12 @@ public class MenuORschedule {
 
 					break;
 				case 2:
-
+					//LOG IN as patient
 					logIn();
-					
 
 					break;
 				case 0:
+					
 					principalMenu();
 				default:
 					break;
@@ -154,9 +155,9 @@ public class MenuORschedule {
 
 					break;
 				case 2:
-
+					//LOG IN as surgeon
 					logIn();
-				
+
 					break;
 
 				case 0:
@@ -176,7 +177,7 @@ public class MenuORschedule {
 
 		try {
 			do {
-				System.out.println("CHOOSE AN OPTION: ");
+				System.out.println("CHOOSE AN OPTION: "); // TODO register first?? it is not on the database
 				System.out.println("1. LOG IN");
 				System.out.println("0. Exit");
 
@@ -187,11 +188,83 @@ public class MenuORschedule {
 				case 1:
 
 					logIn();
-
 					break;
 				case 0:
+					
 					// EXIT
 					principalMenu();
+				default:
+					break;
+				}
+			} while (true);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void PMenu(int id) {
+
+		try {
+			do {
+				System.out.println("CHOOSE AN OPTION: ");
+				System.out.println("1. Check information and update");
+				System.out.println("2. Check surgeries");
+
+				System.out.println("0. Exit");
+
+				int choice = Integer.parseInt(read.readLine());
+
+				switch (choice) {
+
+				case 1:
+					
+					updatePatientInfo(id);
+					break;
+				case 2:
+					
+					checksurgeries(id);
+					break;
+				case 0:
+					
+					// EXIT
+					patientMenu();
+				default:
+					break;
+				}
+			} while (true);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void SMenu(int sId) {
+
+		try {
+			do {
+				System.out.println("CHOOSE AN OPTION: ");
+				System.out.println("1. Check information and update");
+				System.out.println("2. Check schedule");
+				System.out.println("0. Exit");
+
+				int choice = Integer.parseInt(read.readLine());
+
+				switch (choice) {
+
+				case 1:
+					
+					updateSurgeonInfo(sId);
+					break;
+
+				case 2:
+
+					surgeonManager.showSchedules(sId);
+					break;
+
+				case 0:
+					// EXIT
+					surgeonMenu();
 				default:
 					break;
 				}
@@ -208,6 +281,7 @@ public class MenuORschedule {
 			do {
 				System.out.println("CHOOSE AN OPTION: ");
 				System.out.println("1. Create a surgery");
+				System.out.println("2. Delete a surgery");
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(read.readLine());
@@ -217,7 +291,11 @@ public class MenuORschedule {
 				case 1:
 
 					createSurgery();
+					break;
 
+				case 2:
+
+					deleteSurgery();
 					break;
 
 				case 0:
@@ -233,103 +311,154 @@ public class MenuORschedule {
 		}
 	}
 
-	private static void PMenu() {
+	public static void createPatient() throws Exception {
 
-		try {
-			do {
-				System.out.println("CHOOSE AN OPTION: ");
-				System.out.println("1. Check information");// check and update?
-				System.out.println("2. Check surgeries");// check and update?
+		System.out.println("Input patient's information: ");
+		System.out.println("Name: ");
+		String name = read.readLine();
+		System.out.println("Medstat: ");
+		String medstat = read.readLine();
+		System.out.println("Email: ");
+		String email = read.readLine();
+		System.out.println("Date of birth (yyyy-mm-dd): ");
+		String dob = read.readLine();
+		LocalDate dobDate = LocalDate.parse(dob, formatter);
+		System.out.println("Sex: ");
+		String sex = read.readLine();
 
-				System.out.println("0. Exit");
+		System.out.println("Password: ");
+		String password = read.readLine();
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(password.getBytes());
+		byte[] digest = md.digest();
 
-				int choice = Integer.parseInt(read.readLine());
+		// CREATE PATIENT AND ADD TO JPA
+		User u = new User(email, digest);
+		Role role = userManager.getRole("patient");
+		u.setRole(role);
+		role.addUser(u);
+		userManager.newUser(u);
 
-				switch (choice) {
+		// CREATE PATIENT AND ADD TO JDBC
+		Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate), sex);
+		patientManager.addPatient(patient);
+	}
 
-				case 1:
+	public static void createSurgeon() throws Exception {
 
-					updatePatientInfo();
+		System.out.println("Input information: ");
+		System.out.println("Name: ");
+		String name = read.readLine();
+		System.out.println("Medstat: ");
+		String medstat = read.readLine();
+		System.out.println("Pager number: ");
+		Integer pagerNumber = Integer.parseInt(read.readLine());
+		System.out.println("Telephone number: ");
+		Integer tlfNumber = Integer.parseInt(read.readLine());
 
-					break;
-				case 2:
+		System.out.println("Password: ");
+		String password = read.readLine();
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(password.getBytes());
+		byte[] digest = md.digest();
 
-					checksurgeries();
+		// CREATE SURGEON AND ADD TO JPA
+		User u = new User(name, digest);
+		Role role = userManager.getRole("surgeon");
+		u.setRole(role);
+		role.addUser(u);
+		userManager.newUser(u);
 
-					break;
-				case 0:
-					// EXIT
-					patientMenu();
-				default:
-					break;
-				}
-			} while (true);
+		// CREATE SURGEON AND ADD TO JDBD
+		Surgeon surgeon = new Surgeon(name, medstat, pagerNumber, tlfNumber);
+		surgeonManager.addSurgeon(surgeon);
+	}
 
-		} catch (Exception e) {
-			e.printStackTrace();
+	// LOG IN METHOD
+	public static void logIn() throws IOException {
+
+		System.out.println("Insert your email: ");
+		String email = read.readLine();
+
+		System.out.println("Input your password: ");
+		String passwrd = read.readLine();
+
+		// returns a user, if null = user is not found
+		User user = userManager.checkPassword(email, passwrd);
+
+		if (user == null) {
+			System.out.println("User not found");
+			principalMenu(); // returns to principal menu if the user does not exist
+		}
+		
+		// check [depending on the type of user we open a different menu]
+		if (user != null && user.getRole().equals("patient")) {
+			PMenu(user.getId());
+		}
+		if (user != null && user.getRole().equals("surgeon")) {
+			SMenu(user.getId());
+		}
+		if (user != null && user.getRole().equals("doctor")) {
+			DMenu();
 		}
 	}
 
-	private static void SMenu() {
+	// UPDATE PATIEN'S INFO
+	private static void updatePatientInfo(int id) throws Exception {
 
-		try {
-			do {
-				System.out.println("CHOOSE AN OPTION: ");
-				System.out.println("1. Check information and update");
-				System.out.println("2. Check schedule");
-				System.out.println("0. Exit");
+		// List patient info
+		patientManager.showPatient(id);
+		Patient p = patientManager.searchPatient(id);
+		System.out.println("Update your information: ");
+		// Ask for info, if empty keeps the one existing before
+		String name = read.readLine();
+		if (!name.equals("")) {
+			p.setName(name);
+		}
+		String medstat = read.readLine();
+		if (!medstat.equals("")) {
+			p.setMedstat(medstat);
+		}
+		String newEmail = read.readLine();
+		if (!newEmail.equals("")) {
+			p.setEmail(newEmail);
+		}
+		patientManager.updatePatient(p);
+	}
 
-				int choice = Integer.parseInt(read.readLine());
+	// UPDATE SURGEON'S INFO
+	private static void updateSurgeonInfo(int id) throws Exception {
 
-				switch (choice) {
+		Surgeon s = surgeonManager.showSurgeon(id);
+		System.out.println("Update your information: ");
 
-				case 1:
-					updateSurgeonInfo();
+		Integer pagerNumber = Integer.parseInt(read.readLine());
+		if (!pagerNumber.equals("")) {
+			s.setPagerNumber(pagerNumber);
+		}
+		Integer tlfNumber = Integer.parseInt(read.readLine());
+		if (!tlfNumber.equals("")) {
+			s.setTlfNumber(tlfNumber);
+		}
+		surgeonManager.updateSurgeon(s);
+	}
 
-					break;
+	// CHECK ASSIGNED SURGERIES (patient)
+	public static void checksurgeries(int patientId) throws IOException {
 
-				case 2:
-					// TODO show schedule
-					showshedule(); // id + time + type
-					// TODO accept / deny surgery
-					System.out.println("Do you want to deny a surgery? (1 if yes)");
-					int yes = Integer.parseInt(read.readLine());
-					if (yes == 1) {
-						System.out.println("Input surgery id: ");
-						int id = Integer.parseInt(read.readLine());
-						surgeryManager.unassign(id);
-						;
-					} else {
-						SMenu();
-					}
+		if (surgeryManager.listSurgeries(patientId).isEmpty()) {
 
-					break;
-
-				case 0:
-					// EXIT
-					surgeonMenu();
-				default:
-					break;
-				}
-			} while (true);
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("There are no surgeries scheduled yet ");
 		}
 	}
 
-	private static void showshedule() {
-
-		// TODO tipo y hora JOIN
-
-	}
-
+	// CREATE SURGERY
 	private static void createSurgery() {
 		try {
-			// 1) choose schedule
+			// 1) choose SCHEDULE
 			Schedule s = chooseSchedule();
 
-			// 2)choose a patient
+			// 2)choose PATIENT
 			Patient p = choosePatient();
 			// check if patient available at that schedule
 			while (surgeryManager.checkpatient(s, p)) {
@@ -351,10 +480,10 @@ public class MenuORschedule {
 			}
 			OPR opr = oprManager.searchOPR(oprId);
 
-			// 4)show surgeons with same specialty as patient
+			// 4) SPECIALITY
 			String specialty = p.getMedstat();
 
-			// 5) choose surgeon
+			// 5) choose SURGEONS specialized on the patient's medStat
 			System.out.println("How many surgeons are going to participate? ");
 			Integer numSurg = Integer.parseInt(read.readLine());
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
@@ -364,12 +493,13 @@ public class MenuORschedule {
 				surgeons.add(surg);
 			}
 
-			// input type of surgery (ex: transplant)
+			// 6) TYPE of surgery (ex: transplant)
 			System.out.println("Input the type of surgery:");
 			String type = read.readLine();
 
+			// CREATE THE SURGERY and add to the database
 			Surgery surg = new Surgery(p, surgeons, opr, type, s);
-			surg.setAcceptSurgery(false);
+
 			scheduleManager.addSchedule(s);
 			surgeryManager.addSurgery(surg);
 
@@ -378,67 +508,30 @@ public class MenuORschedule {
 		}
 	}
 
-	public static void createPatient() throws Exception {
-		System.out.println("Input patient's information: ");
-		System.out.println("Name: ");
-		String name = read.readLine();
-		System.out.println("Medstat: ");
-		String medstat = read.readLine();
-		System.out.println("Email: ");
+	// CHOOSE SCHEDULE FOR THE SURGERY
+	public static Schedule chooseSchedule() {
+		Schedule s;
+		Date date = null;
+		Time startTime = null;
+		Time finishTime = null;
+		try {
+			System.out.println("Insert a date: ");
+			date = Date.valueOf(read.readLine());
+			System.out.println("Insert a start time: ");
+			startTime = Time.valueOf(read.readLine());
+			System.out.println("Insert a finish time: ");
+			finishTime = Time.valueOf(read.readLine());
+			// TODO if (startTime < finishTime)
 
-		String email = read.readLine();
-		System.out.println("Password: ");
-		String password = read.readLine();
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.update(password.getBytes());
-		byte[] digest = md.digest();
-		
-		User u = new User(email, digest);
-		Role role = userManager.getRole("patient");
-		u.setRole(role);
-		role.addUser(u);
-		userManager.newUser(u);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-		System.out.println("Date of birth (yyyy-mm-dd): ");
-		String dob = read.readLine();
-		LocalDate dobDate = LocalDate.parse(dob, formatter);
-
-		System.out.println("Sex: ");
-		String sex = read.readLine();
-
-		Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate), sex);
-		patientManager.addPatient(patient);
-
+		s = new Schedule(date, startTime, finishTime);
+		return s;
 	}
 
-	public static void createSurgeon() throws Exception {
-		System.out.println("Input information: ");
-		System.out.println("Name: ");
-		String name = read.readLine();
-		System.out.println("Medstat: ");
-		String medstat = read.readLine();
-		System.out.println("Pager number: ");
-		Integer pagerNumber = Integer.parseInt(read.readLine());
-		System.out.println("Telephone number: ");
-		Integer tlfNumber = Integer.parseInt(read.readLine());
-     
-		System.out.println("Password: ");
-		String password = read.readLine();
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.update(password.getBytes());
-		byte[] digest = md.digest();
-		
-		User u = new User(name, digest);
-		Role role = userManager.getRole("surgeon");
-		u.setRole(role);
-		role.addUser(u);
-		userManager.newUser(u);
-
-		Surgeon surgeon = new Surgeon(name, medstat, pagerNumber, tlfNumber);
-		surgeonManager.addSurgeon(surgeon);
-
-	}
-
+	// CHOOSE PATIENT FOR SURGERY
 	public static Patient choosePatient() throws Exception {
 		System.out.println("choose a patient by its id: ");
 		// list patients
@@ -449,6 +542,7 @@ public class MenuORschedule {
 		return p;
 	}
 
+	// CHOOSE SURGEON FOR SURGERY
 	public static Surgeon chooseSurgeon(String specialty) throws Exception {
 
 		System.out.println("choose a surgeon by its id: ");
@@ -460,132 +554,30 @@ public class MenuORschedule {
 		return s;
 	}
 
+	// CHOOSE OPR FOR SURGERY
 	public static int chooseOPR() throws Exception {
 		System.out.println("choose an opr by its id: ");
-		// list oprs
 		oprManager.listOprs();
 		Integer oprsId = Integer.parseInt(read.readLine());
 		return oprsId;
 
 	}
 
-	private static void updatePatientInfo() throws Exception {
+	// DELETE SURGERY
+	private static void deleteSurgery() throws IOException {
+		// TODO 1)LIST SURGERIES
 
-		System.out.println("input your email: ");
-		String email = read.readLine();
+		System.out.println("Is there any surgery you want to delete? [1= Yes / 0= No]");
+		int answer = Integer.parseInt(read.readLine());
 
-		Integer id = patientManager.listPatientsId(email);
-
-		// List patient info
-		patientManager.showPatient(id);
-		Patient p = patientManager.searchPatient(id);
-		System.out.println("Update your information: ");
-		// Ask for info, if empty keeps the one existing before
-		String name = read.readLine();
-		if (!name.equals("")) {
-			p.setName(name);
+		if (answer != 1 || answer != 0) {
+			System.out.println("Please input the answer again.");
 		}
 
-		String medstat = read.readLine();
-		if (!medstat.equals("")) {
-			p.setMedstat(medstat);
-		}
-		String newEmail = read.readLine();
-		if (!newEmail.equals("")) {
-			p.setEmail(newEmail);
-		}
-
-		patientManager.updatePatient(p);
-
+		System.out.println("Input the id of the surgery you want to delete.");
+		int surgeryId = Integer.parseInt(read.readLine());
+		// 2)DELETE SURGERY
+		surgeryManager.unassign(surgeryId);
 	}
 
-	private static void updateSurgeonInfo() throws Exception {
-
-		System.out.println("Input your pagerNumber: ");
-
-		Integer surgeonPagerNum = Integer.parseInt(read.readLine());
-
-		Surgeon s = surgeonManager.showSurgeon(surgeonPagerNum);
-		System.out.println("Update your information: ");
-
-		Integer pagerNumber = Integer.parseInt(read.readLine());
-		if (!pagerNumber.equals("")) {
-			s.setPagerNumber(pagerNumber);
-		}
-		Integer tlfNumber = Integer.parseInt(read.readLine());
-		if (!tlfNumber.equals("")) {
-			s.setTlfNumber(tlfNumber);
-		}
-		surgeonManager.updateSurgeon(s);
-
-	}
-
-	public static void logIn() throws IOException {
-
-		System.out.println("Insert your email: ");
-		String email = read.readLine();
-
-		System.out.println("Input your password: ");
-		String passwrd = read.readLine();
-
-		// returns a user, if null = user is not found
-		User user = userManager.checkPassword(email, passwrd);
-
-		if (user == null) {
-			System.out.println("User not found");
-			
-			principalMenu(); // returns to principal menu if the user does not exist
-
-		}
-		// TODO check [depending on the type of user we open a different menu]
-		if (user != null && user.getRole().equals("patient")) {
-		    //PMenu(user.getId());
-		}
-		if (user != null && user.getRole().equals("surgeon")) {
-			//SMenu(user.getId());
-		}
-		if (user != null && user.getRole().equals("doctor")) {
-			//DMenu(user.getId());
-		}
-
-		//TODO LOGIN
-		/*
-		if (user!=null && user.getRole().getName().equals("patient")) {
-			System.out.println("Login successful");
-			PMenu(user.getId());
-		}*/
-	}
-
-	public static void checksurgeries() throws IOException {
-		System.out.println("Insert your email: ");
-		String email = read.readLine();
-		patientManager.listPatientsId(email);
-
-		System.out.println("Input your id: ");
-		Integer patientId = Integer.parseInt(read.readLine());
-
-		if (surgeryManager.listSurgeries(patientId).isEmpty()) {
-
-			System.out.println("There are no surgeries scheduled yet ");
-		}
-
-	}
-
-	public static Schedule chooseSchedule() {
-		Schedule s;
-		Date date = null;
-		Time time = null;
-		try {
-			System.out.println("Insert a date: ");
-			date = Date.valueOf(read.readLine());
-			System.out.println("Insert a date: ");
-			time = Time.valueOf(read.readLine());
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		s = new Schedule(date, time);
-		return s;
-	}
 }

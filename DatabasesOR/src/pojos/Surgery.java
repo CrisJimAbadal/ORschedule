@@ -12,19 +12,19 @@ public class Surgery implements Serializable{
 	private static final long serialVersionUID = 7569041371565811550L;
 	private Integer id;
 	private String type;
-	private Boolean acceptSurgery;
+	
 	
 	private Patient patient;
 	private OPR opr;
 	private List <Surgeon> surgeons;
 	private Schedule schedule;
 
-	private List <Acceptance> acceptances;
+	
 	
 
 	public Surgery() {
 		super();
-		acceptances=new ArrayList<Acceptance>();
+	
 	}
 	
 	
@@ -36,7 +36,6 @@ public class Surgery implements Serializable{
 		this.opr = opr;
 		this.type = type;
 		this.schedule=schedule;
-		acceptances=new ArrayList<Acceptance>();
 		
 	}
 
@@ -45,9 +44,8 @@ public class Surgery implements Serializable{
 	public Surgery(String type, Schedule schedule) {
 		this.type=type;
 		this.setSchedule(schedule);
-		acceptances=new ArrayList<Acceptance>();
+		
 	}
-
 
 
 	public Surgery(Integer id, String type, Schedule schedule) {
@@ -55,9 +53,8 @@ public class Surgery implements Serializable{
 		this.id = id;
 		this.type = type;
 		this.schedule = schedule;
-		acceptances=new ArrayList<Acceptance>();
+	
 	}
-
 
 
 	@Override
@@ -88,12 +85,6 @@ public class Surgery implements Serializable{
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Boolean getAcceptSurgery() {
-		return acceptSurgery;
-	}
-	public void setAcceptSurgery(Boolean acceptSurgery) {
-		this.acceptSurgery = acceptSurgery;
-	}
 	
 		public Patient getPatient() {
 		return patient;
@@ -121,7 +112,7 @@ public class Surgery implements Serializable{
 	@Override
 	public String toString() {
 		//añadir patient, opr, surgeons
-		return "Surgery [id=" + id + ", type=" + type + ", acceptSurgery=" + acceptSurgery + "]";
+		return "Surgery [id=" + id + ", type=" + type +"]";
 	}
 
 
@@ -135,21 +126,6 @@ public class Surgery implements Serializable{
 	public void setSchedule(Schedule schedule) {
 		this.schedule = schedule;
 	}
-
-
-
-	public List<Acceptance> getAcceptances() {
-		return acceptances;
-	}
-
-
-
-	public void setAcceptances(List<Acceptance> acceptances) {
-		this.acceptances = acceptances;
-	}
-
-
-
 
 	
 }

@@ -6,12 +6,12 @@ import pojos.*;
 
 public interface UserManager {
 	
+
 	
 	public void disconnect();
 	
 	public void newUser(User u);
 	
-	public void newRole(Role r);
 	
 	public List <Role> getRoles();
 	

@@ -25,7 +25,7 @@ public class Role implements Serializable {
 		pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "roles")
 	private Integer id;
 	private String name;
-	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role")
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "role")//TODO users or roles?? 
 	private List<User> users;
 	
 	public Role() {

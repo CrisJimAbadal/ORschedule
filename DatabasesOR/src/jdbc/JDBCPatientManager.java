@@ -41,7 +41,7 @@ public class JDBCPatientManager implements PManager {
 	public List<Patient> listPatients() {
 		List<Patient> patients = new ArrayList<Patient>();
 		try {
-
+//TODO check this
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM patient";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -70,7 +70,7 @@ public class JDBCPatientManager implements PManager {
 		Patient p = null;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELCT * FROM patient WHERE id = " + id;
+			String sql = "SELECT * FROM patient WHERE id = " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String name = rs.getString("name");

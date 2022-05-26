@@ -536,7 +536,7 @@ public class MenuORschedule {
 
 				System.out.println("The start and finish time are incorrect");
 				System.out.println("Repeat the process please:");
-				chooseSchedule();
+				Schedule s=chooseSchedule();
 			}
 
 		} catch (Exception e) {
@@ -549,11 +549,16 @@ public class MenuORschedule {
 
 	// CHOOSE PATIENT FOR SURGERY
 	public static Patient choosePatient() throws Exception {
-		// TODO this doesn´t show anything, shows []
-		patientManager.listPatients();
+		// TODO this doesn´t show anything, shows []-> check if now correct
+		
+		List<Patient> patients=patientManager.listPatients();
+		//TODO why it doesn't get here?
+		for(Patient patient: patients) {
+			System.out.println(patient);
+			
+		}
+		
 		System.out.println("choose a patient by its id: ");
-	
-
 		Integer patientId = Integer.parseInt(read.readLine());
 		Patient p = patientManager.searchPatient(patientId);
 

@@ -177,7 +177,7 @@ public class MenuORschedule {
 
 		try {
 			do {
-				System.out.println("CHOOSE AN OPTION: "); // TODO register first?? it is not on the database
+				System.out.println("CHOOSE AN OPTION: "); // 
 				System.out.println("1. LOG IN");
 				System.out.println("0. Exit");
 
@@ -186,8 +186,16 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-
-					logIn();
+				String originalPassword="g4nd4lf";
+				System.out.println("Introduce the most famous password in the world:");
+				String password = read.readLine();
+				if(password== "g4nd4lf"|| password == "G4ND4LF" ) {
+					DMenu();
+				}else {
+					principalMenu();
+				}
+				
+				
 					break;
 				case 0:
 					
@@ -398,9 +406,7 @@ public class MenuORschedule {
 		if (user != null && user.getRole().equals("surgeon")) {
 			SMenu(user.getId());
 		}
-		if (user != null && user.getRole().equals("doctor")) {
-			DMenu();
-		}
+		
 	}
 
 	// UPDATE PATIEN'S INFO
@@ -509,8 +515,9 @@ public class MenuORschedule {
 	}
 
 	// CHOOSE SCHEDULE FOR THE SURGERY
+	//TODO check if it works after correcting login
 	public static Schedule chooseSchedule() {
-		Schedule s;
+	
 		Date date = null;
 		Time startTime = null;
 		Time finishTime = null;
@@ -521,7 +528,22 @@ public class MenuORschedule {
 			startTime = Time.valueOf(read.readLine());
 			System.out.println("Insert a finish time: ");
 			finishTime = Time.valueOf(read.readLine());
-			// TODO if (startTime < finishTime)
+			if(finishTime.compareTo(startTime)>0) {
+				//finishtime occurs later-> correct
+				Schedule s= new Schedule(date,startTime,finishTime);
+				
+			}
+			else {
+				
+				
+				System.out.println("The start and finish time are incorrect");
+				System.out.println("Repeat the process please:");
+				chooseSchedule();
+			}
+			
+				
+				
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();

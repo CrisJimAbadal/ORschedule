@@ -93,17 +93,24 @@ public class JDBCSurgeryManager implements SurgManager {
 	public boolean checkOPR(Schedule s, int oprId) {
 
 		try {
-			String sql = "SELECT oprId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
-					+ "WHERE schedule.Date= ? AND schedule.TIME = ? AND surgery.oprId=?";
+			String sql = "SELECT oprId, FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
+					+ "WHERE schedule.Date= ? AND surgery.oprId=?"+
+					" AND (schedule.startTime<= ? AND schedule.finishTime>= ?)"+ //?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?)"+//?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.startTime<= ?)" + //? = startTime ?2finishTIme
+					"OR (schedule.startTime<= ? AND schedule.finishTime>=?)" //? =starttime 
+					;
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setDate(1, s.getDate());
-			pr.setTime(2, s.getTime());
-			pr.setInt(3, oprId);
+			pr.setInt(2, oprId);
 			ResultSet rs = pr.executeQuery(sql);
-			int id = rs.getInt("oprId");
+			int id = rs.getInt(1);
+			
 			if (id == 0) {
 				return false;
+				//no opr occupied at that schedule
 			}
+			if()
 
 		} catch (Exception e) {
 			e.printStackTrace();

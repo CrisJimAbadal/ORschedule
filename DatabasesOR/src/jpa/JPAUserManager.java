@@ -20,7 +20,6 @@ public class JPAUserManager implements UserManager {
 	public JPAUserManager() {
 		this.connect();
 	}
-	
 
 	private void connect() {
 		em = Persistence.createEntityManagerFactory("DatabasesOR").createEntityManager();
@@ -31,10 +30,9 @@ public class JPAUserManager implements UserManager {
 		if (this.getRoles().isEmpty()) {
 			Role patient = new Role("patient");
 			Role surgeon = new Role("surgeon");
-			Role doctor = new Role("doctor");
 			this.newRole(patient);
 			this.newRole(surgeon);
-			this.newRole(doctor);
+
 		}
 	}
 
@@ -51,7 +49,6 @@ public class JPAUserManager implements UserManager {
 
 	}
 
-	
 	private void newRole(Role r) {
 		em.getTransaction().begin();
 		em.persist(r);
@@ -59,7 +56,6 @@ public class JPAUserManager implements UserManager {
 
 	}
 
-	
 	@Override
 	public Role getRole(String name) {
 		Query q = em.createNativeQuery("SELECT * FROM roles WHERE name = ?", Role.class);
@@ -75,7 +71,7 @@ public class JPAUserManager implements UserManager {
 
 		return roles;
 	}
-	
+
 	@Override
 	public User checkPassword(String email, String password) {
 		// null user if match not found
@@ -92,7 +88,8 @@ public class JPAUserManager implements UserManager {
 		}
 		try {
 			u = (User) q.getSingleResult();
-		} catch (NoResultException e) {}
+		} catch (NoResultException e) {
+		}
 		return u;
 	}
 

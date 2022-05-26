@@ -42,30 +42,6 @@ public class JDBCOprManager implements OPRManager {
 		return oprs;
 	}
 	
-	//TODO can we delete this?
-/*	//SHOW OPR
-	@Override
-	public OPR showOPR(int id) {
-		OPR opr = null;
-		try {
-			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM opr WHERE id = " + id;
-			ResultSet rs = stmt.executeQuery(sql);
-			while (rs.next()) {
-
-				Integer floor = rs.getInt("floor");
-				Integer number = rs.getInt("number");
-
-				opr = new OPR(id, floor, number);
-			}
-			rs.close();
-			stmt.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return opr;
-	}*/
 	
 	//SEARCH and return OPR by id
 	@Override

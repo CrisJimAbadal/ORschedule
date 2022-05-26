@@ -88,29 +88,60 @@ public class JDBCSurgeryManager implements SurgManager {
 
 	}
 
-	// TODO COMPROBACION select lo q sea de surgery where time= ? if null... nueva surgery
-	//CHECKS TO SEE IF IT'S CORRECT TO KEEP CREATING
+	// TODO check this method
+	// LIST SURGERIES SO THE DOCTOR CAN DELETE ONE
+	@Override
+	public List<Surgery> listSurgeries() {
+		List<Surgery> surgeries = new ArrayList<Surgery>();
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT surgery.id,type,date,schedule.id, startTime FROM surgery JOIN schedule ON surgery.id= schedule.id ";
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+
+				Integer surgeryId = rs.getInt(1);
+				String type = rs.getString(2);
+				Date date = rs.getDate(3);
+				Integer scheduleId = rs.getInt(4);
+				Time startTime = rs.getTime(5);
+
+				Schedule schedule = new Schedule(scheduleId, date, startTime);
+				Surgery s = new Surgery(surgeryId, type, schedule);
+
+				surgeries.add(s);
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return surgeries;
+	}
+
+	// TODO COMPROBACION select lo q sea de surgery where time= ? if null... nueva
+	// surgery
+	// CHECKS TO SEE IF IT'S CORRECT TO KEEP CREATING
 	public boolean checkOPR(Schedule s, int oprId) {
 
 		try {
 			String sql = "SELECT oprId, FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
-					+ "WHERE schedule.Date= ? AND surgery.oprId=?"+
-					" AND (schedule.startTime<= ? AND schedule.finishTime>= ?)"+ //?1 startTime ?2 finishTime
-					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?)"+//?1 startTime ?2 finishTime
-					"OR (schedule.startTime>= ? AND schedule.startTime<= ?)" + //? = startTime ?2finishTIme
-					"OR (schedule.startTime<= ? AND schedule.finishTime>=?)" //? =starttime 
-					;
+					+ "WHERE schedule.Date= ? AND surgery.oprId=?"
+					+ " AND (schedule.startTime<= ? AND schedule.finishTime>= ?)" + // ?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?)" + // ?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.startTime<= ?)" + // ? = startTime ?2finishTIme
+					"OR (schedule.startTime<= ? AND schedule.finishTime>=?)" // ? =starttime
+			;
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setDate(1, s.getDate());
 			pr.setInt(2, oprId);
 			ResultSet rs = pr.executeQuery(sql);
 			int id = rs.getInt(1);
-			
+
 			if (id == 0) {
 				return false;
-				//no opr occupied at that schedule
+				// no OPR occupied at that schedule
 			}
-			if()
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -118,7 +149,6 @@ public class JDBCSurgeryManager implements SurgManager {
 		return true;
 	}
 
-	
 	public boolean checkpatient(Schedule s, Patient p) {
 
 		try {
@@ -159,4 +189,5 @@ public class JDBCSurgeryManager implements SurgManager {
 		}
 		return true;
 	}
+
 }

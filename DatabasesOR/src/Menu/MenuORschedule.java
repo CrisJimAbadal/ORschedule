@@ -76,11 +76,11 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					
+
 					patientMenu();
 					break;
 				case 2:
-					
+
 					surgeonMenu();
 					break;
 				case 3:
@@ -88,7 +88,7 @@ public class MenuORschedule {
 					doctorMenu();
 					break;
 				case 0:
-					
+
 					JDBCManager.disconnect();
 					System.exit(0);
 
@@ -117,15 +117,15 @@ public class MenuORschedule {
 				case 1:
 					// REGISTER (add patient)
 					createPatient();
-
+					// TODO if already exists, don't add
 					break;
 				case 2:
-					//LOG IN as patient
+					// LOG IN as patient
 					logIn();
 
 					break;
 				case 0:
-					
+
 					principalMenu();
 				default:
 					break;
@@ -152,10 +152,10 @@ public class MenuORschedule {
 				case 1:
 					// Call method REGISTER
 					createSurgeon();
-
+					//TODO if already exists don't add
 					break;
 				case 2:
-					//LOG IN as surgeon
+					// LOG IN as surgeon
 					logIn();
 
 					break;
@@ -177,7 +177,7 @@ public class MenuORschedule {
 
 		try {
 			do {
-				System.out.println("CHOOSE AN OPTION: "); // 
+				System.out.println("CHOOSE AN OPTION: "); //
 				System.out.println("1. LOG IN");
 				System.out.println("0. Exit");
 
@@ -186,19 +186,19 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-				String originalPassword="g4nd4lf";
-				System.out.println("Introduce the most famous password in the world:");
-				String password = read.readLine();
-				if(password== "g4nd4lf"|| password == "G4ND4LF" ) {
-					DMenu();
-				}else {
-					principalMenu();
-				}
-				
-				
+					String originalPassword = "g4nd4lf";
+					System.out.println("Introduce the most famous password in the world:");
+					String password = read.readLine();
+					if (password.equals("g4nd4lf") || password.equals("G4ND4LF")) {
+						DMenu();
+					} else {
+						System.out.println("error");
+						principalMenu();
+					}
+
 					break;
 				case 0:
-					
+
 					// EXIT
 					principalMenu();
 				default:
@@ -226,15 +226,15 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					
+
 					updatePatientInfo(id);
 					break;
 				case 2:
-					
+
 					checksurgeries(id);
 					break;
 				case 0:
-					
+
 					// EXIT
 					patientMenu();
 				default:
@@ -261,7 +261,7 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-					
+
 					updateSurgeonInfo(sId);
 					break;
 
@@ -398,7 +398,7 @@ public class MenuORschedule {
 			System.out.println("User not found");
 			principalMenu(); // returns to principal menu if the user does not exist
 		}
-		
+
 		// check [depending on the type of user we open a different menu]
 		if (user != null && user.getRole().equals("patient")) {
 			PMenu(user.getId());
@@ -406,7 +406,7 @@ public class MenuORschedule {
 		if (user != null && user.getRole().equals("surgeon")) {
 			SMenu(user.getId());
 		}
-		
+
 	}
 
 	// UPDATE PATIEN'S INFO
@@ -515,49 +515,45 @@ public class MenuORschedule {
 	}
 
 	// CHOOSE SCHEDULE FOR THE SURGERY
-	//TODO check if it works after correcting login
+	// TODO check if it works after correcting login
 	public static Schedule chooseSchedule() {
-	
+
 		Date date = null;
 		Time startTime = null;
 		Time finishTime = null;
 		try {
-			System.out.println("Insert a date: ");
+			System.out.println("\nInsert a date (yyyy-MM-dd): ");
 			date = Date.valueOf(read.readLine());
 			System.out.println("Insert a start time: ");
 			startTime = Time.valueOf(read.readLine());
 			System.out.println("Insert a finish time: ");
 			finishTime = Time.valueOf(read.readLine());
-			if(finishTime.compareTo(startTime)>0) {
-				//finishtime occurs later-> correct
-				Schedule s= new Schedule(date,startTime,finishTime);
-				
-			}
-			else {
-				
-				
+			if (finishTime.compareTo(startTime) > 0) {
+				// finishtime occurs later-> correct
+				Schedule s = new Schedule(date, startTime, finishTime);
+
+			} else {
+
 				System.out.println("The start and finish time are incorrect");
 				System.out.println("Repeat the process please:");
 				chooseSchedule();
 			}
-			
-				
-				
-			
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
-		s = new Schedule(date, startTime, finishTime);
+		Schedule s = new Schedule(date, startTime, finishTime);
 		return s;
 	}
 
 	// CHOOSE PATIENT FOR SURGERY
 	public static Patient choosePatient() throws Exception {
-		System.out.println("choose a patient by its id: ");
-		// list patients
+		// TODO this doesn´t show anything, shows []
 		patientManager.listPatients();
+		System.out.println("choose a patient by its id: ");
+	
+
 		Integer patientId = Integer.parseInt(read.readLine());
 		Patient p = patientManager.searchPatient(patientId);
 
@@ -587,8 +583,8 @@ public class MenuORschedule {
 
 	// DELETE SURGERY
 	private static void deleteSurgery() throws IOException {
-		// TODO 1)LIST SURGERIES
-
+		// 1)LIST SURGERIES
+		surgeryManager.listSurgeries();
 		System.out.println("Is there any surgery you want to delete? [1= Yes / 0= No]");
 		int answer = Integer.parseInt(read.readLine());
 

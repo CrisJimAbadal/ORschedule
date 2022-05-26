@@ -22,8 +22,8 @@ public class JDBCSurgeonManager implements SManager {
 	public JDBCSurgeonManager(JDBCManager m) {
 		this.manager = m;
 	}
- 
-	//ADD PATIENT TO THE DATABASE
+
+	// ADD PATIENT TO THE DATABASE
 	@Override
 	public void addSurgeon(Surgeon s) {
 
@@ -41,7 +41,7 @@ public class JDBCSurgeonManager implements SManager {
 		}
 	}
 
-	//LIST SURGEONS by specialty (to match the patient's medStat)
+	// LIST SURGEONS by specialty (to match the patient's medStat)
 	@Override
 	public List<Surgeon> listSurgeons(String specialty) {
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
@@ -67,7 +67,7 @@ public class JDBCSurgeonManager implements SManager {
 		return surgeons;
 	}
 
-	//SEARCH SURGEON BY ID
+	// SEARCH SURGEON BY ID
 	@Override
 	public Surgeon searchSurgeon(int id) {
 		Surgeon s = null;
@@ -90,7 +90,7 @@ public class JDBCSurgeonManager implements SManager {
 		return s;
 	}
 
-	//SHOW SURGEON'S INFO (before updating the info)
+	// SHOW SURGEON'S INFO (before updating the info)
 	@Override
 	public Surgeon showSurgeon(int id) {
 		Surgeon s = null;
@@ -114,7 +114,7 @@ public class JDBCSurgeonManager implements SManager {
 		return s;
 	}
 
-	//UPDATE SURGEON
+	// UPDATE SURGEON
 	@Override
 	public void updateSurgeon(Surgeon s) {
 		try {
@@ -140,8 +140,6 @@ public class JDBCSurgeonManager implements SManager {
 		}
 	}
 
-
-	// TODO is this ok?
 	public List<Schedule> showSchedules(int surgeonId) {
 
 		List<Schedule> schedules = new ArrayList<Schedule>();

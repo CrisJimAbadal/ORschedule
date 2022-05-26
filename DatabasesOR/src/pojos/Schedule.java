@@ -35,6 +35,13 @@ public class Schedule implements Serializable{
 		this.finishTime = finishTime;
 	}
 
+	public Schedule(Integer id, Date date, Time startTime) {
+		super();
+		this.id = id;
+		this.date = date;
+		this.startTime = startTime;
+	}
+
 	public Schedule() {
 		super();
 		

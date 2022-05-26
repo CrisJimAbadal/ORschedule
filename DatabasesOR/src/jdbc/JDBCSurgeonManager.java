@@ -140,19 +140,6 @@ public class JDBCSurgeonManager implements SManager {
 		}
 	}
 
-//TODO this is not neccessary anymore
-	@Override
-	public void deleteSurgeon(int surgeonId) {
-		try {
-			String sql = "DELETE FROM Surgeons WHERE id=?";
-			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setInt(1, surgeonId);
-			pr.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 	// TODO is this ok?
 	public List<Schedule> showSchedules(int surgeonId) {

@@ -132,18 +132,5 @@ public class JDBCPatientManager implements PManager {
 		}
 	}
 
-//TODO this is not neccessary anymore
-	@Override
-	public void deletePatient(int patientId) {
-		try {
-			String sql = "DELETE FROM Patients WHERE id=?";
-			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			pr.setInt(1, patientId);
-			pr.executeUpdate();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-	}
 
 }

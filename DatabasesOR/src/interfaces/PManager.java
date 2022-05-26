@@ -22,7 +22,6 @@ public interface PManager {
 	public void updatePatient(Patient p);
 	
 	
-	public void deletePatient(int patientid);
 	
 	
 }

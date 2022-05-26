@@ -23,9 +23,6 @@ public interface SManager {
 
 	public void updateSurgeon(Surgeon s);
 
-
-	public void deleteSurgeon(int Surgeonid);
-
     //show assigned surgeries
 	public List<Schedule> showSchedules(int surgeonId);
 

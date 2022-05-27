@@ -5,17 +5,30 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "OPR")
+@XmlType(propOrder = { "id", "floor", "number"})
 public class OPR implements Serializable {
 
 	
 	private static final long serialVersionUID = -3851196959970978337L;
 	
-	
+	@XmlAttribute
 	private Integer id;
+	@XmlAttribute
 	private Integer floor;
+	@XmlAttribute
 	private Integer number;
-	
+	@XmlTransient
 	private List <Surgery> surgeries; 
+	@XmlTransient
 	private List <Schedule> av;
 	
 	

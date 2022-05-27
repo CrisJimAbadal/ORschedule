@@ -6,18 +6,38 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+
+import utils.SQLDateAdapter;
+import utils.SQLTimeAdapter;
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Schedule")
+@XmlType(propOrder = { "date", "startTime", "finishTime"})
 public class Schedule implements Serializable{
 	
 	private static final long serialVersionUID = 4417970591986345560L;
 	
+	@XmlTransient
 	private Integer id;
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date;
+	@XmlJavaTypeAdapter(SQLTimeAdapter.class)
 	private Time startTime;
+	@XmlJavaTypeAdapter(SQLTimeAdapter.class)
 	private Time finishTime;
 	
-
-	private Surgery surgery;
+	@XmlTransient
+	private Surgery surgery; //TODO  adapter?
 	
 
 	public Schedule(Integer id, Date date, Time startTime, Time finishTime) {

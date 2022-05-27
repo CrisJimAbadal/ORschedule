@@ -5,19 +5,38 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Surgery") //TODO ask how to make this one the root element
+@XmlType(propOrder = { "type", "opr", "patient", "surgeon", "schedule"})
 public class Surgery implements Serializable{
 
 	
 	private static final long serialVersionUID = 7569041371565811550L;
+	
+	@XmlTransient
 	private Integer id;
+	@XmlAttribute
 	private String type;
-	
-	
-	private Patient patient;
+	@XmlElement
+	private Patient patient; 
+	@XmlElement
 	private OPR opr;
+	@XmlElement(name = "Surgeon")
+	@XmlElementWrapper(name= "Surgeons")
 	private List <Surgeon> surgeons;
-	private Schedule schedule;
+	
+	private Schedule schedule;//TODO Do we want to ignore? if not, adapter?
 
 	
 	

@@ -52,7 +52,7 @@ public class JDBCPatientManager implements PManager {
 				String medstat = rs.getString("medstat");
 				Date dob = rs.getDate("dob");
 				String sex = rs.getString("sex");
-
+				System.out.println("He llegado del 55");
 				Patient p = new Patient(id, name, medstat, dob, sex);
 				patients.add(p);
 			}

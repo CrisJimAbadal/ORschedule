@@ -552,6 +552,7 @@ public class MenuORschedule {
 		// TODO this doesn´t show anything, shows []-> check if now correct
 		
 		List<Patient> patients=patientManager.listPatients();
+		
 		//TODO why it doesn't get here?
 		for(Patient patient: patients) {
 			System.out.println(patient);

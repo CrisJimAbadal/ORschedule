@@ -5,27 +5,51 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.TableGenerator;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
+import utils.SQLDateAdapter;
+
+
+@XmlAccessorType(XmlAccessType.FIELD)
+@XmlRootElement(name = "Patient")
+@XmlType(propOrder = { "name", "medstat", "email"})
 public class Patient implements Serializable {
 
 
 	
 	private static final long serialVersionUID = 7926972104136754563L;
 	
+	@XmlTransient
 	private Integer id;
+	@XmlAttribute
 	private String name;
+	@XmlAttribute
 	private String medstat;
+	@XmlAttribute
 	private String email;
+	@XmlTransient
 	private byte[] digest;
 	public byte[] getDigest() {
 		return digest;
 	}
 
 
-
+	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date dob;
+	@XmlAttribute
 	private String sex;
 	
+	@XmlElement(name = "Surgery")
+	@XmlElementWrapper(name= "Surgeries")
 	private List <Surgery> surgeries;
 	
 	
@@ -146,9 +170,8 @@ public class Patient implements Serializable {
 
 	@Override
 	public String toString() {
-		//añadir las surgeries, email
-		
-		return "Patient [id=" + id + ", name=" + name + ", medstat=" + medstat + ", age=" + dob + ", sex=" + sex + "]";
+		return "Patient [id=" + id + ", name=" + name + ", medstat=" + medstat + ", email=" + email + ", dob=" + dob
+				+ ", sex=" + sex + "]";
 	}
 
 	

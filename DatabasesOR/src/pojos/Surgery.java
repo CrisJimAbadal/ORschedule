@@ -35,8 +35,8 @@ public class Surgery implements Serializable{
 	@XmlElement(name = "Surgeon")
 	@XmlElementWrapper(name= "Surgeons")
 	private List <Surgeon> surgeons;
-	
-	private Schedule schedule;//TODO Do we want to ignore? if not, adapter?
+	@XmlElement
+	private Schedule schedule;
 
 	
 	

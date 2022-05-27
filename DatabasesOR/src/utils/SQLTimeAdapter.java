@@ -11,7 +11,7 @@ public class SQLTimeAdapter extends XmlAdapter<String, Time> {
 	
 	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //TODO CHANGE TO TIME
 
-	@Override//TODO ASK RODRI :)
+	@Override//TODO ASK RODRIGO :)
 	public String marshal(Time sqlTime) throws Exception {
 		return sqlTime.toLocalTime().format(formatter);
 	}

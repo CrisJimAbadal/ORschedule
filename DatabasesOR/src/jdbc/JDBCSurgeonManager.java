@@ -47,7 +47,7 @@ public class JDBCSurgeonManager implements SManager {
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
 
-			String sql = "SELECT * FROM surgeon WHERE specialty LIKE" + specialty;
+			String sql = "SELECT * FROM surgeon WHERE medstat LIKE" + specialty;
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			ResultSet rs = prep.executeQuery(sql);
 			while (rs.next()) {
@@ -118,7 +118,7 @@ public class JDBCSurgeonManager implements SManager {
 	@Override
 	public void updateSurgeon(Surgeon s) {
 		try {
-			String sql = "UPDATE surgeonSET name = ?, medstat = ?, pagernumber = ?, tlfnumber = ?";
+			String sql = "UPDATE surgeon SET name = ?, medstat = ?, pagernumber = ?, tlfnumber = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			if (s.getName() != "") {
 				pr.setString(1, s.getName());
@@ -139,7 +139,7 @@ public class JDBCSurgeonManager implements SManager {
 
 		}
 	}
-
+//TODO check this in db browser
 	public List<Schedule> showSchedules(int surgeonId) {
 
 		List<Schedule> schedules = new ArrayList<Schedule>();

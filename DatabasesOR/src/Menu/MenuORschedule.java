@@ -555,7 +555,7 @@ public class MenuORschedule {
 		
 		//TODO why it doesn't get here?
 		for(Patient patient: patients) {
-			System.out.println(patient);
+			System.out.println(patient.toString());
 			
 		}
 		

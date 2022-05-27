@@ -23,13 +23,14 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public void addPatient(Patient p) {
 		try {
-			String sql = "INSERT INTO patient (name, medstat, dob, sex) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO patient (name, medstat,email, dob, sex) VALUES (?,?,?,?,?)";
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, p.getName());
 			prep.setString(2, p.getMedstat());
-			prep.setDate(3, p.getDob());
-			prep.setString(4, p.getSex());
+			prep.setString(3, p.getEmail());
+			prep.setDate(4, p.getDob());
+			prep.setString(5, p.getSex());
 
 		} catch (Exception e) {
 			e.printStackTrace();

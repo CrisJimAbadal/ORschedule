@@ -31,7 +31,8 @@ public class JDBCPatientManager implements PManager {
 			prep.setString(3, p.getEmail());
 			prep.setDate(4, p.getDob());
 			prep.setString(5, p.getSex());
-
+			prep.executeUpdate();
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

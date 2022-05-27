@@ -400,10 +400,10 @@ public class MenuORschedule {
 		}
 
 		// check [depending on the type of user we open a different menu]
-		if (user != null && user.getRole().equals("patient")) {
+		if (user != null && user.getRole().getName().equals("patient")) {
 			PMenu(user.getId());
 		}
-		if (user != null && user.getRole().equals("surgeon")) {
+		if (user != null && user.getRole().getName().equals("surgeon")) {
 			SMenu(user.getId());
 		}
 

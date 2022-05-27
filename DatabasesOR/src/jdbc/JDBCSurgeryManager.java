@@ -29,6 +29,8 @@ public class JDBCSurgeryManager implements SurgManager {
 	public void addSurgery(Surgery s) {
 
 		try {
+			//TODO ask rodrigo if we put patient,.. or patientid,..
+			
 			String sql = "INSERT INTO surgery (patient, surgeons, opr, type) VALUES (?,?,?,?)";
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);

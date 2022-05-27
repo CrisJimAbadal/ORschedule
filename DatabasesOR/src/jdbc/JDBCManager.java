@@ -68,11 +68,11 @@ public class JDBCManager {
 			stm.executeUpdate(sql);
 
 			// TABLE SURGERY
-			sql = "CREATE TABLE surgery(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT,"
+			sql = "CREATE TABLE surgery(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL,"
 					+ "patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
 					+ "surgeonID INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
 					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,"
-					+ "medstat TEXT NOT NULL, scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
+					+ "scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
 			stm.executeUpdate(sql);
 
 			// WE ASSUME THAT OUR HOSPITALS HAS 6 OPR

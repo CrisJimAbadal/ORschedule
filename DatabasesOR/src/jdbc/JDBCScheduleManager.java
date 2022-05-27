@@ -25,7 +25,8 @@ public class JDBCScheduleManager implements ScheduleManager {
 			pr.setDate(1, s.getDate());
 			pr.setTime(2, s.getStartTime());
 			pr.setTime(3, s.getFinishTime());
-
+			pr.executeUpdate();
+			pr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

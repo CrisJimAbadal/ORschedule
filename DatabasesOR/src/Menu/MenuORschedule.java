@@ -44,6 +44,7 @@ public class MenuORschedule {
 	private static UserManager userManager;
 	private static ScheduleManager scheduleManager;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+	// TODO time formatter (HH:MM)
 
 	public static void main(String[] args) {
 
@@ -152,7 +153,7 @@ public class MenuORschedule {
 				case 1:
 					// Call method REGISTER
 					createSurgeon();
-					//TODO if already exists don't add
+					// TODO if already exists don't add
 					break;
 				case 2:
 					// LOG IN as surgeon
@@ -413,8 +414,11 @@ public class MenuORschedule {
 	private static void updatePatientInfo(int id) throws Exception {
 
 		// List patient info
-		patientManager.showPatient(id);
+		Patient patient = patientManager.showPatient(id);
+		System.out.println(patient.toString());
+
 		Patient p = patientManager.searchPatient(id);
+		// TODO this doesnt work
 		System.out.println("Update your information: ");
 		// Ask for info, if empty keeps the one existing before
 		String name = read.readLine();
@@ -515,7 +519,7 @@ public class MenuORschedule {
 	}
 
 	// CHOOSE SCHEDULE FOR THE SURGERY
-	
+
 	public static Schedule chooseSchedule() {
 
 		Date date = null;
@@ -536,7 +540,7 @@ public class MenuORschedule {
 
 				System.out.println("The start and finish time are incorrect");
 				System.out.println("Repeat the process please:");
-				Schedule s=chooseSchedule();
+				Schedule s = chooseSchedule();
 			}
 
 		} catch (Exception e) {
@@ -549,16 +553,15 @@ public class MenuORschedule {
 
 	// CHOOSE PATIENT FOR SURGERY
 	public static Patient choosePatient() throws Exception {
-		// TODO this doesn´t show anything, shows []-> check if now correct
-		
-		List<Patient> patients=patientManager.listPatients();
-		
-		//TODO why it doesn't get here?
-		for(Patient patient: patients) {
+
+		List<Patient> patients = patientManager.listPatients();
+
+		// TODO why it doesn't get here?
+		for (Patient patient : patients) {
 			System.out.println(patient.toString());
-			
+
 		}
-		
+
 		System.out.println("choose a patient by its id: ");
 		Integer patientId = Integer.parseInt(read.readLine());
 		Patient p = patientManager.searchPatient(patientId);

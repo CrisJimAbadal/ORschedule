@@ -35,7 +35,8 @@ public class JDBCSurgeonManager implements SManager {
 			prep.setString(2, s.getMedstat());
 			prep.setInt(3, s.getPagerNumber());
 			prep.setInt(4, s.getTlfNumber());
-
+			prep.executeUpdate();
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -133,7 +134,7 @@ public class JDBCSurgeonManager implements SManager {
 				pr.setInt(4, s.getTlfNumber());
 			}
 			pr.executeUpdate();
-
+			pr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 

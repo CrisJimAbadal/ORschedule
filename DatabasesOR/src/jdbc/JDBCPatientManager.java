@@ -81,6 +81,7 @@ public class JDBCPatientManager implements PManager {
 				String medstat = rs.getString("medstat");
 
 				p = new Patient(id, name, medstat);
+				System.out.println("estas en searchPatient");
 			}
 			rs.close();
 			stmt.close();
@@ -95,10 +96,10 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public Patient showPatient(int id) {
 
-		Patient p = null;
+		Patient p = null ;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM patient WHERE id = " + id;
+			String sql = "SELECT * FROM patient WHERE id= " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 
@@ -107,8 +108,9 @@ public class JDBCPatientManager implements PManager {
 				String email = rs.getString("email");
 				Date dob = rs.getDate("dob");
 				String sex = rs.getString("sex");
-
-				p = new Patient(name, medstat, /* digest, */ email, dob, sex);
+				System.out.println("estas en showPatient");
+				p = new Patient(name, medstat,email, dob, sex);
+				
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -120,7 +122,7 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public void updatePatient(Patient p) {
 		try {
-			String sql = "UPDATE patient " + "SET name = ?" + " medstat = ?" + "email = ?" + " dob = ?" + " sex = ?";
+			String sql = "UPDATE patient SET name = ?, medstat = ?, email = ?, dob = ?, sex = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 
 			pr.setString(1, p.getName());
@@ -128,8 +130,8 @@ public class JDBCPatientManager implements PManager {
 			pr.setString(3, p.getEmail());
 			pr.setDate(4, (Date) p.getDob());
 			pr.setString(5, p.getSex());
-
 			pr.executeUpdate();
+			pr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 

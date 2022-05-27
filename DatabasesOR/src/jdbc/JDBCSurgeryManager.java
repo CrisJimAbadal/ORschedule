@@ -32,7 +32,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		List <Surgeon> surgeons=s.getSurgeons();
 
 		try {
-			//TODO finish query 
+			//TODO finish query.
 			
 			String sql = "INSERT INTO surgery (patientId, , oprId, type VALUES (?,?,?)";
 			// use preparedStmt so nothing damages the database

@@ -44,7 +44,7 @@ public class MenuORschedule {
 	private static UserManager userManager;
 	private static ScheduleManager scheduleManager;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	// TODO time formatter (HH:MM)
+	
 
 	public static void main(String[] args) {
 
@@ -404,6 +404,8 @@ public class MenuORschedule {
 		if (user != null && user.getRole().getName().equals("patient")) {
 			PMenu(user.getId());
 		}
+		
+		//TODO hace login pero no se almacena la info ¿puede ser pq surgeon no tiene email?
 		if (user != null && user.getRole().getName().equals("surgeon")) {
 			SMenu(user.getId());
 		}
@@ -418,34 +420,43 @@ public class MenuORschedule {
 		System.out.println(patient.toString());
 
 		Patient p = patientManager.searchPatient(id);
-		// TODO this doesnt work
+		
 		System.out.println("Update your information: ");
 		// Ask for info, if empty keeps the one existing before
+		System.out.println("New name: ");
 		String name = read.readLine();
 		if (!name.equals("")) {
 			p.setName(name);
 		}
+		System.out.println("New medstat: ");
 		String medstat = read.readLine();
 		if (!medstat.equals("")) {
 			p.setMedstat(medstat);
 		}
-		String newEmail = read.readLine();
-		if (!newEmail.equals("")) {
-			p.setEmail(newEmail);
+		System.out.println("New email: ");
+		String email = read.readLine();
+		if (!email.equals(" ")) {
+			p.setEmail(email);
 		}
+		//TODO si update email.... tener en cuenta para el logIn 
 		patientManager.updatePatient(p);
 	}
 
 	// UPDATE SURGEON'S INFO
 	private static void updateSurgeonInfo(int id) throws Exception {
 
-		Surgeon s = surgeonManager.showSurgeon(id);
+		Surgeon surgeon = surgeonManager.showSurgeon(id);
+		System.out.println(surgeon.toString());
+		
+		Surgeon s= surgeonManager.searchSurgeon(id);
+		
 		System.out.println("Update your information: ");
-
+		System.out.println("New pager Number: ");
 		Integer pagerNumber = Integer.parseInt(read.readLine());
 		if (!pagerNumber.equals("")) {
 			s.setPagerNumber(pagerNumber);
 		}
+		System.out.println("New phone number: ");
 		Integer tlfNumber = Integer.parseInt(read.readLine());
 		if (!tlfNumber.equals("")) {
 			s.setTlfNumber(tlfNumber);
@@ -528,6 +539,7 @@ public class MenuORschedule {
 		try {
 			System.out.println("\nInsert a date (yyyy-MM-dd): ");
 			date = Date.valueOf(read.readLine());
+			//TODO time formatter
 			System.out.println("Insert a start time: ");
 			startTime = Time.valueOf(read.readLine());
 			System.out.println("Insert a finish time: ");
@@ -556,16 +568,14 @@ public class MenuORschedule {
 
 		List<Patient> patients = patientManager.listPatients();
 
-		// TODO why it doesn't get here?
 		for (Patient patient : patients) {
 			System.out.println(patient.toString());
-
 		}
 
 		System.out.println("choose a patient by its id: ");
 		Integer patientId = Integer.parseInt(read.readLine());
 		Patient p = patientManager.searchPatient(patientId);
-
+//TODO hace bien searchPatient pero hay que terminar la comrpobacion de Time para que termine de ir 
 		return p;
 	}
 

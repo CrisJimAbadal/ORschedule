@@ -143,12 +143,12 @@ public class Surgeon implements Serializable {
 		this.surgeries = surgeries;
 	}
 
-
 	@Override
 	public String toString() {
-		// añadir avs y surgeries
-		return "Surgeon [id=" + id + ", name=" + name + ", medstat=" + medstat + ", pagernumber=" + pagerNumber
-				+ ", tlfnumber=" + tlfNumber + "]";
+		return "Surgeon [id=" + id + ", name=" + name + ", medstat=" + medstat + ", pagerNumber=" + pagerNumber
+				+ ", tlfNumber=" + tlfNumber + "]";
 	}
+
+
 
 }

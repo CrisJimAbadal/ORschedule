@@ -43,7 +43,7 @@ public class JDBCPatientManager implements PManager {
 	public List<Patient> listPatients() {
 		List<Patient> patients = new ArrayList<Patient>();
 		try {
-//TODO check this
+
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM patient";
 			ResultSet rs = stmt.executeQuery(sql);
@@ -108,7 +108,7 @@ public class JDBCPatientManager implements PManager {
 				String email = rs.getString("email");
 				Date dob = rs.getDate("dob");
 				String sex = rs.getString("sex");
-				System.out.println("estas en showPatient");
+				
 				p = new Patient(name, medstat,email, dob, sex);
 				
 			}
@@ -122,14 +122,13 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public void updatePatient(Patient p) {
 		try {
-			String sql = "UPDATE patient SET name = ?, medstat = ?, email = ?, dob = ?, sex = ?";
+			String sql = "UPDATE patient SET name = ?, medstat = ?, email = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 
 			pr.setString(1, p.getName());
 			pr.setString(2, p.getMedstat());
 			pr.setString(3, p.getEmail());
-			pr.setDate(4, (Date) p.getDob());
-			pr.setString(5, p.getSex());
+			
 			pr.executeUpdate();
 			pr.close();
 		} catch (Exception e) {

@@ -47,7 +47,9 @@ public class Java2XmlSurgery {
 				Surgery s = (Surgery) q2.getSingleResult();
 				
 				// Use the Marshaller to marshal the Java object to a file	
-				marshaller.marshal(s, file);
+				
+				
+				//marshaller.marshal(s, file);
 			
 	}
 

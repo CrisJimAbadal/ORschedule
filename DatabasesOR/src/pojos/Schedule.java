@@ -37,7 +37,7 @@ public class Schedule implements Serializable{
 	private Time finishTime;
 	
 	@XmlTransient
-	private Surgery surgery; //TODO  adapter?
+	private Surgery surgery; 
 	
 
 	public Schedule(Integer id, Date date, Time startTime, Time finishTime) {

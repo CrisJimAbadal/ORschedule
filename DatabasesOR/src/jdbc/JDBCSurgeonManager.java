@@ -97,7 +97,7 @@ public class JDBCSurgeonManager implements SManager {
 		Surgeon s = null;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM surgeon WHERE id = " + id;
+			String sql = "SELECT * FROM surgeon WHERE id= " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String name = rs.getString("name");
@@ -106,9 +106,9 @@ public class JDBCSurgeonManager implements SManager {
 				Integer tlfNumber = rs.getInt("tlfNumber");
 
 				s = new Surgeon(id, name, medstat, pagerNumber, tlfNumber);
+				System.out.println("estas en showSurgeon");
 			}
-			rs.close();
-			stmt.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

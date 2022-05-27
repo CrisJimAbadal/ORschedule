@@ -26,7 +26,7 @@ public class User implements Serializable {
 	@TableGenerator(name = "users", table = "sqlite_sequence",
 		pkColumnName = "name", valueColumnName = "seq", pkColumnValue = "users")
 	private Integer id;
-	private String email;
+	private String name;
 	@Lob
 	private byte[] password;
 	@ManyToOne
@@ -37,9 +37,9 @@ public class User implements Serializable {
 		super();
 	}
 
-	public User(String email, byte[] password) {
+	public User(String name, byte[] password) {
 		super();
-		this.email = email;
+		this.name = name;
 		this.password = password;
 	}
 
@@ -51,12 +51,12 @@ public class User implements Serializable {
 		this.id = id;
 	}
 
-	public String getEmail() {
-		return email;
+	public String getName() {
+		return name;
 	}
 
-	public void setEmail(String email) {
-		this.email = email;
+	public void setEmail(String name) {
+		this.name = name;
 	}
 
 	public byte[] getPassword() {
@@ -95,7 +95,7 @@ public class User implements Serializable {
 	
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + Arrays.toString(password) + ", role=" + role.getName()
+		return "User [id=" + id + ", name=" + name + ", password=" + Arrays.toString(password) + ", role=" + role.getName()
 				+ "]";
 	}
 

@@ -48,7 +48,8 @@ public class JDBCSurgeryManager implements SurgManager {
 				PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
 				prep2.setObject(1, s.getId());
 				prep2.setObject(1, surgeon.getId());
-				//TODO execute but in all of the queries of the project
+				prep.executeUpdate();
+				prep.close();
 			}
 
 		} catch (Exception e) {
@@ -63,7 +64,8 @@ public class JDBCSurgeryManager implements SurgManager {
 			String sql = "DELETE * FROM Surgery WHERE id =?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setInt(1, surgeryId);
-
+			pr.executeUpdate();
+			pr.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -102,7 +104,7 @@ public class JDBCSurgeryManager implements SurgManager {
 
 	}
 
-	// TODO check this method
+	
 	// LIST SURGERIES SO THE DOCTOR CAN DELETE ONE
 	@Override
 	public List<Surgery> listSurgeries() {

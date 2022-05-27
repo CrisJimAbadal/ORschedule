@@ -515,7 +515,7 @@ public class MenuORschedule {
 	}
 
 	// CHOOSE SCHEDULE FOR THE SURGERY
-	// TODO check if it works after correcting login
+	
 	public static Schedule chooseSchedule() {
 
 		Date date = null;

@@ -39,8 +39,8 @@ public class JDBCScheduleManager implements ScheduleManager {
 		Time startTime = null;
 		Time finishTime= null;
 		try {
-			//TODO check if this query correct
-			String sql = "SELECT * FROM schedule JOIN surgeon ON schedule.id= surgeon.scheduleid WHERE surgeonId = " + id;
+			
+			String sql = "SELECT * FROM schedule JOIN surgery ON schedule.id= surgery.scheduleid WHERE surgery.surgeonId = " + id;
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			ResultSet rs = prep.executeQuery(sql);
 			while (rs.next()) {

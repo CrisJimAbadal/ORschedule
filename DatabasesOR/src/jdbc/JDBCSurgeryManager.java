@@ -27,17 +27,29 @@ public class JDBCSurgeryManager implements SurgManager {
 	// ADD SURGERY TO THE DATABASE
 	@Override
 	public void addSurgery(Surgery s) {
+		Patient p= s.getPatient();
+		OPR o=s.getOpr();
+		List <Surgeon> surgeons=s.getSurgeons();
 
 		try {
-			//TODO ask rodrigo if we put patient,.. or patientid,..
+			//TODO finish query 
 			
-			String sql = "INSERT INTO surgery (patient, surgeons, opr, type) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO surgery (patientId, , oprId, type VALUES (?,?,?)";
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-			prep.setObject(1, s.getPatient());
-			prep.setObject(2, s.getSurgeons());
-			prep.setObject(3, s.getOpr());
-			prep.setString(4, s.getType());
+			prep.setObject(1, p.getId());
+			prep.setObject(2,o.getId() );
+			prep.setString(3, s.getType());
+			
+			for(Surgeon surgeon: surgeons) {
+				
+				String sql2 = "INSERT INTO surgeonSurgery (surgeryId, surgeonId VALUES (?,?)";
+				// use preparedStmt so nothing damages the database
+				PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
+				prep2.setObject(1, s.getId());
+				prep2.setObject(1, surgeon.getId());
+				//TODO execute but in all of the queries of the project
+			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -127,12 +139,12 @@ public class JDBCSurgeryManager implements SurgManager {
 	public boolean checkOPR(Schedule s, int oprId) {
 
 		try {
-			String sql = "SELECT oprId, FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
+			String sql = "SELECT oprId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
 					+ "WHERE schedule.Date= ? AND surgery.oprId=?"
-					+ " AND (schedule.startTime<= ? AND schedule.finishTime>= ?)" + // ?1 startTime ?2 finishTime
-					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?)" + // ?1 startTime ?2 finishTime
-					"OR (schedule.startTime>= ? AND schedule.startTime<= ?)" + // ? = startTime ?2finishTIme
-					"OR (schedule.startTime<= ? AND schedule.finishTime>=?)" // ? =starttime
+					+ " AND ((schedule.startTime<= ? AND schedule.finishTime>= ?) " + // ?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?) " + // ?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.startTime<= ?) " + // ? = startTime ?2finishTIme
+					"OR (schedule.startTime<= ? AND schedule.finishTime>=?))" // ? =starttime
 			;
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setDate(1, s.getDate());

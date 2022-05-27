@@ -30,34 +30,7 @@ public class XML2JavaSurgery {
 		Surgery surgery = (Surgery) unmarshaller.unmarshal(file);
 
 		// Print the report
-		System.out.println("Surgery:");
-		System.out.println("Type: " + surgery.getType());
-		//TODO rest of the print
 		
-
-		// Store the report in the database
-		// Create entity manager
-		factory = Persistence.createEntityManagerFactory(PERSISTENCE_PROVIDER);
-		EntityManager em = factory.createEntityManager();
-		em.getTransaction().begin();
-		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
-		em.getTransaction().commit();
-
-		// Create a transaction
-		EntityTransaction tx1 = em.getTransaction();
-
-		// Start transaction
-		tx1.begin();
-
-		// Persist
-		// We assume the authors are not already in the database
-		// In a real world, we should check if they already exist
-		// and update them instead of inserting as new
-		//TODO rest of the XML2Java
-		em.persist(surgery);
-		
-		// End transaction
-		tx1.commit();
-	}
+	}//TODO new interface xmlmanager
 
 }

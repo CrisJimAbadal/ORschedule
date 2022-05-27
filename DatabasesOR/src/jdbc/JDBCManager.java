@@ -74,6 +74,12 @@ public class JDBCManager {
 					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,"
 					+ "scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
 			stm.executeUpdate(sql);
+			
+			// TABLE SURGERY-SURGEONS
+						sql = "CREATE TABLE surgeonSurgery (surgeonId INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
+								+ "surgeryId INTEGER REFERENCES surgery(id) ON DELETE SET NULL,"
+								+ "PRIMARY KEY (surgeonId,surgeryId)";
+						stm.executeUpdate(sql);
 
 			// WE ASSUME THAT OUR HOSPITALS HAS 6 OPR
 			sql = "INSERT INTO opr (floor, number) VALUES (1, 1)";

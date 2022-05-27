@@ -23,14 +23,6 @@ public class Java2XmlSurgery {
 	private static EntityManager em;
 	private static BufferedReader reader = new BufferedReader( new InputStreamReader(System.in));
 	
-	private static void printSurgeries() {
-		Query q1 = em.createNativeQuery("SELECT * FROM Surgery", Surgery.class);
-		List<Surgery> surg = (List<Surgery>) q1.getResultList();
-		// Print the departments
-		for (Surgery s : surg) {
-			System.out.println(s);
-		}
-	}
 	
 	public static void main(String[] args) throws Exception{
 		
@@ -47,7 +39,7 @@ public class Java2XmlSurgery {
 				// Pretty formatting
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
 				
-				printSurgeries();
+				
 				System.out.print("Choose a Surgery to turn into an XML file:");
 				int Surg_id = Integer.parseInt(reader.readLine());
 				Query q2 = em.createNativeQuery("SELECT * FROM Surgery WHERE id = ?", Surgery.class);
@@ -55,10 +47,9 @@ public class Java2XmlSurgery {
 				Surgery s = (Surgery) q2.getSingleResult();
 				
 				// Use the Marshaller to marshal the Java object to a file
-				File file = new File("./xmls/ORschedule.xml"); //TODO create this file
+			
 				marshaller.marshal(s, file);
-				// Printout
-				marshaller.marshal(s, System.out);
+				
 	}
 
 }

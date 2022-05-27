@@ -8,8 +8,8 @@ import java.time.format.DateTimeFormatter;
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class SQLTimeAdapter extends XmlAdapter<String, Time> {
-	
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); //TODO CHANGE TO TIME
+	//TODO change formate of time ineverything
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm"); //TODO CHANGE TO TIME
 
 	@Override//TODO ASK RODRIGO :)
 	public String marshal(Time sqlTime) throws Exception {

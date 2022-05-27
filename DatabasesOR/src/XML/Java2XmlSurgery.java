@@ -47,7 +47,7 @@ public class Java2XmlSurgery {
 				// Pretty formatting
 				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
 				
-				printSurgeries();
+				
 				System.out.print("Choose a Surgery to turn into an XML file:");
 				int Surg_id = Integer.parseInt(reader.readLine());
 				Query q2 = em.createNativeQuery("SELECT * FROM Surgery WHERE id = ?", Surgery.class);

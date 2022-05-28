@@ -71,13 +71,15 @@ public class Patient implements Serializable {
 		this.surgeries= new ArrayList<Surgery>();
 	}
 	
-	public Patient(Integer id, String name, String medstat, Date dob, String sex) {
+	
+	public Patient(Integer id, String name, String medstat, Date dob, String sex,String email) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.medstat = medstat;
 		this.dob = dob;
 		this.sex = sex;
+		this.email=email;
 		this.surgeries= new ArrayList<Surgery>();
 	}
 	

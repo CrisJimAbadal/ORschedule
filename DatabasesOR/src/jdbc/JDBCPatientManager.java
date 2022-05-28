@@ -54,8 +54,9 @@ public class JDBCPatientManager implements PManager {
 				String medstat = rs.getString("medstat");
 				Date dob = rs.getDate("dob");
 				String sex = rs.getString("sex");
+				String email=rs.getString("email");
 				
-				Patient p = new Patient(id, name, medstat, dob, sex);
+				Patient p = new Patient(id, name, medstat, dob, sex,email);
 		
 				patients.add(p);
 			}
@@ -82,6 +83,7 @@ public class JDBCPatientManager implements PManager {
 
 				p = new Patient(id, name, medstat);
 				System.out.println("estas en searchPatient");
+				
 			}
 			rs.close();
 			stmt.close();

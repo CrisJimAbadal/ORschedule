@@ -28,13 +28,14 @@ public class JDBCSurgeonManager implements SManager {
 	public void addSurgeon(Surgeon s) {
 
 		try {
-			String sql = "INSERT INTO surgeon (name, medstat, pagerNumber, tlfNumber) VALUES (?,?,?,?)";
+			String sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES (?,?,?,?,?)";
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, s.getName());
-			prep.setString(2, s.getMedstat());
-			prep.setInt(3, s.getPagerNumber());
-			prep.setInt(4, s.getTlfNumber());
+			prep.setString (2, s.getEmail());
+			prep.setString(3, s.getMedstat());
+			prep.setInt(4, s.getPagerNumber());
+			prep.setInt(5, s.getTlfNumber());
 			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
@@ -54,11 +55,12 @@ public class JDBCSurgeonManager implements SManager {
 			while (rs.next()) {
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
+				String email = rs.getString("email");
 				String medstat = rs.getString("medstat");
 				Integer pagerNumber = rs.getInt("pagerNumber");
 				Integer tlfNumber = rs.getInt("tlfNumber");
 
-				Surgeon s = new Surgeon(id, name, medstat, pagerNumber, tlfNumber);
+				Surgeon s = new Surgeon(id, email, name, medstat, pagerNumber, tlfNumber);
 				surgeons.add(s);
 			}
 			rs.close();
@@ -78,9 +80,10 @@ public class JDBCSurgeonManager implements SManager {
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String name = rs.getString("name");
+				String email = rs.getString("email");
 				String medstat = rs.getString("medstat");
 
-				s = new Surgeon(id, name, medstat);
+				s = new Surgeon(id, email, name, medstat);
 
 			}
 			rs.close();
@@ -101,11 +104,12 @@ public class JDBCSurgeonManager implements SManager {
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String name = rs.getString("name");
+				String email = rs.getString("email");
 				String medstat = rs.getString("medstat");
 				Integer pagerNumber = rs.getInt("pagerNumber");
 				Integer tlfNumber = rs.getInt("tlfNumber");
 
-				s = new Surgeon(id, name, medstat, pagerNumber, tlfNumber);
+				s = new Surgeon(id, name, email, medstat, pagerNumber, tlfNumber);
 				System.out.println("estas en showSurgeon");
 			}
 			
@@ -121,12 +125,7 @@ public class JDBCSurgeonManager implements SManager {
 		try {
 			String sql = "UPDATE surgeon SET name = ?, medstat = ?, pagernumber = ?, tlfnumber = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			if (s.getName() != "") {
-				pr.setString(1, s.getName());
-			}
-			if (s.getMedstat() != "") {
-				pr.setString(2, s.getMedstat());
-			}
+			
 			if (s.getPagerNumber() != null) {
 				pr.setInt(3, s.getPagerNumber());
 			}

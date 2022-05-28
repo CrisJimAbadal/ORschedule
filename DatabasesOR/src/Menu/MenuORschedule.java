@@ -358,6 +358,8 @@ public class MenuORschedule {
 		System.out.println("Input information: ");
 		System.out.println("Name: ");
 		String name = read.readLine();
+		System.out.println("Email: ");
+		String email = read.readLine();
 		System.out.println("Medstat: ");
 		String medstat = read.readLine();
 		System.out.println("Pager number: ");
@@ -372,14 +374,14 @@ public class MenuORschedule {
 		byte[] digest = md.digest();
 
 		// CREATE SURGEON AND ADD TO JPA
-		User u = new User(name, digest);
+		User u = new User(email, digest);
 		Role role = userManager.getRole("surgeon");
 		u.setRole(role);
 		role.addUser(u);
 		userManager.newUser(u);
 
 		// CREATE SURGEON AND ADD TO JDBD
-		Surgeon surgeon = new Surgeon(name, medstat, pagerNumber, tlfNumber);
+		Surgeon surgeon = new Surgeon(name, email, medstat, pagerNumber, tlfNumber);
 		surgeonManager.addSurgeon(surgeon);
 	}
 

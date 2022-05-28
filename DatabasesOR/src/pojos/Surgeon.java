@@ -17,7 +17,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Surgeon")
-@XmlType(propOrder = { "name", "medstat", "pagerNumber", "tlfNumber"})
+@XmlType(propOrder = { "name", "medstat", "pagerNumber", "tlfNumber" })
 public class Surgeon implements Serializable {
 
 	private static final long serialVersionUID = 7391492954500022065L;
@@ -25,7 +25,10 @@ public class Surgeon implements Serializable {
 	@XmlTransient
 	private Integer id;
 	@XmlAttribute
+	private String email;
+	@XmlAttribute
 	private String name;
+
 	@XmlAttribute
 	private String medstat;
 	@XmlElement
@@ -34,48 +37,44 @@ public class Surgeon implements Serializable {
 	private Integer tlfNumber;
 	@XmlTransient
 	private List<Surgery> surgeries;
-	
-	
 
 	public Surgeon() {
 		super();
 		surgeries = new ArrayList<Surgery>();
-	
-		
+
 	}
 
-	public Surgeon(String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
+	public Surgeon(String name, String email, String medstat, Integer pagerNumber, Integer tlfNumber) {
 		super();
 		this.name = name;
+		this.email = email;
 		this.medstat = medstat;
 		this.pagerNumber = pagerNumber;
 		this.tlfNumber = tlfNumber;
 		surgeries = new ArrayList<Surgery>();
-	
-		
+
 	}
 
-	public Surgeon(Integer id, String name, String medstat, Integer pagerNumber, Integer tlfNumber) {
+	public Surgeon(Integer id, String name, String email,String medstat, Integer pagerNumber, Integer tlfNumber) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.email = email;
 		this.medstat = medstat;
 		this.pagerNumber = pagerNumber;
 		this.tlfNumber = tlfNumber;
 		surgeries = new ArrayList<Surgery>();
-		
-	
+
 	}
 
-	public Surgeon(Integer id, String name, String medstat) {
+	public Surgeon(Integer id, String email, String name, String medstat) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.email = email;
 		this.medstat = medstat;
 		surgeries = new ArrayList<Surgery>();
-		
-	
-		
+
 	}
 
 	@Override
@@ -109,6 +108,14 @@ public class Surgeon implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getMedstat() {
@@ -145,10 +152,10 @@ public class Surgeon implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Surgeon [id=" + id + ", name=" + name + ", medstat=" + medstat + ", pagerNumber=" + pagerNumber
-				+ ", tlfNumber=" + tlfNumber + "]";
+		return "Surgeon [id=" + id + ", email=" + email + ", name=" + name + ", medstat=" + medstat + ", pagerNumber="
+				+ pagerNumber + ", tlfNumber=" + tlfNumber + "]";
 	}
 
-
+	
 
 }

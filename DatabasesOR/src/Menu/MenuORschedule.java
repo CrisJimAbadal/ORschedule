@@ -407,7 +407,6 @@ public class MenuORschedule {
 			PMenu(user.getId());
 		}
 		
-		//TODO hace login pero no se almacena la info ¿puede ser pq surgeon no tiene email?
 		if (user != null && user.getRole().getName().equals("surgeon")) {
 			SMenu(user.getId());
 		}
@@ -415,7 +414,7 @@ public class MenuORschedule {
 	}
 
 	// UPDATE PATIEN'S INFO
-	private static void updatePatientInfo(int id) throws Exception {
+	private static void updatePatientInfo(int id) throws IOException {
 
 		// List patient info
 		Patient patient = patientManager.showPatient(id);
@@ -435,12 +434,8 @@ public class MenuORschedule {
 		if (!medstat.equals("")) {
 			p.setMedstat(medstat);
 		}
-		System.out.println("New email: ");
-		String email = read.readLine();
-		if (!email.equals(" ")) {
-			p.setEmail(email);
-		}
-		//TODO si update email.... tener en cuenta para el logIn 
+		
+		
 		patientManager.updatePatient(p);
 	}
 
@@ -584,7 +579,7 @@ public class MenuORschedule {
 		System.out.println("choose a patient by its id: ");
 		Integer patientId = Integer.parseInt(read.readLine());
 		Patient p = patientManager.searchPatient(patientId);
-//TODO hace bien searchPatient pero hay que terminar la comrpobacion de Time para que termine de ir 
+
 		return p;
 	}
 

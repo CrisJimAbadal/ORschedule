@@ -65,7 +65,6 @@ public class Patient implements Serializable {
 		this.name = name;
 		this.medstat = medstat;
 		this.email = email;
-	//	this.digest= digest;
 		this.dob = dob;
 		this.sex = sex;
 		this.surgeries= new ArrayList<Surgery>();

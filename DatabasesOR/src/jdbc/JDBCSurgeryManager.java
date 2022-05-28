@@ -135,8 +135,6 @@ public class JDBCSurgeryManager implements SurgManager {
 		return surgeries;
 	}
 
-	// TODO COMPROBACION select lo q sea de surgery where time= ? if null... nueva
-	// surgery
 	// CHECKS TO SEE IF IT'S CORRECT TO KEEP CREATING
 	public boolean checkOPR(Schedule s, int oprId) {
 

@@ -513,8 +513,15 @@ public class MenuORschedule {
 
 			for (int i = 0; i < numSurg; i++) {
 				Surgeon surg = chooseSurgeon(specialty);
+				while (surgeryManager.checksurgeon(s, surg)) {
+					// TRUE = not available
+					System.out.println("The surgeon is not available at this schedule.");
+					System.out.println("Please choose another one:");
+					surg =chooseSurgeon(specialty);
+				}
 				surgeons.add(surg);
 			}
+			
 
 			// 6) TYPE of surgery (ex: transplant)
 			System.out.println("Input the type of surgery:");

@@ -151,6 +151,12 @@ public class JDBCSurgeryManager implements SurgManager {
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setDate(1, s.getDate());
 			pr.setInt(2, oprId);
+			pr.setTime(3, s.getStartTime());
+			pr.setTime(4, s.getFinishTime());
+			pr.setTime(5, s.getStartTime());
+			pr.setTime(6, s.getFinishTime());
+			pr.setTime(7, s.getStartTime());
+			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery(sql);
 			int id = rs.getInt(1);
 
@@ -166,21 +172,34 @@ public class JDBCSurgeryManager implements SurgManager {
 	}
 
 	public boolean checkpatient(Schedule s, Patient p) {
+		Patient patient=p;
 
 		try {
-			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT patientId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id WHERE schedule.Date= ? AND schedule.TIME = ? AND surgery.patientId=?";
+			String sql = "SELECT patientId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
+					+ "WHERE schedule.Date= ? AND surgery.patientId=?"
+					+ " AND ((schedule.startTime<= ? AND schedule.finishTime>= ?) " + // ?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?) " + // ?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.startTime<= ?) " + // ? = startTime ?2finishTIme
+					"OR (schedule.startTime<= ? AND schedule.finishTime>=?))" // ? =starttime
+			;
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setDate(1, s.getDate());
-			pr.setTime(2, s.getTime());
-			pr.setInt(3, p.getId());
+			pr.setInt(2, patient.getId());
+			pr.setTime(3, s.getStartTime());
+			pr.setTime(4, s.getFinishTime());
+			pr.setTime(5, s.getStartTime());
+			pr.setTime(6, s.getFinishTime());
+			pr.setTime(7, s.getStartTime());
+			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery(sql);
-			int id = rs.getInt("patientId");
+			int id = rs.getInt(1);
+
 			if (id == 0) {
 				return false;
-			}
+				// patient is not occupied at that schedule
 
-		} catch (Exception e) {
+		}} 
+			catch (Exception e) {
 			e.printStackTrace();
 		}
 		return true;
@@ -188,19 +207,35 @@ public class JDBCSurgeryManager implements SurgManager {
 
 	public boolean checksurgeon(Schedule s, Surgeon surg) {
 
+		Surgeon surgeon=surg;
+
 		try {
-			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT surgeonId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id WHERE schedule.Date= ? AND schedule.TIME = ? AND surgeon.oprId=?";
+			String sql = "SELECT surgeonId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
+					+ "WHERE schedule.Date= ? AND surgery.patientId=?"
+					+ " AND ((schedule.startTime<= ? AND schedule.finishTime>= ?) " + // ?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?) " + // ?1 startTime ?2 finishTime
+					"OR (schedule.startTime>= ? AND schedule.startTime<= ?) " + // ? = startTime ?2finishTIme
+					"OR (schedule.startTime<= ? AND schedule.finishTime>=?))" // ? =starttime
+			;
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setDate(1, s.getDate());
-			pr.setTime(2, s.getTime());
-			pr.setInt(3, s.getId());
+			pr.setInt(2, surgeon.getId());
+			pr.setTime(3, s.getStartTime());
+			pr.setTime(4, s.getFinishTime());
+			pr.setTime(5, s.getStartTime());
+			pr.setTime(6, s.getFinishTime());
+			pr.setTime(7, s.getStartTime());
+			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery(sql);
-			int id = rs.getInt("surgeonId");
+			int id = rs.getInt(1);
+
 			if (id == 0) {
 				return false;
-			}
-		} catch (Exception e) {
+				// surgeon is not occupied at that schedule
+
+		} 
+		} 
+		catch (Exception e) {
 			e.printStackTrace();
 		}
 		return true;

@@ -156,7 +156,7 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery(sql);
-			int id = rs.getInt(1); //TODO Why is this 1? Shouldnt it be 2?
+			int id = rs.getInt(1); 
 
 			if (id == 0) {
 				return false;
@@ -189,6 +189,8 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(6, s.getFinishTime());
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
+			pr.executeUpdate();   //TODO is this ok?
+			
 			ResultSet rs = pr.executeQuery(sql);
 			int id = rs.getInt(1);
 
@@ -196,7 +198,9 @@ public class JDBCSurgeryManager implements SurgManager {
 				return false;
 				// patient is not occupied at that schedule
 
-		}} 
+		}
+		
+		} 
 			catch (Exception e) {
 			e.printStackTrace();
 		}

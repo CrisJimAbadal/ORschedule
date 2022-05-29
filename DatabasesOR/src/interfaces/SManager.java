@@ -3,8 +3,6 @@ package interfaces;
 import java.util.List;
 
 import pojos.Schedule;
-//import jdbc.Availability;
-import pojos.Patient;
 import pojos.Surgeon;
 
 public interface SManager {

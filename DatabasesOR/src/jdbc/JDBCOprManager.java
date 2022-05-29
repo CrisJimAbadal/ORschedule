@@ -7,7 +7,7 @@ import java.util.List;
 
 import interfaces.OPRManager;
 import pojos.OPR;
-import pojos.Surgeon;
+
 
 public class JDBCOprManager implements OPRManager {
 

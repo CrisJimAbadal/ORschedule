@@ -76,7 +76,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		List<Surgery> surgeries = new ArrayList<Surgery>();
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT surgery.id,type,date,schedule.id, startTime, finishTime FROM surgery JOIN schedule ON surgery.id= schedule.id WHERE id= "
+			String sql = "SELECT surgery.id, type, date, schedule.id, startTime, finishTime FROM surgery JOIN schedule ON surgery.id= schedule.id WHERE id= "
 					+ id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -111,7 +111,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		List<Surgery> surgeries = new ArrayList<Surgery>();
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT surgery.id,type,date,schedule.id, startTime FROM surgery JOIN schedule ON surgery.id= schedule.id ";
+			String sql = "SELECT surgery.id, surgery.type, schedule.date, schedule.id, startTime FROM surgery JOIN schedule ON surgery.id = schedule.id ";
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 
@@ -156,7 +156,7 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery(sql);
-			int id = rs.getInt(1);
+			int id = rs.getInt(1); //TODO Why is this 1? Shouldnt it be 2?
 
 			if (id == 0) {
 				return false;

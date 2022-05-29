@@ -1,6 +1,7 @@
 package Menu;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
@@ -13,6 +14,14 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Time;
 import java.util.List;
+
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import interfaces.OPRManager;
 import interfaces.PManager;
@@ -45,7 +54,7 @@ public class MenuORschedule {
 	private static ScheduleManager scheduleManager;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	
-
+//TODO CREATE SOMETHING SO THE ID IS PUT AUTOMATICALLY
 	public static void main(String[] args) {
 
 		System.out.println("WELCOME TO THE OR SHCEDULE");
@@ -219,7 +228,6 @@ public class MenuORschedule {
 				System.out.println("CHOOSE AN OPTION: ");
 				System.out.println("1. Check information and update");
 				System.out.println("2. Check surgeries");
-
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(read.readLine());
@@ -408,7 +416,7 @@ public class MenuORschedule {
 		}
 		
 		if (user != null && user.getRole().getName().equals("surgeon")) {
-			SMenu(user.getId());
+			SMenu(user.getId()); //TODO does not go to SMenu();
 		}
 
 	}
@@ -479,16 +487,17 @@ public class MenuORschedule {
 			// 2)choose PATIENT
 			Patient p = choosePatient();
 			// check if patient available at that schedule
-			while (surgeryManager.checkpatient(s, p)) {
+			while (surgeryManager.checkpatient(s, p))  {
 				// TRUE = not available
 				System.out.println("The patient is not available at that time and date");
 				// if patient not available-> choose another schedule
 				System.out.println("Choose another schedule for that patient");
-				s = chooseSchedule();
+				s = chooseSchedule(); //TODO there is an error here
+				
 			}
 
 			// 3) choose OPR
-			int oprId = chooseOPR();
+			int oprId = chooseOPR(); //Cannot invoke "interfaces.OPRManager.listOprs()" because "Menu.MenuORschedule.oprManager" is null
 
 			while (surgeryManager.checkOPR(s, oprId)) {
 				// TRUE = not available
@@ -527,6 +536,8 @@ public class MenuORschedule {
 
 			scheduleManager.addSchedule(s);
 			surgeryManager.addSurgery(surg);
+			java2Xmlsurgury(surg);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -540,6 +551,7 @@ public class MenuORschedule {
 		Date date = null;
 		Time startTime = null;
 		Time finishTime = null;
+		Schedule s = null;
 		try {
 			System.out.println("\nInsert a date (yyyy-MM-dd): ");
 			date = Date.valueOf(read.readLine());
@@ -548,16 +560,14 @@ public class MenuORschedule {
 			startTime = Time.valueOf(read.readLine());
 			System.out.println("Insert a finish time: ");
 			finishTime = Time.valueOf(read.readLine());
-			if (finishTime.compareTo(startTime) > 0) {
-				// finishtime occurs later-> correct
-				Schedule s = new Schedule(date, startTime, finishTime);
-
-			} else {
-
+			while(finishTime.compareTo(startTime) < 0) {
 				System.out.println("The start and finish time are incorrect");
 				System.out.println("Repeat the process please:");
-				Schedule s = chooseSchedule();
-			}
+				 s = chooseSchedule();
+
+			} // finishtime occurs later-> correct
+			 s = new Schedule(date, startTime, finishTime);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -589,6 +599,7 @@ public class MenuORschedule {
 		System.out.println("choose a surgeon by its id: ");
 
 		surgeonManager.listSurgeons(specialty);
+		
 		Integer surgeonId = Integer.parseInt(read.readLine());
 		Surgeon s = surgeonManager.searchSurgeon(surgeonId);
 
@@ -599,6 +610,7 @@ public class MenuORschedule {
 	public static int chooseOPR() throws Exception {
 		System.out.println("choose an opr by its id: ");
 		oprManager.listOprs();
+		
 		Integer oprsId = Integer.parseInt(read.readLine());
 		return oprsId;
 
@@ -607,12 +619,21 @@ public class MenuORschedule {
 	// DELETE SURGERY
 	private static void deleteSurgery() throws IOException {
 		// 1)LIST SURGERIES
-		surgeryManager.listSurgeries();
+		List<Surgery> surgeries = surgeryManager.listSurgeries();
+		
+		for (Surgery s : surgeries) {
+			System.out.println(s.toString());
+		}
+		
 		System.out.println("Is there any surgery you want to delete? [1= Yes / 0= No]");
 		int answer = Integer.parseInt(read.readLine());
 
 		if (answer != 1 || answer != 0) {
 			System.out.println("Please input the answer again.");
+		}
+		
+		if(answer == 0) {
+			DMenu();
 		}
 
 		System.out.println("Input the id of the surgery you want to delete.");
@@ -620,5 +641,54 @@ public class MenuORschedule {
 		// 2)DELETE SURGERY
 		surgeryManager.unassign(surgeryId);
 	}
+	
+	private static EntityManager em;
+	
+	public static void java2Xmlsurgury(Surgery surgery) throws Exception{
+		
+		em = Persistence.createEntityManagerFactory("DatabasesOR").createEntityManager(); 
+		em.getTransaction().begin();
+		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
+		em.getTransaction().commit();
+		
+		// Create the JAXBContext
+				JAXBContext jaxbContext = JAXBContext.newInstance(Surgery.class); 
+				// Get the marshaller
+				Marshaller marshaller = jaxbContext.createMarshaller();
+				
+				// Pretty formatting
+				marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT,Boolean.TRUE);
+				
+				
+				File file = new File("./xmls/Sample-Surgery.xml"); 
+				marshaller.marshal(surgery, file);
+	}
+	
+	
+	//TODO do not know in which moment we need unmarshaller, maybye it is not necessary
+	private static final String PERSISTENCE_PROVIDER = "DatabasesOR"; //TODO change the persistence provider
+	private static EntityManagerFactory factory;
+	
+public void Xml2JavaSurgery() throws JAXBException{
+		
+		// Create the JAXBContext
+				JAXBContext jaxbContext = JAXBContext.newInstance(Surgery.class);
+				// Get the unmarshaller
+				Unmarshaller unmarshaller = jaxbContext.createUnmarshaller();
+
+				// Use the Unmarshaller to unmarshal the XML document from a file
+				File file = new File("./xmls/External-Surgery.xml");
+				Surgery surgery = (Surgery) unmarshaller.unmarshal(file);
+				
+				factory = Persistence.createEntityManagerFactory(PERSISTENCE_PROVIDER);
+				EntityManager em = factory.createEntityManager();
+				em.getTransaction().begin();
+				em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
+				em.getTransaction().commit();
+				
+				
+		
+	}
+	
 
 }

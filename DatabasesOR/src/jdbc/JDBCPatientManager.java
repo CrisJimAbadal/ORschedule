@@ -85,12 +85,13 @@ public class JDBCPatientManager implements PManager {
 				System.out.println("estas en searchPatient");
 				
 			}
+			System.out.println("estas fuera del while");
 			rs.close();
 			stmt.close();
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-
+		System.out.println("estas antes del return");
 		return p;
 	}
 

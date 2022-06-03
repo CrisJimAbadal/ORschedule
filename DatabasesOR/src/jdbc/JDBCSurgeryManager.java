@@ -32,7 +32,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		List <Surgeon> surgeons=s.getSurgeons();
 
 		try {
-			//TODO ask
+			
 			
 			String sql = "INSERT INTO surgery (patientId, , oprId, type VALUES (?,?,?)";
 			// use preparedStmt so nothing damages the database
@@ -214,7 +214,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		Surgeon surgeon=surg;
 
 		try {
-			String sql = "SELECT surgeonId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
+			String sql = "SELECT * FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
 					+ "WHERE schedule.Date= ? AND surgery.patientId=?"
 					+ " AND ((schedule.startTime<= ? AND schedule.finishTime>= ?) " + // ?1 startTime ?2 finishTime
 					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?) " + // ?1 startTime ?2 finishTime
@@ -230,7 +230,9 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(6, s.getFinishTime());
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
-			ResultSet rs = pr.executeQuery(sql);
+			ResultSet rs = pr.executeQuery();
+			
+			rs.next();
 			int id = rs.getInt(1);
 
 			if (id == 0) {
@@ -245,4 +247,33 @@ public class JDBCSurgeryManager implements SurgManager {
 		return true;
 	}
 
+	public Surgery chooseSurgery (int id) {
+		Surgery s= null;
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM surgery WHERE id = " + id;
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String type = rs.getString("type");
+			Integer pId = rs.getInt("patientId");
+			Integer sId = rs.getInt("surgeonId");
+			Integer oprId = rs.getInt("oprId");
+			Integer scheduleId = rs.getInt("scheduleId");
+			Patient patient= 
+					//TODO crear un searchpatient con id
+					//TODO crear patient y surgeon por los patientid y surgeonid etc etc  que devuelve esto y pasar al constructor
+			
+				s = new Surgery(id, type, patientId, surgeonId, oprId, scheduleId);
+
+			}
+			
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		
+		return s;
+	}
 }

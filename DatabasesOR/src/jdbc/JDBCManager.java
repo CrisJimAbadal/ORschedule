@@ -59,7 +59,7 @@ public class JDBCManager {
 
 			// TABLE PATIENT
 			sql = "CREATE TABLE patient(id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT NOT NULL ,"
-					+ "email TEXT NOT NULL,medstat TEXT NOT NULL,dob DATE,sex TEXT NOT NULL )";
+					+ "email TEXT NOT NULL UNIQUE,medstat TEXT NOT NULL,dob DATE,sex TEXT NOT NULL )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON
@@ -70,7 +70,7 @@ public class JDBCManager {
 			// TABLE SURGERY
 			sql = "CREATE TABLE surgery(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL,"
 					+ "patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
-					+ "surgeonID INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
+					+ "surgeonId INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
 					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,"
 					+ "scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
 			stm.executeUpdate(sql);

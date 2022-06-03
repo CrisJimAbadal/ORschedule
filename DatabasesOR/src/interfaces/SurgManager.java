@@ -22,6 +22,9 @@ public interface SurgManager {
 	//list assigned surgeries so the doctor can delete one
 	public List<Surgery> listSurgeries();
 	
+	//choose Surgery
+	public Surgery chooseSurgery (int id);
+	
 	//to check if it's available at a specific schedule
 	public boolean checkOPR (Schedule s, int oprId);
 	public boolean checkpatient (Schedule s, Patient p);

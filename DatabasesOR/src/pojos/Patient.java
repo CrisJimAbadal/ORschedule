@@ -61,6 +61,7 @@ public class Patient implements Serializable {
 
 	public Patient(String name,  String medstat, String email, Date dob, String sex) {
 		super();
+		
 		this.name = name;
 		this.medstat = medstat;
 		this.email = email;
@@ -83,9 +84,9 @@ public class Patient implements Serializable {
 	
 	
 
-	public Patient(Integer id, String name, String medstat) {
+	public Patient(String email, String name, String medstat) {
 		super();
-		this.id = id;
+		this.email=email;
 		this.name = name;
 		this.medstat = medstat;
 		this.surgeries= new ArrayList<Surgery>();

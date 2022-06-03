@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.sql.Date;
@@ -50,7 +51,7 @@ public class MenuORschedule {
 	private static UserManager userManager;
 	private static ScheduleManager scheduleManager;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-	private static DateTimeFormatter formattert = DateTimeFormatter.ofPattern("hh:mm");
+	private static DateTimeFormatter formattert = DateTimeFormatter.ofPattern("HH:mm");
 	
 	public static void main(String[] args) {
 
@@ -203,6 +204,7 @@ public class MenuORschedule {
 					}
 
 					break;
+				
 				case 0:
 
 					// EXIT
@@ -295,6 +297,7 @@ public class MenuORschedule {
 				System.out.println("CHOOSE AN OPTION: ");
 				System.out.println("1. Create a surgery");
 				System.out.println("2. Delete a surgery");
+				System.out.println("3. XML");
 				System.out.println("0. Exit");
 
 				int choice = Integer.parseInt(read.readLine());
@@ -309,6 +312,9 @@ public class MenuORschedule {
 				case 2:
 
 					deleteSurgery();
+					break;
+				case 3:
+					toxml();
 					break;
 
 				case 0:
@@ -327,6 +333,7 @@ public class MenuORschedule {
 	public static void createPatient() throws Exception {
 
 		System.out.println("Input patient's information: ");
+		
 		System.out.println("Name: ");
 		String name = read.readLine();
 		System.out.println("Medstat: ");
@@ -347,7 +354,7 @@ public class MenuORschedule {
 
 		//CHECK THAT THE PATIENT DOESN'T EXIST ALREADY (do the same in surgeon)
 		Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate), sex);
-		if (patientManager.searchPatient(patient.getId())==null) {  //TODO pojos.Patient.getId()??
+		if (patientManager.searchPatient(email) == null) {  //TODO pojos.Patient.getId()??
 		// CREATE PATIENT AND ADD TO JPA
 		User u = new User(email, digest);
 		Role role = userManager.getRole("patient");
@@ -420,7 +427,10 @@ public class MenuORschedule {
 
 		// [depending on the type of user we open a different menu]
 		if (user != null && user.getRole().getName().equals("patient")) {
-			PMenu(user.getId());
+			String emailu=user.getEmail();
+			Patient p = patientManager.searchPatient(emailu);
+			PMenu(p.getId());
+
 		}
 
 		if (user != null && user.getRole().getName().equals("surgeon")) {
@@ -436,7 +446,7 @@ public class MenuORschedule {
 		Patient patient = patientManager.showPatient(id);
 		System.out.println(patient.toString());
 
-		Patient p = patientManager.searchPatient(id);
+		Patient p = patientManager.searchPatient(patient.getEmail());
 
 		System.out.println("Update your information: ");
 		// Ask for info, if empty keeps the one existing before
@@ -560,11 +570,14 @@ public class MenuORschedule {
 		Schedule s = null;
 		try {
 			System.out.println("\nInsert a date (yyyy-MM-dd): ");
-			date = Date.valueOf(read.readLine());
-			System.out.println("Insert a start time (hh:mm:ss): ");
-			startTime = Time.valueOf(read.readLine());
+			LocalDate ld = LocalDate.parse(read.readLine(), formatter);
+			date = Date.valueOf(ld);
+			System.out.println("Insert a start time (hh:mm): ");
+			LocalTime lt = LocalTime.parse(read.readLine(), formattert);
+			startTime = Time.valueOf(lt);
 			System.out.println("Insert a finish time: ");
-			finishTime = Time.valueOf(read.readLine());
+			LocalTime ltf = LocalTime.parse(read.readLine(), formattert);
+			finishTime = Time.valueOf(ltf);
 			while (finishTime.compareTo(startTime) < 0) {
 				System.out.println("The start and finish time are incorrect");
 				System.out.println("Repeat the process please:");
@@ -592,7 +605,11 @@ public class MenuORschedule {
 
 		System.out.println("choose a patient by its id: ");
 		Integer patientId = Integer.parseInt(read.readLine());
-		Patient p = patientManager.searchPatient(patientId);
+		System.out.println("the patient chosen is:");
+		Patient patient = patientManager.showPatient(patientId);
+		System.out.println(patient.toString());
+		Patient p = patientManager.searchPatient(patient.getEmail());
+	
 
 		return p;
 	}
@@ -683,12 +700,15 @@ public class MenuORschedule {
 		File file = new File("./xmls/External-Surgery.xml");
 		Surgery surgery = (Surgery) unmarshaller.unmarshal(file);
 
-		factory = Persistence.createEntityManagerFactory(PERSISTENCE_PROVIDER);
-		EntityManager em = factory.createEntityManager();
-		em.getTransaction().begin();
-		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
-		em.getTransaction().commit();
+		surgeryManager.addSurgery(surgery);
 
+	}
+	public void toxml() throws NumberFormatException, IOException {
+		System.out.println("Select a surgery to pass to xml");
+		surgeryManager.listSurgeries();
+		Integer id= Integer.parseInt(read.readLine());
+		Surgery s = surgeryManager.chooseSurgery(id);
+		
 	}
 
 }

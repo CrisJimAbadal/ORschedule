@@ -23,7 +23,7 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public void addPatient(Patient p) {
 		try {
-			String sql = "INSERT INTO patient (name, medstat, email, dob, sex) VALUES (?,?,?,?,?)";
+			String sql = "INSERT INTO patient (name, medstat, email, dob, sex) VALUES (?,?,?,?,?,?)";
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, p.getName());
@@ -71,19 +71,18 @@ public class JDBCPatientManager implements PManager {
 
 	// FINDS A PATIENT BY ITS ID
 	@Override
-	public Patient searchPatient(int id) {
+	public Patient searchPatient( String email) {
 		Patient p = null;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM patient WHERE id = " + id;
+			String sql = "SELECT name,medstat FROM patient WHERE email = " + email;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String name = rs.getString("name");
 				String medstat = rs.getString("medstat");
 
-				p = new Patient(id, name, medstat);
-			
-				
+				p = new Patient(email,name, medstat);
+
 			}
 			
 			rs.close();
@@ -112,7 +111,7 @@ public class JDBCPatientManager implements PManager {
 				String sex = rs.getString("sex");
 				String email=rs.getString("email");
 				
-				p = new Patient( name,email, medstat, dob, sex);
+				p = new Patient(name,email, medstat, dob, sex);
 			}
 			rs.close();
 			stmt.close();

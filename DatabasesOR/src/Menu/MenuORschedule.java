@@ -50,7 +50,7 @@ public class MenuORschedule {
 	private static UserManager userManager;
 	private static ScheduleManager scheduleManager;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-
+	private static DateTimeFormatter formattert = DateTimeFormatter.ofPattern("hh:mm");
 
 	public static void main(String[] args) {
 
@@ -124,7 +124,6 @@ public class MenuORschedule {
 				case 1:
 					// REGISTER (add patient)
 					createPatient();
-					// TODO if already exists, don't add
 					break;
 				case 2:
 					// LOG IN as patient
@@ -562,8 +561,7 @@ public class MenuORschedule {
 		try {
 			System.out.println("\nInsert a date (yyyy-MM-dd): ");
 			date = Date.valueOf(read.readLine());
-			// TODO time formatter
-			System.out.println("Insert a start time: ");
+			System.out.println("Insert a start time (hh:mm): ");
 			startTime = Time.valueOf(read.readLine());
 			System.out.println("Insert a finish time: ");
 			finishTime = Time.valueOf(read.readLine());

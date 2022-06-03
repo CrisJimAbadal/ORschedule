@@ -32,7 +32,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		List <Surgeon> surgeons=s.getSurgeons();
 
 		try {
-			//TODO finish query
+			//TODO ask
 			
 			String sql = "INSERT INTO surgery (patientId, , oprId, type VALUES (?,?,?)";
 			// use preparedStmt so nothing damages the database
@@ -41,6 +41,7 @@ public class JDBCSurgeryManager implements SurgManager {
 			prep.setObject(2,o.getId() );
 			prep.setString(3, s.getType());
 			
+		
 			for(Surgeon surgeon: surgeons) {
 				
 				String sql2 = "INSERT INTO surgeonSurgery (surgeryId, surgeonId VALUES (?,?)";
@@ -48,10 +49,11 @@ public class JDBCSurgeryManager implements SurgManager {
 				PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
 				prep2.setObject(1, s.getId());
 				prep2.setObject(1, surgeon.getId());
-				prep.executeUpdate();
-				prep.close();
+				prep2.executeUpdate(); 
+				prep2.close();
 			}
-
+			prep.executeUpdate(); 
+			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

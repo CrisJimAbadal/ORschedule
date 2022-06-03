@@ -78,7 +78,7 @@ public class JDBCManager {
 			// TABLE SURGERY-SURGEONS
 			sql = "CREATE TABLE surgeonSurgery (surgeonId INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
 					+ "surgeryId INTEGER REFERENCES surgery(id) ON DELETE SET NULL,"
-					+ "PRIMARY KEY (surgeonId,surgeryId)";
+					+ "PRIMARY KEY (surgeonId,surgeryId))";
 			stm.executeUpdate(sql);
 
 			// WE ASSUME THAT OUR HOSPITALS HAS 6 OPR

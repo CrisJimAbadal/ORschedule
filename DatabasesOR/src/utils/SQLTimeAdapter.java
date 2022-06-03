@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 
 public class SQLTimeAdapter extends XmlAdapter<String, Time> {
 	
-	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm"); 
+	private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("hh:mm"); //TODO ask if it is correct
 
 	@Override
 	public String marshal(Time sqlTime) throws Exception {

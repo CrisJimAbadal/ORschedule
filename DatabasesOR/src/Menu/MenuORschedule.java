@@ -51,7 +51,7 @@ public class MenuORschedule {
 	private static ScheduleManager scheduleManager;
 	private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 	private static DateTimeFormatter formattert = DateTimeFormatter.ofPattern("hh:mm");
-
+	
 	public static void main(String[] args) {
 
 		System.out.println("WELCOME TO THE OR SHCEDULE");
@@ -561,7 +561,7 @@ public class MenuORschedule {
 		try {
 			System.out.println("\nInsert a date (yyyy-MM-dd): ");
 			date = Date.valueOf(read.readLine());
-			System.out.println("Insert a start time (hh:mm): ");
+			System.out.println("Insert a start time (hh:mm:ss): ");
 			startTime = Time.valueOf(read.readLine());
 			System.out.println("Insert a finish time: ");
 			finishTime = Time.valueOf(read.readLine());
@@ -669,7 +669,7 @@ public class MenuORschedule {
 
 	// TODO do not know in which moment we need unmarshaller, maybye it is not
 	// necessary
-	private static final String PERSISTENCE_PROVIDER = "DatabasesOR"; // TODO change the persistence provider
+	private static final String PERSISTENCE_PROVIDER = "DatabasesOR"; 
 	private static EntityManagerFactory factory;
 
 	public void Xml2JavaSurgery() throws JAXBException {

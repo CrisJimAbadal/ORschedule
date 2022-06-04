@@ -69,7 +69,7 @@ public class JDBCPatientManager implements PManager {
 		return patients;
 	}
 
-	// FINDS A PATIENT BY ITS ID
+	// FINDS A PATIENT BY ITS EMAIL
 	@Override
 	public Patient searchPatient( String email) {
 		Patient p = null;
@@ -93,6 +93,30 @@ public class JDBCPatientManager implements PManager {
 		
 		return p;
 	}
+	
+	// FINDS A PATIENT BY ITS ID
+		@Override
+		public Patient searchPatientbyId ( int id) {
+			Patient p = null;
+			try {
+				Statement stmt = manager.getConnection().createStatement();
+				String sql = "SELECT name,medstat FROM patient WHERE id = " + id;
+				ResultSet rs = stmt.executeQuery(sql);
+				while (rs.next()) {
+					String name = rs.getString("name");
+					String medstat = rs.getString("medstat");
+
+					p = new Patient(id,name, medstat);
+
+				}
+				rs.close();
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+			
+			return p;
+		}
 
 	// INFO THAT THE PATIENT CAN SEE
 	@Override

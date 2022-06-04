@@ -354,7 +354,7 @@ public class MenuORschedule {
 
 		//CHECK THAT THE PATIENT DOESN'T EXIST ALREADY (do the same in surgeon)
 		Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate), sex);
-		if (patientManager.searchPatient(email) == null) {  //TODO pojos.Patient.getId()??
+		if (patientManager.searchPatient(email) == null) {  
 		// CREATE PATIENT AND ADD TO JPA
 		User u = new User(email, digest);
 		Role role = userManager.getRole("patient");
@@ -427,14 +427,17 @@ public class MenuORschedule {
 
 		// [depending on the type of user we open a different menu]
 		if (user != null && user.getRole().getName().equals("patient")) {
-			String emailu=user.getEmail();
-			Patient p = patientManager.searchPatient(emailu);
+			Integer id =user.getId();    // returns 1 (user id not patient id)
+			System.out.println(id);
+			Patient p = patientManager.searchPatientbyId(id);  //returns null (patient empty)
+			System.out.println(p);
+			
 			PMenu(p.getId());
-
+			
 		}
 
 		if (user != null && user.getRole().getName().equals("surgeon")) {
-			SMenu(user.getId()); // TODO does not go to SMenu();
+			SMenu(user.getId()); // TODO fix user.get [patient and surgeon]
 		}
 
 	}
@@ -509,13 +512,11 @@ public class MenuORschedule {
 				System.out.println("The patient is not available at that time and date");
 				// if patient not available-> choose another schedule
 				System.out.println("Choose another schedule for that patient");
-				s = chooseSchedule(); // TODO there is an error here
-
+				s = chooseSchedule(); 
 			}
 
 			// 3) choose OPR
-			int oprId = chooseOPR(); // Cannot invoke "interfaces.OPRManager.listOprs()" because
-										// "Menu.MenuORschedule.oprManager" is null
+			int oprId = chooseOPR(); 
 
 			while (surgeryManager.checkOPR(s, oprId)) {
 				// TRUE = not available
@@ -553,7 +554,7 @@ public class MenuORschedule {
 
 			scheduleManager.addSchedule(s);
 			surgeryManager.addSurgery(surg);
-			java2Xmlsurgury(surg);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -608,7 +609,7 @@ public class MenuORschedule {
 		System.out.println("the patient chosen is:");
 		Patient patient = patientManager.showPatient(patientId);
 		System.out.println(patient.toString());
-		Patient p = patientManager.searchPatient(patient.getEmail());
+		Patient p = patientManager.searchPatientbyId(patientId);
 	
 
 		return p;
@@ -622,7 +623,7 @@ public class MenuORschedule {
 		surgeonManager.listSurgeons(specialty);
 
 		Integer surgeonId = Integer.parseInt(read.readLine());
-		Surgeon s = surgeonManager.searchSurgeon(surgeonId);
+		Surgeon s = surgeonManager.chooseSurgeon(surgeonId);
 
 		return s;
 	}
@@ -684,7 +685,7 @@ public class MenuORschedule {
 		marshaller.marshal(surgery, file);
 	}
 
-	// TODO do not know in which moment we need unmarshaller, maybye it is not
+	// TODO do not know in which moment we need unmarshaller, maybe it is not
 	// necessary
 	private static final String PERSISTENCE_PROVIDER = "DatabasesOR"; 
 	private static EntityManagerFactory factory;
@@ -703,12 +704,14 @@ public class MenuORschedule {
 		surgeryManager.addSurgery(surgery);
 
 	}
-	public void toxml() throws NumberFormatException, IOException {
+	
+	public static void toxml() throws Exception {
 		System.out.println("Select a surgery to pass to xml");
 		surgeryManager.listSurgeries();
 		Integer id= Integer.parseInt(read.readLine());
 		Surgery s = surgeryManager.chooseSurgery(id);
-		
+		//TODO check
+		java2Xmlsurgury(s);
 	}
 
 }

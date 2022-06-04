@@ -93,6 +93,16 @@ public class Patient implements Serializable {
 
 	}
 	
+	
+	public Patient(Integer id, String name, String medstat) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.medstat = medstat;
+		this.surgeries = new ArrayList <Surgery>();
+	}
+
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

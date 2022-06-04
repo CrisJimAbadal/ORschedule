@@ -60,6 +60,18 @@ public class Surgery implements Serializable{
 
 
 
+	public Surgery(Integer id, String type, Patient patient, OPR opr, List<Surgeon> surgeons, Schedule schedule) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.patient = patient;
+		this.opr = opr;
+		this.surgeons = surgeons;
+		this.schedule = schedule;
+	}
+
+
+
 	public Surgery(String type, Schedule schedule) {
 		this.type=type;
 		this.setSchedule(schedule);

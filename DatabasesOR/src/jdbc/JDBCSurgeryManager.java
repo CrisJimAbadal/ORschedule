@@ -9,6 +9,10 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import interfaces.OPRManager;
+import interfaces.PManager;
+import interfaces.SManager;
+import interfaces.ScheduleManager;
 import interfaces.SurgManager;
 import pojos.OPR;
 import pojos.Patient;
@@ -19,6 +23,10 @@ import pojos.Surgery;
 public class JDBCSurgeryManager implements SurgManager {
 
 	private JDBCManager manager;
+	private static PManager patientManager;
+	private static SManager surgeonManager;
+	private static OPRManager oprManager;
+	private static ScheduleManager scheduleManager;
 
 	public JDBCSurgeryManager(JDBCManager m) {
 		this.manager = m;
@@ -27,32 +35,30 @@ public class JDBCSurgeryManager implements SurgManager {
 	// ADD SURGERY TO THE DATABASE
 	@Override
 	public void addSurgery(Surgery s) {
-		Patient p= s.getPatient();
-		OPR o=s.getOpr();
-		List <Surgeon> surgeons=s.getSurgeons();
+		Patient p = s.getPatient();
+		OPR o = s.getOpr();
+		List<Surgeon> surgeons = s.getSurgeons();
 
 		try {
-			
-			
+
 			String sql = "INSERT INTO surgery (patientId, , oprId, type VALUES (?,?,?)";
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setObject(1, p.getId());
-			prep.setObject(2,o.getId() );
+			prep.setObject(2, o.getId());
 			prep.setString(3, s.getType());
-			
-		
-			for(Surgeon surgeon: surgeons) {
-				
+
+			for (Surgeon surgeon : surgeons) {
+
 				String sql2 = "INSERT INTO surgeonSurgery (surgeryId, surgeonId VALUES (?,?)";
 				// use preparedStmt so nothing damages the database
 				PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
 				prep2.setObject(1, s.getId());
 				prep2.setObject(1, surgeon.getId());
-				prep2.executeUpdate(); 
+				prep2.executeUpdate();
 				prep2.close();
 			}
-			prep.executeUpdate(); 
+			prep.executeUpdate();
 			prep.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -106,7 +112,6 @@ public class JDBCSurgeryManager implements SurgManager {
 
 	}
 
-	
 	// LIST SURGERIES SO THE DOCTOR CAN DELETE ONE
 	@Override
 	public List<Surgery> listSurgeries() {
@@ -157,8 +162,8 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(6, s.getFinishTime());
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
-			ResultSet rs = pr.executeQuery(sql);
-			int id = rs.getInt(1); 
+			ResultSet rs = pr.executeQuery();
+			int id = rs.getInt(1);
 
 			if (id == 0) {
 				return false;
@@ -172,7 +177,7 @@ public class JDBCSurgeryManager implements SurgManager {
 	}
 
 	public boolean checkpatient(Schedule s, Patient p) {
-		Patient patient=p;
+		Patient patient = p;
 
 		try {
 			String sql = "SELECT patientId FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
@@ -191,19 +196,16 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(6, s.getFinishTime());
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
-			pr.executeUpdate();   //TODO is this ok?
-			
-			ResultSet rs = pr.executeQuery(sql);
+			ResultSet rs = pr.executeQuery();
 			int id = rs.getInt(1);
 
 			if (id == 0) {
 				return false;
 				// patient is not occupied at that schedule
 
-		}
-		
-		} 
-			catch (Exception e) {
+			}
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return true;
@@ -211,7 +213,7 @@ public class JDBCSurgeryManager implements SurgManager {
 
 	public boolean checksurgeon(Schedule s, Surgeon surg) {
 
-		Surgeon surgeon=surg;
+		Surgeon surgeon = surg;
 
 		try {
 			String sql = "SELECT * FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
@@ -231,7 +233,7 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery();
-			
+
 			rs.next();
 			int id = rs.getInt(1);
 
@@ -239,41 +241,46 @@ public class JDBCSurgeryManager implements SurgManager {
 				return false;
 				// surgeon is not occupied at that schedule
 
-		} 
-		} 
-		catch (Exception e) {
+			}
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return true;
 	}
 
-	public Surgery chooseSurgery (int id) {
-		Surgery s= null;
+	public Surgery chooseSurgery(int id) {
+		Surgery s = null;
+		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
 			Statement stmt = manager.getConnection().createStatement();
 			String sql = "SELECT * FROM surgery WHERE id = " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String type = rs.getString("type");
-			Integer pId = rs.getInt("patientId");
-			Integer sId = rs.getInt("surgeonId");
-			Integer oprId = rs.getInt("oprId");
-			Integer scheduleId = rs.getInt("scheduleId");
-			Patient patient= 
-					//TODO crear un searchpatient con id
-					//TODO crear patient y surgeon por los patientid y surgeonid etc etc  que devuelve esto y pasar al constructor
-			
-				s = new Surgery(id, type, patientId, surgeonId, oprId, scheduleId);
+				Integer pId = rs.getInt("patientId");
 
+				Integer sId = rs.getInt("surgeonId");
+				Integer oprId = rs.getInt("oprId");
+				Integer scheduleId = rs.getInt("scheduleId");
+
+				Patient patient = patientManager.searchPatientbyId(pId);
+
+				Surgeon surgeon = surgeonManager.chooseSurgeon(sId);
+				surgeons.add(surgeon);
+
+				OPR opr = oprManager.searchOPR(oprId);
+				Schedule schedule = scheduleManager.showSchedule(surgeon.getId());
+				// TODO check if the method is correct
+
+				s = new Surgery(id, type, patient, opr, surgeons, schedule);
 			}
-			
+
 			rs.close();
 			stmt.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		
+
 		return s;
 	}
 }

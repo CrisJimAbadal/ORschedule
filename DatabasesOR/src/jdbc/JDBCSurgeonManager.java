@@ -91,6 +91,33 @@ public class JDBCSurgeonManager implements SManager {
 		return s;
 	}
 
+	//CHOOSE SURGEON
+	@Override
+	public Surgeon chooseSurgeon(int id) {
+		Surgeon s = null;
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM surgeon WHERE id = " + id;
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				String name = rs.getString("name");
+				String email = rs.getString("email");
+				String medstat = rs.getString("medstat");
+				Integer pagerNumber = rs.getInt("pagerNumber");
+				Integer tlfNumber = rs.getInt("tlfNumber");
+				
+
+				s = new Surgeon(id, email, name, medstat, pagerNumber, tlfNumber);
+
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return s;
+	}
+
 	// SHOW SURGEON'S INFO (before updating the info)
 	@Override
 	public Surgeon showSurgeon(int id) {
@@ -107,7 +134,7 @@ public class JDBCSurgeonManager implements SManager {
 				Integer tlfNumber = rs.getInt("tlfNumber");
 
 				s = new Surgeon(id, name, email, medstat, pagerNumber, tlfNumber);
-				System.out.println("estas en showSurgeon");
+				
 			}
 			
 		} catch (Exception e) {

@@ -15,10 +15,14 @@ public interface SManager {
 
 	// searchSurgeon
 	public Surgeon searchSurgeon(int id);
+	
+	//chooseSurgeon
+	public Surgeon chooseSurgeon(int id);
 
 	// search by PagerNumber
 	public Surgeon showSurgeon(int id);
 
+	//update surgeon
 	public void updateSurgeon(Surgeon s);
 
     //show assigned surgeries

@@ -8,7 +8,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 public class Xml2HtmlReport {
-	//TODO mirar si hay que cambiar cosas de esta clase
+	
 	
 	
 	/**
@@ -26,9 +26,9 @@ public class Xml2HtmlReport {
 			e.printStackTrace();
 		}
 	}
-
+//TODO import and  create Files
 	public static void main(String[] args) {
-		simpleTransform("./xmls/External-Report.xml", "./xmls/Report-Style.xslt", "./xmls/External-Report.html");
-
+		simpleTransform("./xml/External-Surgery.xml", "./xml/Surgery-Style.xslt", "./xml/External-Surgery.html");
+//the last one creates the webpage
 	}
 }

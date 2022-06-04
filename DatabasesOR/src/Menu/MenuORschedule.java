@@ -233,7 +233,7 @@ public class MenuORschedule {
 				switch (choice) {
 
 				case 1:
-
+System.out.println("llega aqui");
 					updatePatientInfo(id);
 					break;
 				case 2:
@@ -273,8 +273,14 @@ public class MenuORschedule {
 					break;
 
 				case 2:
-
-					surgeonManager.showSchedules(sId);
+					//TODO revisar si imprime bien cuando hayamos creado surgeries
+					//la ultima vez que fue probado no habia surgeries
+					List<Surgery> surgeries = new ArrayList<Surgery>();
+					surgeries=surgeonManager.listSurgeries(sId);
+					
+						System.out.println(surgeries.toString());
+					
+					
 					break;
 
 				case 0:
@@ -430,27 +436,33 @@ public class MenuORschedule {
 		if (user != null && user.getRole().getName().equals("patient")) {
 			Integer id =user.getId();    // returns 1 (user id not patient id)
 			System.out.println(id);
-			Patient p = patientManager.searchPatientbyId(id);  //returns null (patient empty)
+			int patientid=patientManager.searchPatientfromUId (id);
+			Patient p = patientManager.searchPatientbyId(patientid);  //returns null (patient empty)
 			System.out.println(p);
-			
 			PMenu(p.getId());
 			
 		}
 
 		if (user != null && user.getRole().getName().equals("surgeon")) {
-			SMenu(user.getId()); // TODO fix user.get [patient and surgeon]
+			Integer id =user.getId();    // returns 1 (user id not patient id)
+			System.out.println(id);
+			int surgeonid =surgeonManager.searchSurgeonIdfromUId(id);
+			Surgeon s=surgeonManager.searchSurgeon(surgeonid);
+			System.out.println(s);
+			SMenu(s.getId());
+			
 		}
 
 	}
 
 	// UPDATE PATIEN'S INFO
 	private static void updatePatientInfo(int id) throws IOException {
-
+System.out.println("entra a este metodo");
 		// List patient info
 		Patient patient = patientManager.showPatient(id);
 		System.out.println(patient.toString());
 
-		Patient p = patientManager.searchPatient(patient.getEmail());
+		Patient p = patientManager.searchPatientbyId(id);
 
 		System.out.println("Update your information: ");
 		// Ask for info, if empty keeps the one existing before

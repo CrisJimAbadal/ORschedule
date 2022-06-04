@@ -29,4 +29,5 @@ public interface SurgManager {
 	public boolean checkOPR (Schedule s, int oprId);
 	public boolean checkpatient (Schedule s, Patient p);
 	public boolean checksurgeon (Schedule s, Surgeon surg);
+	
 }

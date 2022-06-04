@@ -93,4 +93,5 @@ public class JPAUserManager implements UserManager {
 		return u;
 	}
 
+
 }

@@ -94,6 +94,28 @@ public class JDBCPatientManager implements PManager {
 		return p;
 	}
 	
+	//get patientid from user id -> for login
+	public int searchPatientfromUId (int id) {
+		int pid=0;
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT patient.id FROM patient JOIN users ON patient.email=users.email WHERE users.id= " + id;
+			ResultSet rs = stmt.executeQuery(sql);
+			
+				pid = rs.getInt("id");
+		
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return pid;
+		
+	}
+	
+	
+	
 	// FINDS A PATIENT BY ITS ID
 		@Override
 		public Patient searchPatientbyId ( int id) {

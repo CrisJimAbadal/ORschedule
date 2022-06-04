@@ -24,7 +24,8 @@ public interface PManager {
 	//update patient
 	public void updatePatient(Patient p);
 	
-	
+	//get patient id 
+	public int searchPatientfromUId (int id);
 	
 	
 }

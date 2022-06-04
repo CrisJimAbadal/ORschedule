@@ -4,6 +4,7 @@ import java.util.List;
 
 import pojos.Schedule;
 import pojos.Surgeon;
+import pojos.Surgery;
 
 public interface SManager {
 
@@ -25,7 +26,10 @@ public interface SManager {
 	//update surgeon
 	public void updateSurgeon(Surgeon s);
 
-    //show assigned surgeries
-	public List<Schedule> showSchedules(int surgeonId);
 
+	//get surgeonid from userid
+	public int searchSurgeonIdfromUId (int id);
+
+	//to show the schedule
+	public List<Surgery> listSurgeries(int surgeonId);
 }

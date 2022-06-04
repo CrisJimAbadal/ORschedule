@@ -3,6 +3,7 @@ package jdbc;
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Time;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 import interfaces.SManager;
 import pojos.Schedule;
 import pojos.Surgeon;
+import pojos.Surgery;
 
 public class JDBCSurgeonManager implements SManager {
 
@@ -66,7 +68,25 @@ public class JDBCSurgeonManager implements SManager {
 		}
 		return surgeons;
 	}
+	//get surgeonid from user id -> for login
+		public int searchSurgeonIdfromUId (int id) {
+			int sid=0;
+			try {
+				Statement stmt = manager.getConnection().createStatement();
+				String sql = "SELECT surgeon.id FROM surgeon JOIN users ON surgeon.email=users.email WHERE users.id= " + id;
+				ResultSet rs = stmt.executeQuery(sql);
+				
+					sid = rs.getInt("id");
+			
+				rs.close();
+				stmt.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
 
+			return sid;
+			
+		}
 	// SEARCH SURGEON BY ID
 	@Override
 	public Surgeon searchSurgeon(int id) {
@@ -147,14 +167,14 @@ public class JDBCSurgeonManager implements SManager {
 	@Override
 	public void updateSurgeon(Surgeon s) {
 		try {
-			String sql = "UPDATE surgeon SET name = ?, medstat = ?, pagernumber = ?, tlfnumber = ?";
+			String sql = "UPDATE surgeon SET  pagernumber = ?, tlfnumber = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			
 			if (s.getPagerNumber() != null) {
-				pr.setInt(3, s.getPagerNumber());
+				pr.setInt(1, s.getPagerNumber());
 			}
 			if (s.getTlfNumber() != null) {
-				pr.setInt(4, s.getTlfNumber());
+				pr.setInt(2, s.getTlfNumber());
 			}
 			pr.executeUpdate();
 			pr.close();
@@ -163,30 +183,34 @@ public class JDBCSurgeonManager implements SManager {
 
 		}
 	}
-//TODO check this in db browser
-	public List<Schedule> showSchedules(int surgeonId) {
 
-		List<Schedule> schedules = new ArrayList<Schedule>();
+	
+	public List<Surgery> listSurgeries(int surgeonId) {
+		List<Surgery> surgeries = new ArrayList<Surgery>();
 		try {
-			String sql = "SELECT date, startTime, finishTime  FROM schedule JOIN surgeon"
-					+ " ON surgeon.scheduleId = schedule.id WHERE surgeonId = " + surgeonId;
-			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-			ResultSet rs = prep.executeQuery(sql);
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT surgery.id, surgery.type, schedule.date, schedule.id, startTime FROM surgery JOIN schedule ON surgery.id = schedule.id WHERE surgery.surgeonID = "+ surgeonId;
+			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 
-				Date date = rs.getDate(1);
-				Time stime = rs.getTime(2);
-				Time ftime = rs.getTime(3);
-				Schedule schedule = new Schedule(date, stime, ftime);
+				Integer surgeryId = rs.getInt(1);
+				String type = rs.getString(2);
+				Date date = rs.getDate(3);
+				Integer scheduleId = rs.getInt(4);
+				Time startTime = rs.getTime(5);
 
-				schedules.add(schedule);
+				Schedule schedule = new Schedule(scheduleId, date, startTime);
+				Surgery s = new Surgery(surgeryId, type, schedule);
+
+				surgeries.add(s);
 			}
 			rs.close();
-
-		} catch (Exception e) {
-			e.printStackTrace();
+			stmt.close();
+		} catch (Exception ex) {
+			ex.printStackTrace();
 		}
-		return schedules;
+
+		return surgeries;
 	}
 
 }

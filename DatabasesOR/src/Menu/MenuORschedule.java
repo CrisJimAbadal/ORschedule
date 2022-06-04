@@ -354,8 +354,9 @@ public class MenuORschedule {
 
 		//CHECK THAT THE PATIENT DOESN'T EXIST ALREADY (do the same in surgeon)
 		Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate), sex);
-		if (patientManager.searchPatient(email) == null) {  
-		// CREATE PATIENT AND ADD TO JPA
+		if (patientManager.searchPatient(patient.getEmail()) == null) {  
+		//TODO the exception doesn't work because it doesn't find column email
+			// CREATE PATIENT AND ADD TO JPA
 		User u = new User(email, digest);
 		Role role = userManager.getRole("patient");
 		u.setRole(role);

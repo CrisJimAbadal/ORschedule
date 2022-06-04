@@ -84,21 +84,21 @@ public class JDBCSurgeryManager implements SurgManager {
 		List<Surgery> surgeries = new ArrayList<Surgery>();
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT surgery.id, type, date, schedule.id, startTime, finishTime FROM surgery JOIN schedule ON surgery.id= schedule.id WHERE id= "
+			String sql = "SELECT  surgery.type, schedule.date, schedule.startTime FROM surgery JOIN schedule ON surgery.id= schedule.id WHERE patientId= "
 					+ id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				// when using a join put the number of the column instead of the name. Start
 				// with 1 instead of 0
-				Integer surgeryId = rs.getInt(1);
-				String type = rs.getString(2);
-				Date date = rs.getDate(3);
-				Integer scheduleId = rs.getInt(4);
-				Time startTime = rs.getTime(5);
-				Time finishTime = rs.getTime(6);
 
-				Schedule schedule = new Schedule(scheduleId, date, startTime, finishTime);
-				Surgery s = new Surgery(surgeryId, type, schedule);
+				String type = rs.getString(1);
+				Date date = rs.getDate(2);
+
+				Time startTime = rs.getTime(3);
+				Time finishTime = rs.getTime(4);
+
+				Schedule schedule = new Schedule(date, startTime, finishTime);
+				Surgery s = new Surgery(type, schedule);
 
 				surgeries.add(s);
 			}
@@ -163,7 +163,10 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery();
-			int id = rs.getInt(1);
+			int id=0;
+			while(rs.next()) {
+			 id = rs.getInt(1);
+			}
 
 			if (id == 0) {
 				return false;
@@ -197,17 +200,20 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(7, s.getStartTime());
 			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery();
-			int id = rs.getInt(1);
-
+			int id=0;
+			while(rs.next()) {
+			 id = rs.getInt(1);
+			}
 			if (id == 0) {
 				return false;
 				// patient is not occupied at that schedule
 
 			}
-
+			rs.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 		return true;
 	}
 
@@ -234,8 +240,10 @@ public class JDBCSurgeryManager implements SurgManager {
 			pr.setTime(8, s.getStartTime());
 			ResultSet rs = pr.executeQuery();
 
-			rs.next();
-			int id = rs.getInt(1);
+			int id=0;
+			while(rs.next()) {
+			 id = rs.getInt(1);
+			}
 
 			if (id == 0) {
 				return false;
@@ -270,7 +278,7 @@ public class JDBCSurgeryManager implements SurgManager {
 
 				OPR opr = oprManager.searchOPR(oprId);
 				Schedule schedule = scheduleManager.showSchedule(surgeon.getId());
-				// TODO check if the method is correct
+		
 
 				s = new Surgery(id, type, patient, opr, surgeons, schedule);
 			}

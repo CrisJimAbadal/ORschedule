@@ -159,6 +159,7 @@ public class JDBCPatientManager implements PManager {
 				
 				p = new Patient(name,medstat, email,  dob, sex);
 			}
+			
 			rs.close();
 			stmt.close();
 		} catch (Exception e) {

@@ -31,7 +31,7 @@ public class JDBCSurgeonManager implements SManager {
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setString(1, s.getName());
-			prep.setString (2, s.getEmail());
+			prep.setString(2, s.getEmail());
 			prep.setString(3, s.getMedstat());
 			prep.setInt(4, s.getPagerNumber());
 			prep.setInt(5, s.getTlfNumber());
@@ -47,10 +47,10 @@ public class JDBCSurgeonManager implements SManager {
 	public List<Surgeon> listSurgeons(String specialty) {
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT * FROM surgeon WHERE medstat = " + specialty;
 
-			String sql = "SELECT * FROM surgeon WHERE medstat LIKE" + specialty;
-			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
-			ResultSet rs = prep.executeQuery(sql);
+			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
@@ -63,30 +63,33 @@ public class JDBCSurgeonManager implements SManager {
 				surgeons.add(s);
 			}
 			rs.close();
+			stmt.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return surgeons;
 	}
-	//get surgeonid from user id -> for login
-		public int searchSurgeonIdfromUId (int id) {
-			int sid=0;
-			try {
-				Statement stmt = manager.getConnection().createStatement();
-				String sql = "SELECT surgeon.id FROM surgeon JOIN users ON surgeon.email=users.email WHERE users.id= " + id;
-				ResultSet rs = stmt.executeQuery(sql);
-				
-					sid = rs.getInt("id");
-			
-				rs.close();
-				stmt.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
 
-			return sid;
-			
+	// get surgeonid from user id -> for login
+	public int searchSurgeonIdfromUId(int id) {
+		int sid = 0;
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT surgeon.id FROM surgeon JOIN users ON surgeon.email=users.email WHERE users.id= " + id;
+			ResultSet rs = stmt.executeQuery(sql);
+
+			sid = rs.getInt("id");
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
+
+		return sid;
+
+	}
+
 	// SEARCH SURGEON BY ID
 	@Override
 	public Surgeon searchSurgeon(int id) {
@@ -111,7 +114,7 @@ public class JDBCSurgeonManager implements SManager {
 		return s;
 	}
 
-	//CHOOSE SURGEON
+	// CHOOSE SURGEON
 	@Override
 	public Surgeon chooseSurgeon(int id) {
 		Surgeon s = null;
@@ -125,7 +128,6 @@ public class JDBCSurgeonManager implements SManager {
 				String medstat = rs.getString("medstat");
 				Integer pagerNumber = rs.getInt("pagerNumber");
 				Integer tlfNumber = rs.getInt("tlfNumber");
-				
 
 				s = new Surgeon(id, email, name, medstat, pagerNumber, tlfNumber);
 
@@ -154,9 +156,9 @@ public class JDBCSurgeonManager implements SManager {
 				Integer tlfNumber = rs.getInt("tlfNumber");
 
 				s = new Surgeon(id, name, email, medstat, pagerNumber, tlfNumber);
-				
+
 			}
-			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -169,7 +171,7 @@ public class JDBCSurgeonManager implements SManager {
 		try {
 			String sql = "UPDATE surgeon SET  pagernumber = ?, tlfnumber = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
-			
+
 			if (s.getPagerNumber() != null) {
 				pr.setInt(1, s.getPagerNumber());
 			}
@@ -184,12 +186,12 @@ public class JDBCSurgeonManager implements SManager {
 		}
 	}
 
-	
 	public List<Surgery> listSurgeries(int surgeonId) {
 		List<Surgery> surgeries = new ArrayList<Surgery>();
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT surgery.id, surgery.type, schedule.date, schedule.id, startTime FROM surgery JOIN schedule ON surgery.id = schedule.id WHERE surgery.surgeonID = "+ surgeonId;
+			String sql = "SELECT surgery.id, surgery.type, schedule.date, schedule.id, startTime FROM surgery JOIN schedule ON surgery.id = schedule.id WHERE surgery.surgeonID = "
+					+ surgeonId;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 
@@ -213,4 +215,23 @@ public class JDBCSurgeonManager implements SManager {
 		return surgeries;
 	}
 
+	@Override
+	public int countSurgeons(String specialty) {
+		int surgeons = 0;
+		try {
+			Statement stmt = manager.getConnection().createStatement();
+			String sql = "SELECT COUNT(id) FROM surgeon WHERE medstat = " + specialty;
+
+			ResultSet rs = stmt.executeQuery(sql);
+			while (rs.next()) {
+				surgeons = rs.getInt("count");
+
+			}
+			rs.close();
+			stmt.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return surgeons;
+	}
 }

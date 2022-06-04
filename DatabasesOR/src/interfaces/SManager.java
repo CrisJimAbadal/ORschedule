@@ -32,4 +32,7 @@ public interface SManager {
 
 	//to show the schedule
 	public List<Surgery> listSurgeries(int surgeonId);
+	
+	//countSurgeons
+	public int countSurgeons(String specialty);
 }

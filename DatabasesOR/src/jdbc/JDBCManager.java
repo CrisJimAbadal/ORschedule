@@ -64,7 +64,7 @@ public class JDBCManager {
 
 			// TABLE SURGEON
 			sql = "CREATE TABLE surgeon (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL ,"
-					+ "email TEXT NOT NULL, medstat TEXT NOT NULL, pagerNumber INTEGER UNIQUE NOT NULL, tlfNumber INTEGER UNIQUE )";
+					+ "email TEXT NOT NULL, medstat TEXT NOT NULL, pagerNumber INTEGER NOT NULL, tlfNumber INTEGER )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGERY
@@ -96,15 +96,15 @@ public class JDBCManager {
 			stm.executeUpdate(sql);
 			
 			//SURGEONS
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES (tomas, tomasalvarez, cardiology, 123, 6789)";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('tomas', 'tomasalvarez', 'cardiology', 123, 6789)";
 			stm.executeUpdate(sql);
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES (cristina, cristinaj, neurology, 234, 6391)";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('cristina', 'cristinaj', 'neurology', 234, 6391)";
 			stm.executeUpdate(sql);
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES (paola, paolad, trauma, 345, 6493)";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('paola', 'paolad', 'trauma', 345, 6493)";
 			stm.executeUpdate(sql);
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES (jaime, jaimesol, oncology, 456, 6895)";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('jaime', 'jaimesol', 'oncology', 456, 6895)";
 			stm.executeUpdate(sql);
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES (eduardo, eduardog, pediatrics, 567, 6673)";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('eduardo', 'eduardog', 'pediatrics', 567, 6673)";
 			stm.executeUpdate(sql);
 			
 			

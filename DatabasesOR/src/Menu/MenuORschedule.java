@@ -277,6 +277,7 @@ public class MenuORschedule {
 				case 1:
 
 					updateSurgeonInfo(sId);
+					SMenu(sId);
 					break;
 
 				case 2:
@@ -500,6 +501,7 @@ public class MenuORschedule {
 		Surgeon surgeon = new Surgeon(name, email, medstat, pagerNumber, tlfNumber);
 
 		surgeonManager.addSurgeon(surgeon);
+		
 
 	}
 
@@ -566,6 +568,7 @@ public class MenuORschedule {
 		}
 
 		patientManager.updatePatient(p);
+		PMenu(id);
 	}
 
 	// UPDATE SURGEON'S INFO
@@ -595,13 +598,15 @@ public class MenuORschedule {
 		List<Surgery> surgeries = new ArrayList<Surgery>();
 		surgeries = surgeryManager.listSurgeries(patientId);
 		if (surgeries.isEmpty()) {
-
 			System.out.println("There are no surgeries scheduled yet ");
+			
 		} else {
 			for (Surgery s : surgeries) {
 				System.out.println(s);
+				
 			}
 		}
+		PMenu(patientId);
 	}
 
 	// CREATE SURGERY
@@ -710,6 +715,10 @@ public class MenuORschedule {
 	public static Patient choosePatient() throws Exception {
 
 		List<Patient> patients = patientManager.listPatients();
+		//TODO excepcion aqui
+		/*if(patients==null) {
+			System.out.println("There are no patients in the database at this moment");
+		}*/
 
 		for (Patient patient : patients) {
 			System.out.println(patient.toString());

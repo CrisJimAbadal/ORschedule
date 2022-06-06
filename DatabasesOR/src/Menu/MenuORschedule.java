@@ -370,15 +370,15 @@ public class MenuORschedule {
 				break;
 			case 3:
 				medstat = "trauma";
-				;
+				
 				break;
 			case 4:
 				medstat = "pediatrics";
-				;
+				
 				break;
 			case 5:
 				medstat = "oncology";
-				;
+				
 				break;
 			default:
 				break;
@@ -403,10 +403,13 @@ public class MenuORschedule {
 
 			case 1:
 				medstat = "male";
+				
 				break;
+				
 			case 2:
 				medstat = "female";
 				break;
+				
 			default:
 				break;
 			}

@@ -59,7 +59,7 @@ public class JDBCManager {
 
 			// TABLE PATIENT
 			sql = "CREATE TABLE patient(id INTEGER PRIMARY KEY AUTOINCREMENT,  name TEXT NOT NULL ,"
-					+ "email TEXT NOT NULL UNIQUE,medstat TEXT NOT NULL,dob DATE,sex TEXT NOT NULL )";
+					+ "email TEXT NOT NULL UNIQUE,medstat TEXT NOT NULL,dob DATE,sex TEXT )";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGEON

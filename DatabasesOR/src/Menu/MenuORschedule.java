@@ -295,7 +295,7 @@ public class MenuORschedule {
 				default:
 					break;
 				}
-			} while (choice < 0 || choice > 2);
+			} while (true);
 
 		} catch (Exception e) {
 			e.printStackTrace();

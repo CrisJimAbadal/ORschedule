@@ -9,7 +9,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.sql.Date;
+import java.sql.Date;import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.Time;
 import java.util.List;
 
@@ -610,6 +611,7 @@ public class MenuORschedule {
 		try {
 			// 1) choose SCHEDULE
 			Schedule s = chooseSchedule();
+			
 
 			// 2)choose PATIENT
 			Patient p = choosePatient();
@@ -644,21 +646,22 @@ public class MenuORschedule {
 
 			// 5) choose SURGEONS specialized on the patient's medStat
 
-
-			//TODO FIX THIS
 			int numOfSurgeons=0;
 			int numSurg=0;
 
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
-
 			do {
+				//TODO surgeons in surgery try to correct it 
 				System.out.println("How many surgeons are going to participate? ");
 				numSurg = Integer.parseInt(read.readLine());
 				
 				numOfSurgeons = surgeonManager.countSurgeons(specialty);
 				System.out.println("number of surgeons compatible with that patient:");
 				System.out.println(numOfSurgeons);
-
+				
+				surgeonManager.listSurgeons(specialty);
+				
+				
 				for (int i = 0; i < numSurg; i++) {
 					
 					Surgeon surg = chooseSurgeon(specialty);
@@ -668,18 +671,26 @@ public class MenuORschedule {
 						System.out.println("Please choose another one:");
 						
 						surg = chooseSurgeon(specialty);
+						
 					}
+					
 					surgeons.add(surg);
+					System.out.println("the surgeons that will participate in this surgery are:");
+					for(Surgeon surgeon: surgeons) {
+						System.out.println(surgeon);
+					}
 				}
-			} while (numOfSurgeons < numSurg);
+				
+			} while((numOfSurgeons>numSurg));
 
 			// 6) TYPE of surgery
 			String type = p.getMedstat();
 
 			// CREATE THE SURGERY and add to the database
-			Surgery surg = new Surgery(p, surgeons, opr, type, s);
-
+			
 			scheduleManager.addSchedule(s);
+			Surgery surg = new Surgery(p, surgeons, opr, type, s);
+			
 			surgeryManager.addSurgery(surg);
 
 		} catch (Exception e) {
@@ -690,7 +701,7 @@ public class MenuORschedule {
 	// CHOOSE SCHEDULE FOR THE SURGERY
 
 	public static Schedule chooseSchedule() {
-
+		int id= scheduleManager.getIdSchedule();
 		Date date = null;
 		Time startTime = null;
 		Time finishTime = null;
@@ -711,8 +722,8 @@ public class MenuORschedule {
 				s = chooseSchedule();
 
 			} // finishtime occurs later-> correct
-			s = new Schedule(date, startTime, finishTime);
-
+			s = new Schedule(id,date, startTime, finishTime);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

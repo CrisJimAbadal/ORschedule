@@ -44,26 +44,28 @@ public class JDBCSurgeonManager implements SManager {
 
 	// LIST SURGEONS by specialty (to match the patient's medStat)
 	@Override
-	public List<Surgeon> listSurgeons(String specialty) {
+	public List<Surgeon> listSurgeons(String medstat) {
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
-			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM surgeon WHERE medstat = " + specialty;
+			
+			String sql = "SELECT * FROM surgeon WHERE medstat = ?";
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			pr.setString(1,medstat);
+			ResultSet rs = pr.executeQuery();
 
-			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				Integer id = rs.getInt("id");
 				String name = rs.getString("name");
 				String email = rs.getString("email");
-				String medstat = rs.getString("medstat");
 				Integer pagerNumber = rs.getInt("pagerNumber");
 				Integer tlfNumber = rs.getInt("tlfNumber");
 
 				Surgeon s = new Surgeon(id, email, name, medstat, pagerNumber, tlfNumber);
 				surgeons.add(s);
+				
 			}
 			rs.close();
-			stmt.close();
+			pr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -216,22 +218,21 @@ public class JDBCSurgeonManager implements SManager {
 	}
 
 	@Override
-	public int countSurgeons(String specialty) {
+	public int countSurgeons(String medstat) {
 		int surgeons = 0;
 		
 		try {
-			Statement stmt = manager.getConnection().createStatement();
-
-			String sql = "SELECT COUNT(id) FROM surgeon WHERE medstat LIKE " + specialty;
-
-
-			ResultSet rs = stmt.executeQuery(sql);
+			
+			String sql = "SELECT COUNT(id) FROM surgeon WHERE medstat LIKE ?" ;
+			
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			pr.setString(1,medstat);
+			ResultSet rs = pr.executeQuery();
 			while (rs.next()) {
-				surgeons = (rs.getInt("count"));
-
+				surgeons = (rs.getInt("COUNT(id)"));
 			}
-			rs.close();
-			stmt.close();
+			
+			pr.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

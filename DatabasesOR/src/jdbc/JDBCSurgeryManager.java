@@ -39,28 +39,35 @@ public class JDBCSurgeryManager implements SurgManager {
 		Patient p = s.getPatient();
 		OPR o = s.getOpr();
 		List<Surgeon> surgeons = s.getSurgeons();
+		Schedule sc=s.getSchedule();
+		
+			System.out.println(surgeons);
+		
 
 		try {
+			for (Surgeon surgeon : surgeons) {
 
-			String sql = "INSERT INTO surgery (patientId, , oprId, type VALUES (?,?,?)";
+			String sql = "INSERT INTO surgery (patientId, oprId, type, scheduleId) VALUES (?,?,?,?)";
 			// use preparedStmt so nothing damages the database
 			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
 			prep.setObject(1, p.getId());
 			prep.setObject(2, o.getId());
 			prep.setString(3, s.getType());
+			prep.setInt(4, sc.getId());
+			
+			
 
-			for (Surgeon surgeon : surgeons) {
-
-				String sql2 = "INSERT INTO surgeonSurgery (surgeryId, surgeonId VALUES (?,?)";
+				String sql2 = "INSERT INTO surgeonSurgery (surgeryId, surgeonId) VALUES (?,?)";
 				// use preparedStmt so nothing damages the database
-				PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
-				prep2.setObject(1, s.getId());
-				prep2.setObject(1, surgeon.getId());
-				prep2.executeUpdate();
-				prep2.close();
-			}
+				prep = manager.getConnection().prepareStatement(sql2);
+				prep.setObject(1, s.getId());
+				prep.setObject(2, surgeon.getId());
+				prep.executeUpdate();
+				
+			
 			prep.executeUpdate();
 			prep.close();
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,7 +77,7 @@ public class JDBCSurgeryManager implements SurgManager {
 	@Override
 	public void unassign(int surgeryId) {
 		try {
-			String sql = "DELETE * FROM Surgery WHERE id =?";
+			String sql = "DELETE  FROM surgery WHERE id =?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setInt(1, surgeryId);
 			pr.executeUpdate();

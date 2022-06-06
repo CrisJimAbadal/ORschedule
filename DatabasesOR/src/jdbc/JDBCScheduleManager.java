@@ -20,11 +20,12 @@ public class JDBCScheduleManager implements ScheduleManager {
 	public void addSchedule(Schedule s) {
 		try {
 
-			String sql = "INSERT INTO schedule (date,startTime, finishTime) VALUES (?,?,?)";
+			String sql = "INSERT INTO schedule (date,startTime, finishTime,id) VALUES (?,?,?,?)";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 			pr.setDate(1, s.getDate());
 			pr.setTime(2, s.getStartTime());
 			pr.setTime(3, s.getFinishTime());
+			pr.setInt(4,s.getId());
 			pr.executeUpdate();
 			pr.close();
 		} catch (Exception e) {
@@ -51,10 +52,36 @@ public class JDBCScheduleManager implements ScheduleManager {
 				
 			}
 			s = new Schedule(id, date, startTime, finishTime);
+			rs.close();
+			prep.close();
+
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return s;
 	}
+	public int getIdSchedule() {
+		int id = 0;
+		try {
+			String sql = "SELECT MAX(id) FROM schedule";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			
+			while(rs.next()) {
+				id = rs.getInt(1);
+			}
+			
+			
+			rs.close();
+			prep.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+		id++;
+		return id;
+	}
+	
+	
 }

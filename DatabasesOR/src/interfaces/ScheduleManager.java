@@ -10,4 +10,5 @@ public interface ScheduleManager {
 	public void addSchedule(Schedule s);
 	
 	public Schedule showSchedule(int pagerNumber);
+	public int getIdSchedule();
 }

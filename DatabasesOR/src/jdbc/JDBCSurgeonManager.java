@@ -218,13 +218,14 @@ public class JDBCSurgeonManager implements SManager {
 	@Override
 	public int countSurgeons(String specialty) {
 		int surgeons = 0;
+		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT COUNT(id) FROM surgeon WHERE medstat = " + specialty;
+			String sql = "SELECT count(*)AS count FROM surgeon GROUP BY medstat HAVING medstat = " + specialty;
 
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
-				surgeons = rs.getInt("count");
+				surgeons = (rs.getInt("count"));
 
 			}
 			rs.close();

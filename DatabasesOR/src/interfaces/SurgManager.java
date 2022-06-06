@@ -2,6 +2,7 @@ package interfaces;
 
 import java.util.List;
 
+import Exceptions.NotFoundException;
 import pojos.Patient;
 import pojos.Schedule;
 import pojos.Surgeon;
@@ -23,7 +24,7 @@ public interface SurgManager {
 	public List<Surgery> listSurgeries();
 	
 	//choose Surgery
-	public Surgery chooseSurgery (int id);
+	public Surgery chooseSurgery (int id) throws NotFoundException;
 	
 	//to check if it's available at a specific schedule
 	public boolean checkOPR (Schedule s, int oprId);

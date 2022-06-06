@@ -5,6 +5,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+import Exceptions.NotFoundException;
 import interfaces.OPRManager;
 import pojos.OPR;
 
@@ -45,7 +46,7 @@ public class JDBCOprManager implements OPRManager {
 	
 	//SEARCH and return OPR by id
 	@Override
-	public OPR searchOPR(int id) {
+	public OPR searchOPR(int id){
 		OPR opr = null;
 		try {
 			Statement stmt = manager.getConnection().createStatement();

@@ -431,10 +431,8 @@ public class MenuORschedule {
 		role.addUser(u);
 		userManager.newUser(u);
 
-		// CREATE PATIENT AND ADD TO JDBC
-		// Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate),
-		// sex);
 		patientManager.addPatient(patient);
+	
 
 	}
 

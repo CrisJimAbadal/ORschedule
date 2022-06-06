@@ -9,6 +9,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
+import Exceptions.NotFoundException;
 import interfaces.OPRManager;
 import interfaces.PManager;
 import interfaces.SManager;
@@ -256,7 +257,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		return true;
 	}
 
-	public Surgery chooseSurgery(int id) {
+	public Surgery chooseSurgery(int id) throws NotFoundException {
 		Surgery s = null;
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
@@ -277,6 +278,9 @@ public class JDBCSurgeryManager implements SurgManager {
 				surgeons.add(surgeon);
 
 				OPR opr = oprManager.searchOPR(oprId);
+				if (opr== null) {
+					throw new NotFoundException ("OPR not found");
+				}
 				Schedule schedule = scheduleManager.showSchedule(surgeon.getId());
 		
 

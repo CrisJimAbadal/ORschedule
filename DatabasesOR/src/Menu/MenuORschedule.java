@@ -571,12 +571,19 @@ public class MenuORschedule {
 		System.out.println("Update your information: ");
 		System.out.println("New pager Number: ");
 		Integer pagerNumber = Integer.parseInt(read.readLine());
-		if (!pagerNumber.equals("")) {
+			
+		if (!(pagerNumber==(Integer.parseInt("")))) {
+			s.setPagerNumber(pagerNumber);
+		}
+		if (!(pagerNumber==(Integer.parseInt("\n")))) {
 			s.setPagerNumber(pagerNumber);
 		}
 		System.out.println("New phone number: ");
 		Integer tlfNumber = Integer.parseInt(read.readLine());
-		if (!tlfNumber.equals("")) {
+		if (!(tlfNumber==(Integer.parseInt("")))) {
+			s.setTlfNumber(tlfNumber);
+		}
+		if (!(tlfNumber==(Integer.parseInt("\n")))) {
 			s.setTlfNumber(tlfNumber);
 		}
 		surgeonManager.updateSurgeon(s);
@@ -636,23 +643,33 @@ public class MenuORschedule {
 			System.out.println(specialty);
 
 			// 5) choose SURGEONS specialized on the patient's medStat
+<<<<<<< HEAD
 			// TODO FIX THIS
 			int numOfSurgeons = 0;
 			Integer numSurg;
+=======
+			//TODO FIX THIS
+			int numOfSurgeons=0;
+			int numSurg=0;
+>>>>>>> branch 'master' of https://github.com/CrisJimAbadal/ORschedule
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
 
 			do {
 				System.out.println("How many surgeons are going to participate? ");
 				numSurg = Integer.parseInt(read.readLine());
+				
 				numOfSurgeons = surgeonManager.countSurgeons(specialty);
+				System.out.println("number of surgeons compatible with that patient:");
 				System.out.println(numOfSurgeons);
 
 				for (int i = 0; i < numSurg; i++) {
+					
 					Surgeon surg = chooseSurgeon(specialty);
 					while (surgeryManager.checksurgeon(s, surg)) {
 						// TRUE = not available
 						System.out.println("The surgeon is not available at this schedule.");
 						System.out.println("Please choose another one:");
+						
 						surg = chooseSurgeon(specialty);
 					}
 					surgeons.add(surg);

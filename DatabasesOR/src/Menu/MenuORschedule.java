@@ -402,12 +402,12 @@ public class MenuORschedule {
 			switch (choice) {
 
 			case 1:
-				medstat = "male";
+				sex = "male";
 				
 				break;
 				
 			case 2:
-				medstat = "female";
+				sex = "female";
 				break;
 				
 			default:

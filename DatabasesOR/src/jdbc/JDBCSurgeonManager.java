@@ -25,7 +25,7 @@ public class JDBCSurgeonManager implements SManager {
 	// ADD PATIENT TO THE DATABASE
 	@Override
 	public void addSurgeon(Surgeon s) {
-
+		
 		try {
 			String sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES (?,?,?,?,?)";
 			// use preparedStmt so nothing damages the database
@@ -220,7 +220,7 @@ public class JDBCSurgeonManager implements SManager {
 		int surgeons = 0;
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT COUNT(id) FROM surgeon WHERE medstat = " + specialty;
+			String sql = "SELECT COUNT(id) FROM surgeon WHERE medstat LIKE " + specialty;
 
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {

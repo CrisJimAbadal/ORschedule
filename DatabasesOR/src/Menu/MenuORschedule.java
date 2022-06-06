@@ -643,15 +643,12 @@ public class MenuORschedule {
 			System.out.println(specialty);
 
 			// 5) choose SURGEONS specialized on the patient's medStat
-<<<<<<< HEAD
-			// TODO FIX THIS
-			int numOfSurgeons = 0;
-			Integer numSurg;
-=======
+
+
 			//TODO FIX THIS
 			int numOfSurgeons=0;
 			int numSurg=0;
->>>>>>> branch 'master' of https://github.com/CrisJimAbadal/ORschedule
+
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
 
 			do {

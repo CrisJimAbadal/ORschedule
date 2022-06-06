@@ -221,11 +221,9 @@ public class JDBCSurgeonManager implements SManager {
 		
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-<<<<<<< HEAD
-			String sql = "SELECT count(*)AS count FROM surgeon GROUP BY medstat HAVING medstat = " + specialty;
-=======
+
 			String sql = "SELECT COUNT(id) FROM surgeon WHERE medstat LIKE " + specialty;
->>>>>>> branch 'master' of https://github.com/CrisJimAbadal/ORschedule
+
 
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {

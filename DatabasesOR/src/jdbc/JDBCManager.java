@@ -70,15 +70,18 @@ public class JDBCManager {
 			// TABLE SURGERY
 			sql = "CREATE TABLE surgery(id INTEGER PRIMARY KEY AUTOINCREMENT, type TEXT NOT NULL,"
 					+ "patientId INTEGER REFERENCES patient(id) ON DELETE SET NULL,"
-					+ "surgeonId INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
 					+ "oprId INTEGER REFERENCES opr(id) ON DELETE SET NULL,"
 					+ "scheduleId INTEGER REFERENCES schedule(id)ON DELETE SET NULL)";
 			stm.executeUpdate(sql);
 
 			// TABLE SURGERY-SURGEONS
-			sql = "CREATE TABLE surgeonSurgery (surgeonId INTEGER REFERENCES surgeon(id) ON DELETE SET NULL,"
-					+ "surgeryId INTEGER REFERENCES surgery(id) ON DELETE SET NULL,"
-					+ "PRIMARY KEY (surgeonId,surgeryId))";
+			sql = "CREATE TABLE surgeonSurgery ("
+					+ "surgeonId INTEGER NOT NULL,"
+					+ "surgeryId INTEGER NOT NULL,"
+					+ "PRIMARY KEY (surgeonId,surgeryId),"
+					+ "FOREIGN KEY (surgeonId) REFERENCES surgeon(id) ON DELETE CASCADE,"
+					+ "FOREIGN KEY (surgeryId) REFERENCES surgery(id) ON DELETE CASCADE"
+					+ ")";
 			stm.executeUpdate(sql);
 
 			// WE ASSUME THAT OUR HOSPITALS HAS 6 OPR
@@ -96,15 +99,15 @@ public class JDBCManager {
 			stm.executeUpdate(sql);
 			
 			//SURGEONS
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('tomas', 'tomasalvarez', 'cardiology', '123', '6789')";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('tomas', 'tomasalvarez', 'cardiology', 123, 6789)";
 			stm.executeUpdate(sql);
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('cristina', 'cristinaj', 'neurology', '234', '6391')";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('cristina', 'cristinaj', 'neurology', 234, 6391)";
 			stm.executeUpdate(sql);
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('paola', 'paolad', 'trauma', '345', '6493')";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('paola', 'paolad', 'trauma', 345, 6493)";
 			stm.executeUpdate(sql);
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('jaime', 'jaimesol', 'oncology', '456', '6895')";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('jaime', 'jaimesol', 'oncology', 456, 6895)";
 			stm.executeUpdate(sql);
-			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('eduardo', 'eduardog', 'pediatrics', '567', '6673')";
+			sql = "INSERT INTO surgeon (name, email, medstat, pagerNumber, tlfNumber) VALUES ('eduardo', 'eduardog', 'pediatrics', 567, 6673)";
 			stm.executeUpdate(sql);
 			
 			

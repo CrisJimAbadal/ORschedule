@@ -45,7 +45,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		
 
 		try {
-			for (Surgeon surgeon : surgeons) {
+			
 
 			String sql = "INSERT INTO surgery (patientId, oprId, type, scheduleId) VALUES (?,?,?,?)";
 			// use preparedStmt so nothing damages the database
@@ -55,7 +55,7 @@ public class JDBCSurgeryManager implements SurgManager {
 			prep.setString(3, s.getType());
 			prep.setInt(4, sc.getId());
 			
-			
+			for (Surgeon surgeon : surgeons) {
 
 				String sql2 = "INSERT INTO surgeonSurgery (surgeryId, surgeonId) VALUES (?,?)";
 				// use preparedStmt so nothing damages the database
@@ -63,11 +63,10 @@ public class JDBCSurgeryManager implements SurgManager {
 				prep.setObject(1, s.getId());
 				prep.setObject(2, surgeon.getId());
 				prep.executeUpdate();
-				
-			
+					
+			}
 			prep.executeUpdate();
 			prep.close();
-			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -230,8 +229,8 @@ public class JDBCSurgeryManager implements SurgManager {
 		Surgeon surgeon = surg;
 
 		try {
-			String sql = "SELECT * FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id "
-					+ "WHERE schedule.Date= ? AND surgery.patientId=?"
+			String sql = "SELECT * FROM surgery JOIN schedule ON surgery.scheduleId= schedule.id JOIN surgeonSurgery ON surgery.id= surgeonSurgery.surgeryId JOIN surgeon ON surgeon.id=surgeonSurgery.surgeonId "
+					+ "WHERE schedule.Date= ? AND surgeonSurgery.surgeonId=?"
 					+ " AND ((schedule.startTime<= ? AND schedule.finishTime>= ?) " + // ?1 startTime ?2 finishTime
 					"OR (schedule.startTime>= ? AND schedule.finishTime<= ?) " + // ?1 startTime ?2 finishTime
 					"OR (schedule.startTime>= ? AND schedule.startTime<= ?) " + // ? = startTime ?2finishTIme

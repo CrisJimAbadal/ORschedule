@@ -59,10 +59,12 @@ public class JDBCSurgeryManager implements SurgManager {
 
 				String sql2 = "INSERT INTO surgeonSurgery (surgeryId, surgeonId) VALUES (?,?)";
 				// use preparedStmt so nothing damages the database
-				prep = manager.getConnection().prepareStatement(sql2);
-				prep.setObject(1, s.getId());
-				prep.setObject(2, surgeon.getId());
-				prep.executeUpdate();
+				PreparedStatement prep2 = manager.getConnection().prepareStatement(sql);
+				prep2 = manager.getConnection().prepareStatement(sql2);
+				prep2.setObject(1, s.getId());
+				prep2.setObject(2, surgeon.getId());
+				prep2.executeUpdate();
+				prep2.close();
 					
 			}
 			prep.executeUpdate();

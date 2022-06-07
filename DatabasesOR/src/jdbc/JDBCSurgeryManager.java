@@ -9,7 +9,7 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-import Exceptions.NotFoundException;
+
 import interfaces.OPRManager;
 import interfaces.PManager;
 import interfaces.SManager;
@@ -54,12 +54,12 @@ public class JDBCSurgeryManager implements SurgManager {
 			prep.setObject(2, o.getId());
 			prep.setString(3, s.getType());
 			prep.setInt(4, sc.getId());
-			
+			prep.executeUpdate();
 			for (Surgeon surgeon : surgeons) {
 
 				String sql2 = "INSERT INTO surgeonSurgery (surgeryId, surgeonId) VALUES (?,?)";
 				// use preparedStmt so nothing damages the database
-				PreparedStatement prep2 = manager.getConnection().prepareStatement(sql);
+				PreparedStatement prep2 = manager.getConnection().prepareStatement(sql2);
 				prep2 = manager.getConnection().prepareStatement(sql2);
 				prep2.setObject(1, s.getId());
 				prep2.setObject(2, surgeon.getId());
@@ -67,8 +67,9 @@ public class JDBCSurgeryManager implements SurgManager {
 				prep2.close();
 					
 			}
-			prep.executeUpdate();
+			
 			prep.close();
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -93,7 +94,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		List<Surgery> surgeries = new ArrayList<Surgery>();
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT  surgery.type, schedule.date, schedule.startTime FROM surgery JOIN schedule ON surgery.id= schedule.id WHERE patientId= "
+			String sql = "SELECT  surgery.type, schedule.date, schedule.startTime,schedule.finishTime FROM surgery JOIN schedule ON surgery.id= schedule.id WHERE patientId= "
 					+ id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
@@ -265,7 +266,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		return true;
 	}
 
-	public Surgery chooseSurgery(int id) throws NotFoundException {
+	public Surgery chooseSurgery(int id)  {
 		Surgery s = null;
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
@@ -286,9 +287,7 @@ public class JDBCSurgeryManager implements SurgManager {
 				surgeons.add(surgeon);
 
 				OPR opr = oprManager.searchOPR(oprId);
-				if (opr== null) {
-					throw new NotFoundException ("OPR not found");
-				}
+				
 				Schedule schedule = scheduleManager.showSchedule(surgeon.getId());
 		
 
@@ -303,4 +302,26 @@ public class JDBCSurgeryManager implements SurgManager {
 
 		return s;
 	}
+	public int getIdSurgery() {
+		int id = 0;
+		try {
+			String sql = "SELECT MAX(id) FROM surgery";
+			PreparedStatement prep = manager.getConnection().prepareStatement(sql);
+			ResultSet rs = prep.executeQuery();
+			
+			while(rs.next()) {
+				id = rs.getInt(1);
+			}
+			
+			
+			rs.close();
+			prep.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+			
+		}
+		id++;
+		return id;
+	}
+	
 }

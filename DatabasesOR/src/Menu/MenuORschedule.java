@@ -650,7 +650,7 @@ public class MenuORschedule {
 			int numSurg=0;
 
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
-			do {
+			
 				//TODO surgeons in surgery try to correct it 
 				System.out.println("How many surgeons are going to participate? ");
 				numSurg = Integer.parseInt(read.readLine());
@@ -658,6 +658,8 @@ public class MenuORschedule {
 				numOfSurgeons = surgeonManager.countSurgeons(specialty);
 				System.out.println("number of surgeons compatible with that patient:");
 				System.out.println(numOfSurgeons);
+				
+				if(numOfSurgeons>=numSurg) {
 				
 				surgeonManager.listSurgeons(specialty);
 				
@@ -680,8 +682,13 @@ public class MenuORschedule {
 						System.out.println(surgeon);
 					}
 				}
+				}
+				else {
+					System.out.println("the number of surgeons selected is not available");
+					
+				}
 				
-			} while((numOfSurgeons>numSurg));
+			
 
 			// 6) TYPE of surgery
 			String type = p.getMedstat();
@@ -689,7 +696,9 @@ public class MenuORschedule {
 			// CREATE THE SURGERY and add to the database
 			
 			scheduleManager.addSchedule(s);
-			Surgery surg = new Surgery(p, surgeons, opr, type, s);
+			int surgeryid=surgeryManager.getIdSurgery();
+				
+			Surgery surg = new Surgery(surgeryid,type,p,opr,  surgeons,s);
 			
 			surgeryManager.addSurgery(surg);
 

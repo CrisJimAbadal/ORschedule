@@ -192,7 +192,7 @@ public class JDBCSurgeonManager implements SManager {
 		List<Surgery> surgeries = new ArrayList<Surgery>();
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT surgery.id, surgery.type, schedule.date, schedule.id, startTime FROM surgery JOIN schedule ON surgery.id = schedule.id WHERE surgery.surgeonID = "
+			String sql = "SELECT surgery.id, surgery.type, schedule.date, schedule.id, startTime FROM surgery JOIN schedule ON surgery.id = schedule.id JOIN surgeonSurgery ON surgery.id=surgeonSurgery.surgeryId WHERE surgeonSurgery.surgeonId = "
 					+ surgeonId;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {

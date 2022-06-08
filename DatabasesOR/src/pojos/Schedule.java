@@ -3,14 +3,10 @@ package pojos;
 import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Time;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
-import javax.persistence.TableGenerator;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -29,10 +25,13 @@ public class Schedule implements Serializable{
 	
 	@XmlTransient
 	private Integer id;
+	@XmlElement
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date date;
+	@XmlElement
 	@XmlJavaTypeAdapter(SQLTimeAdapter.class)
 	private Time startTime;
+	@XmlElement
 	@XmlJavaTypeAdapter(SQLTimeAdapter.class)
 	private Time finishTime;
 	

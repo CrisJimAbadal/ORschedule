@@ -572,21 +572,20 @@ public class MenuORschedule {
 		System.out.println("Update your information: ");
 		System.out.println("New pager Number: ");
 		Integer pagerNumber = Integer.parseInt(read.readLine());
-			
-		if (!(pagerNumber==(Integer.parseInt("")))) {
-			s.setPagerNumber(pagerNumber);
-		}
+		s.setPagerNumber(pagerNumber);	
+		/*
 		if (!(pagerNumber==(Integer.parseInt("\n")))) {
 			s.setPagerNumber(pagerNumber);
-		}
+		}*/
 		System.out.println("New phone number: ");
 		Integer tlfNumber = Integer.parseInt(read.readLine());
-		if (!(tlfNumber==(Integer.parseInt("")))) {
+		/*if (!(tlfNumber==(Integer.parseInt("")))) {
 			s.setTlfNumber(tlfNumber);
 		}
 		if (!(tlfNumber==(Integer.parseInt("\n")))) {
 			s.setTlfNumber(tlfNumber);
-		}
+		}*/
+		s.setTlfNumber(tlfNumber);
 		surgeonManager.updateSurgeon(s);
 	}
 

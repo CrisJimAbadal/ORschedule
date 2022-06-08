@@ -860,16 +860,16 @@ public class MenuORschedule {
 
 	public static void toxml() throws Exception {
 		
-		System.out.println("Select a surgery to pass to xml");
-		Surgery s=null;
+		System.out.println("Select the type of the surgeries to pass to xml");
+		
 		surgeryManager.listSurgeries();
+		String type = read.readLine();
+		System.out.println(type);
+		List<Surgery> surgeries = new ArrayList<Surgery>();
+		 surgeries= surgeryManager.chooseSurgerybytype(type);
 		
-		Integer id = Integer.parseInt(read.readLine());
 		
-		 s= surgeryManager.chooseSurgery(id);
-		
-		
-
-		java2Xmlsurgury(s);
+		 for(Surgery s: surgeries) {
+		java2Xmlsurgury(s);}
 	}
 }

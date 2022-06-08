@@ -33,5 +33,6 @@ public interface SurgManager {
 	//to get id
 	public int getIdSurgery();
 	
+	public List <Surgery> chooseSurgerybytype(String type);
 	
 }

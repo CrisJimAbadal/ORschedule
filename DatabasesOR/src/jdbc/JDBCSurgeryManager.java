@@ -274,6 +274,7 @@ public class JDBCSurgeryManager implements SurgManager {
 			String sql = "SELECT surgery.*, surgeon.id FROM surgery JOIN surgeonSurgery ON surgeonSurgery.surgeryId= surgery.id JOIN surgeon ON surgeonSurgery.surgeonId=surgeon.id WHERE surgery.id = " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
+				
 				String type = rs.getString("type");
 				Integer pId = rs.getInt("patientId");
 
@@ -292,7 +293,9 @@ public class JDBCSurgeryManager implements SurgManager {
 		
 
 				s = new Surgery(id, type, patient, opr, surgeons, schedule);
+				
 			}
+			
 
 			rs.close();
 			stmt.close();
@@ -302,6 +305,52 @@ public class JDBCSurgeryManager implements SurgManager {
 
 		return s;
 	}
+	
+	public List <Surgery> chooseSurgerybytype(String typeS)  {
+		List<Surgery> surgeries = new ArrayList<Surgery>();
+		List<Surgeon> surgeons = new ArrayList<Surgeon>();
+		try {
+			
+			String sql = "SELECT surgery.*, surgeonId FROM surgery JOIN surgeonSurgery ON surgeonSurgery.surgeryId= surgery.id JOIN surgeon ON surgeonSurgery.surgeonId=surgeon.id WHERE surgery.type= ? ";
+			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
+			
+			pr.setString(1,typeS);
+			ResultSet rs = pr.executeQuery();
+			while (rs.next()) {
+				
+				String type = rs.getString("type");
+				Integer pId = rs.getInt("patientId");
+				Integer sId = rs.getInt("surgeonId");
+				Integer oprId = rs.getInt("oprId");
+				Integer scheduleId = rs.getInt("scheduleId");
+
+				Patient patient = patientManager.searchPatientbyId(pId);
+
+				Surgeon surgeon = surgeonManager.chooseSurgeon(sId);
+				surgeons.add(surgeon);
+
+				OPR opr = oprManager.searchOPR(oprId);
+				
+				Schedule schedule = scheduleManager.showSchedule(scheduleId);
+		
+					
+				Surgery s = new Surgery(patient, surgeons, opr,type,schedule);
+				surgeries.add(s);
+				
+			}
+			
+
+			rs.close();
+			pr.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return surgeries;
+	}
+	
+	
+	
 	public int getIdSurgery() {
 		int id = 0;
 		try {

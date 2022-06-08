@@ -1,0 +1,32 @@
+
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+
+<!DOCTYPE ORSchedule [
+	<!ELEMENT ORSchedule (Surgery)*>
+	<!ELEMENT surgery (type, patient, opr, surgeons,Schedule)>
+	<!ELEMENT type (#PCDATA)>
+	<!ELEMENT patient (name2, medstat2, email2,  dob,sex) >
+	<!ATTLIST patient id CDATA #REQUIRED>
+	<!ELEMENT name2 (#PCDATA)>
+	<!ELEMENT medstat2 (#PCDATA)>
+	<!ELEMENT email2 (#PCDATA)>
+	<!ELEMENT dob (CDATA)>
+	<!ELEMENT sex (#PCDATA)>
+	<!ELEMENT opr (floor, number)>
+	<!ATTLIST opr id CDATA #REQUIRED>
+	<!ELEMENT floor (CDATA)>
+	<!ELEMENT number (CDATA)>
+	<!ELEMENT surgeons (surgeon+)>
+	<!ELEMENT surgeon (email,name, medstat, pagerNumber,tlfNumber )>
+	<!ATTLIST surgeon id CDATA #REQUIRED>
+	<!ELEMENT email (#PCDATA)>
+	<!ELEMENT name (#PCDATA)>
+	<!ELEMENT medstat (#PCDATA)>
+	<!ELEMENT pagerNumber (CDATA)>
+	<!ELEMENT tlfNumber (CDATA)>
+	<!ELEMENT schedule (date, startTime, finishTime)>
+	<!ATTLIST schedule ID CDATA #REQUIRED>
+	<!ELEMENT date (CDATA)>
+	<!ELEMENT startTime (CDATA)>
+	<!ELEMENT finishTime (CDATA)>
+]>

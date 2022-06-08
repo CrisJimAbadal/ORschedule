@@ -271,7 +271,7 @@ public class JDBCSurgeryManager implements SurgManager {
 		List<Surgeon> surgeons = new ArrayList<Surgeon>();
 		try {
 			Statement stmt = manager.getConnection().createStatement();
-			String sql = "SELECT * FROM surgery WHERE id = " + id;
+			String sql = "SELECT surgery.*, surgeon.id FROM surgery JOIN surgeonSurgery ON surgeonSurgery.surgeryId= surgery.id JOIN surgeon ON surgeonSurgery.surgeonId=surgeon.id WHERE surgery.id = " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
 				String type = rs.getString("type");

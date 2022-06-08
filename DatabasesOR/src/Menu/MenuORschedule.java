@@ -857,9 +857,13 @@ public class MenuORschedule {
 
 	public static void toxml() throws Exception {
 		System.out.println("Select a surgery to pass to xml");
+		Surgery s=null;
 		surgeryManager.listSurgeries();
+		try {
 		Integer id = Integer.parseInt(read.readLine());
-		Surgery s = surgeryManager.chooseSurgery(id);
+		 s= surgeryManager.chooseSurgery(id);
+		}catch(Exception ex) {}
+		
 
 		java2Xmlsurgury(s);
 	}

@@ -20,7 +20,7 @@ import utils.SQLDateAdapter;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlRootElement(name = "Patient")
-@XmlType(propOrder = { "name", "medstat", "email"})
+@XmlType(propOrder = { "name", "medstat", "email","dob","sex"})
 public class Patient implements Serializable {
 
 
@@ -41,14 +41,13 @@ public class Patient implements Serializable {
 		return digest;
 	}
 
-
+	@XmlElement
 	@XmlJavaTypeAdapter(SQLDateAdapter.class)
 	private Date dob;
 	@XmlAttribute
 	private String sex;
 	
-	@XmlElement(name = "Surgery")
-	@XmlElementWrapper(name= "Surgeries")
+	@XmlTransient
 	private List <Surgery> surgeries;
 	
 	

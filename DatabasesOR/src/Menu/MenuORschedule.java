@@ -9,8 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.sql.Date;import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
 
@@ -417,7 +416,7 @@ public class MenuORschedule {
 		md.update(password.getBytes());
 		byte[] digest = md.digest();
 
-		// TODO CHECK THAT THE PATIENT DOESN'T EXIST ALREADY (do the same in surgeon)
+	
 		Patient patient = new Patient(name, medstat, email, Date.valueOf(dobDate), sex);
 
 		// CREATE PATIENT AND ADD TO JPA
@@ -508,7 +507,7 @@ public class MenuORschedule {
 
 		if (user == null) {
 			System.out.println("User not found");
-			principalMenu(); // TODO returns to principal menu if the user does not exist
+			principalMenu(); 
 		}
 
 		// [depending on the type of user we open a different menu]
@@ -531,7 +530,6 @@ public class MenuORschedule {
 			SMenu(s.getId());
 
 		}
-
 	}
 
 	// UPDATE PATIEN'S INFO
@@ -550,7 +548,7 @@ public class MenuORschedule {
 		if (!name.equals("")) {
 			p.setName(name);
 		}
-		// TODO actualizar medstat (throw exception)
+		
 		System.out.println("New medstat: ");
 		String medstat = read.readLine();
 		if (!medstat.equals("")) {
@@ -650,12 +648,12 @@ public class MenuORschedule {
 
 			List<Surgeon> surgeons = new ArrayList<Surgeon>();
 			
-				//TODO surgeons in surgery try to correct it 
+				
 				System.out.println("How many surgeons are going to participate? ");
 				numSurg = Integer.parseInt(read.readLine());
 				
 				numOfSurgeons = surgeonManager.countSurgeons(specialty);
-				System.out.println("number of surgeons compatible with that patient:");
+				System.out.println("\nnumber of surgeons compatible with that patient:");
 				System.out.println(numOfSurgeons);
 				
 				if(numOfSurgeons>=numSurg) {
@@ -674,20 +672,17 @@ public class MenuORschedule {
 						surg = chooseSurgeon(specialty);
 						
 					}
-					
 					surgeons.add(surg);
-					System.out.println("the surgeons that will participate in this surgery are:");
+					System.out.println("\nthe surgeons that will participate in this surgery are:");
 					for(Surgeon surgeon: surgeons) {
 						System.out.println(surgeon);
 					}
 				}
 				}
 				else {
-					System.out.println("the number of surgeons selected is not available");
-					
+					System.out.println("the number of surgeons selected is not available");	
 				}
 				
-			
 
 			// 6) TYPE of surgery
 			String type = p.getMedstat();
@@ -743,11 +738,7 @@ public class MenuORschedule {
 	public static Patient choosePatient() throws Exception {
 
 		List<Patient> patients = patientManager.listPatients();
-		// TODO excepcion aqui
-		/*
-		 * if(patients==null) {
-		 * System.out.println("There are no patients in the database at this moment"); }
-		 */
+	
 
 		for (Patient patient : patients) {
 			System.out.println(patient.toString());
@@ -815,7 +806,7 @@ public class MenuORschedule {
 		surgeryManager.unassign(surgeryId);
 	}
 
-	//private static EntityManager em;
+	
 
 	public static void java2Xmlsurgury(Surgery surgery) throws Exception {
 		System.out.println(surgery);

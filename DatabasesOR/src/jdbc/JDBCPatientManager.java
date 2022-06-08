@@ -172,12 +172,12 @@ public class JDBCPatientManager implements PManager {
 	@Override
 	public void updatePatient(Patient p) {
 		try {
-			String sql = "UPDATE patient SET name = ?, medstat = ?";
+			String sql = "UPDATE patient SET name = ?, medstat = ? WHERE id = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 
 			pr.setString(1, p.getName());
 			pr.setString(2, p.getMedstat());
-			
+			pr.setInt(3, p.getId());
 			
 			pr.executeUpdate();
 			pr.close();

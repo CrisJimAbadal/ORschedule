@@ -171,7 +171,7 @@ public class JDBCSurgeonManager implements SManager {
 	@Override
 	public void updateSurgeon(Surgeon s) {
 		try {
-			String sql = "UPDATE surgeon SET  pagernumber = ?, tlfnumber = ?";
+			String sql = "UPDATE surgeon SET  pagernumber = ?, tlfnumber = ? WHERE id = ?";
 			PreparedStatement pr = manager.getConnection().prepareStatement(sql);
 
 			if (s.getPagerNumber() != null) {
@@ -180,6 +180,7 @@ public class JDBCSurgeonManager implements SManager {
 			if (s.getTlfNumber() != null) {
 				pr.setInt(2, s.getTlfNumber());
 			}
+			pr.setInt (3, s.getId());
 			pr.executeUpdate();
 			pr.close();
 		} catch (Exception e) {

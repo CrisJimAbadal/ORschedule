@@ -1,1 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Surgery type="neurology">
+    <patient name="paula" medstat="pediatrics"/>
+    <opr id="6" floor="2" number="3"/>
+    <surgeons/>
+</Surgery>

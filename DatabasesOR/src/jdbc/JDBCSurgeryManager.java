@@ -28,10 +28,16 @@ public class JDBCSurgeryManager implements SurgManager {
 	private static SManager surgeonManager;
 	private static OPRManager oprManager;
 	private static ScheduleManager scheduleManager;
-
+	
 	public JDBCSurgeryManager(JDBCManager m) {
 		this.manager = m;
+		 patientManager= new JDBCPatientManager(m);
+		 surgeonManager= new JDBCSurgeonManager(m);
+		 oprManager=new JDBCOprManager(m);
+		 scheduleManager=new JDBCScheduleManager(m);
+		
 	}
+
 
 	// ADD SURGERY TO THE DATABASE
 	@Override
@@ -323,8 +329,8 @@ public class JDBCSurgeryManager implements SurgManager {
 				Integer sId = rs.getInt("surgeonId");
 				Integer oprId = rs.getInt("oprId");
 				Integer scheduleId = rs.getInt("scheduleId");
-
-				Patient patient = patientManager.searchPatientbyId(pId);
+				int patid=pId;
+				Patient patient = patientManager.searchPatientbyId(patid);
 
 				Surgeon surgeon = surgeonManager.chooseSurgeon(sId);
 				surgeons.add(surgeon);

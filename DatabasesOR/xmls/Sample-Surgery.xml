@@ -3,4 +3,9 @@
     <patient name="paula" medstat="pediatrics"/>
     <opr id="6" floor="2" number="3"/>
     <surgeons/>
+    <schedule>
+        <date>2022-09-03</date>
+        <startTime>12:00</startTime>
+        <finishTime>17:00</finishTime>
+    </schedule>
 </Surgery>

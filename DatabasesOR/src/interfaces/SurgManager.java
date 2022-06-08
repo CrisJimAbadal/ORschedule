@@ -33,4 +33,5 @@ public interface SurgManager {
 	//to get id
 	public int getIdSurgery();
 	
+	
 }

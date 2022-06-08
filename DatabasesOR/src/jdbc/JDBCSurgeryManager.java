@@ -274,6 +274,7 @@ public class JDBCSurgeryManager implements SurgManager {
 			String sql = "SELECT surgery.*, surgeon.id FROM surgery JOIN surgeonSurgery ON surgeonSurgery.surgeryId= surgery.id JOIN surgeon ON surgeonSurgery.surgeonId=surgeon.id WHERE surgery.id = " + id;
 			ResultSet rs = stmt.executeQuery(sql);
 			while (rs.next()) {
+				
 				String type = rs.getString("type");
 				Integer pId = rs.getInt("patientId");
 
@@ -292,7 +293,9 @@ public class JDBCSurgeryManager implements SurgManager {
 		
 
 				s = new Surgery(id, type, patient, opr, surgeons, schedule);
+				
 			}
+			
 
 			rs.close();
 			stmt.close();
@@ -302,6 +305,10 @@ public class JDBCSurgeryManager implements SurgManager {
 
 		return s;
 	}
+	
+	
+	
+	
 	public int getIdSurgery() {
 		int id = 0;
 		try {

@@ -816,15 +816,17 @@ public class MenuORschedule {
 		surgeryManager.unassign(surgeryId);
 	}
 
-	private static EntityManager em;
+	//private static EntityManager em;
 
 	public static void java2Xmlsurgury(Surgery surgery) throws Exception {
+		System.out.println(surgery);
 
-		em = Persistence.createEntityManagerFactory("DatabasesOR").createEntityManager();
-		em.getTransaction().begin();
-		em.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
-		em.getTransaction().commit();
+	EntityManager em2 = Persistence.createEntityManagerFactory("DatabasesOR").createEntityManager();
+		em2.getTransaction().begin();
+		em2.createNativeQuery("PRAGMA foreign_keys=ON").executeUpdate();
+		em2.getTransaction().commit();
 
+		
 		// Create the JAXBContext
 		JAXBContext jaxbContext = JAXBContext.newInstance(Surgery.class);
 		// Get the marshaller
@@ -834,6 +836,7 @@ public class MenuORschedule {
 		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 
 		File file = new File("./xmls/Sample-Surgery.xml");
+		
 		marshaller.marshal(surgery, file);
 	}
 
@@ -856,13 +859,15 @@ public class MenuORschedule {
 	}
 
 	public static void toxml() throws Exception {
+		
 		System.out.println("Select a surgery to pass to xml");
 		Surgery s=null;
 		surgeryManager.listSurgeries();
-		try {
+		
 		Integer id = Integer.parseInt(read.readLine());
+		
 		 s= surgeryManager.chooseSurgery(id);
-		}catch(Exception ex) {}
+		
 		
 
 		java2Xmlsurgury(s);
